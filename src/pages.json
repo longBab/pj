@@ -51,6 +51,30 @@
 			}
 		},
 		{
+			"path" : "pages/products",
+			"style" : 
+			{
+				"navigationBarTitleText" : "products",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path" : "pages/introduction",
+			"style" : 
+			{
+				"navigationBarTitleText" : "Introduction",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path" : "pages/informations",
 			"style" : 
 			{

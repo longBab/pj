@@ -1,5 +1,5 @@
 <template>
-<view class="informations">
+<view class="informations body">
   <navBar :logo="logo">
     <template #quicker="{}">
       <navLanguage :source="this" />

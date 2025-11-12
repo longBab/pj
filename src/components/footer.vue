@@ -1,18 +1,22 @@
 <template>
   <view class="footer" style="z-index: 101">
      <view :class="'ul '+page">
-			<text class="item home" @click="gotoPage('/pages/home')">
-                
-			</text>
-			<text class="item order" @click="gotoPage('/pages/order')">
-                
-			</text>
-			<text class="item asset" @click="gotoPage('/pages/asset')">
-                
-			</text>
-			<text class="item member" @click="gotoPage('/pages/member')">
-                
-			</text>
+			<view class="li home" @click="gotoPage('/pages/home')" >
+				<uni-icons  type="shop" size="20" style="color:inherit" />
+             	<text>{{$t('首页')}}</text> 
+			</view>
+			<view class="li products" @click="gotoPage('/pages/products')">
+				<uni-icons  type="shop" size="20" style="color:inherit" />
+				<text>{{$t('产品')}}</text>    
+			</view>
+			<view class="li introduction" @click="gotoPage('/pages/introduction')">
+				<uni-icons  type="shop" size="20" style="color:inherit"/>
+                <text>{{$t('介绍')}}</text>
+			</view>
+			<view class="li member" @click="gotoPage('/pages/member')">
+				<uni-icons  type="shop" size="20" style="color:inherit"/>
+                <text>{{$t('我的')}}</text>
+			</view>
 		</view>
   </view>
 </template>
@@ -41,43 +45,29 @@ export default {
 	width: 100%;
 	bottom: 0;
 	justify-content: space-around;
-	background-color: #fff;
-    background: url('@/assets/green/footer.png') no-repeat center center; 
+	background-color:rgba(0, 0, 0, 0.65);
     background-size: cover;
 	align-items: center;
+	
 	.ul {
-	width: 100%;
-	display: flex;
-	justify-content: space-around;
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		&.home .li.home,
+		&.products .li.products,
+		&.introduction .li.introduction,
+		&.member .li.member{color:#0EFFB0;}
+		
+		.li{
+			color:#fff;
+			display: flex;
+			flex-direction: column;
+			align-content: space-around;
+			flex-wrap: nowrap;
+		}
 	}
 
-	.item {
-		width: 20% !important;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 1.8rem;
-		height: 1.8rem;
-		margin: 0.5rem 0 0.1rem 0;
-        font-weight: 700;
-		background:url(../static/image/tabbar/home.png) no-repeat center ;
-		background-size: 1.8rem 1.8rem;;
-        font-family: 'Microsoft YaHei', 'Segoe UI', Georgia, 'Times New Roman', Times, serif;
+	 
 	
-		&.home{background-image:url(../static/image/tabbar/tabbar-zhuye2.png)}
-    &.order{background-image:url(../static/image/tabbar/tabbar_gailan2.png)}
-		&.asset{background-image:url(../static/image/tabbar/DataExchange.png)}
-		&.member{background-image:url(../static/image/tabbar/tabbar_woon2.png)}
-	}
-	.ul{
-       
-		
-		&.home .item.home{background-image:url(../static/image/tabbar/tabbar-zhuye.png)}
-    &.order .item.order{background-image:url(../static/image/tabbar/tabbar_gailan.png)}
-		&.asset .item.asset{background-image:url(../static/image/tabbar/DataExchange1.png)}
-		&.member .item.member{background-image:url(../static/image/tabbar/tabbar_woon.png)}
-		 
-	}
 }
 </style>

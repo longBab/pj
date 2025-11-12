@@ -1,8 +1,8 @@
 <template>
 <view class="nabBar">
-    <uni-icons class="back" v-if="back&&back.length>2" @click="chose($event,'back')"  type="left" size="25" style="color:#000"></uni-icons>
-    <view v-if="logo" style="width: 40%; justify-content: flex-start;margin:auto;text-align: center;" class="center_flex">
-      <image class="logo mr05" :src="logo" mode="scaleToFill" />
+    <uni-icons class="back" v-if="back&&back.length>2" @click="chose($event,'back')"  type="left" size="20" style="color:inherit"></uni-icons>
+    <view v-if="logo"  class="logo">
+      <image class="img" :src="logo" mode="scaleToFill" />
     </view>
     <view class="title" v-if="title">{{$t(title?title:"none")}}</view>
     <slot name="tabs" v-bind="this"></slot>
@@ -43,23 +43,49 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: transparent;
-  padding: 0 0.7rem;
-  border-bottom: 0rpx solid #cecece;
+  background-color:rgba(0, 0, 0, 0.65);
   display: flex;
-  height: 3.8rem;
+  height: 6vh;
   width:100%;
   z-index: 9999999;
+  color: #fff;
+  font-size: 0.9rem;
+  line-height:6vh;
+  .back,.logo {
+        width: 2rem;
+	      height: 2rem;
+  }
   .logo {
-    width: 4.5rem;
-    height: 2rem;
+    width:40%; justify-content: flex-start;margin:auto;text-align: center;
+    .img{
+      width: 4vh;
+      height: 4vh;
+    }
+  }
+  
+  .title,.quicker ::v-deep .item{
+       
+  }
+  .title {
+      width: calc(100% - 5rem);
+      text-align: center;
+  }
+  .quicker {
+      display: flex;
+      align-items: right;
+      right: 0;
+      top: 20rpx;
+      right: 20rpx;
+      ::v-deep .item{ 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height:2rem;
+        cursor: pointer;
+      }
   }
   .popuper{
     
-  }
-  .quicker {
-    display: flex;
-    align-items: center;
   }
 }
 </style>

@@ -1,18 +1,18 @@
 <template>
-<view class="home body">
-  <navBar ref="navBar"  :logo="logo" :source="this">
-    <!--<template #quicker="{}">
+<view class="introduction body">
+  <navBar :title="title" :back="back">
+    <!--
+    <template #quicker="{}">
       <navLanguage :source="this" />
-    
     </template>
-      -->
+    -->
   </navBar>
   <view class="wrapper">
     <scroll-view scroll-y="true" scroll-x="false">
       
-    </scroll-view>  
+    </scroll-view>
   </view>
-  <mrFooter page="home"  />
+  <mrFooter page="introduction" />
 </view>
 </template>
 
@@ -30,35 +30,29 @@ export default {
   setup() {},
   data() {
     return {
-      name:"Home",
-      logo: "../static/images/logo.png"
-    }
+      back:"home",
+      title: "介绍",
+    };
   },
   onLoad(sender) {
     var that = this;
-    that.sender=sender;
-    that.load(sender);
+    if(sender&&sender.code)that.inviteCode=sender.code;
+ 
   },
   onReady() {
-    var that=this;
+    //this.getServerData();
   },
-  methods: {
-    load(sender){
-      var that=this,sender=that.sender||sender||{};
-      
-    }
-  }
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-.home {
-  .wrapper {
+.introduction {
+  .wrapper{
     justify-content: flex-start;
     height: calc(100% - 4rem);
-    padding: 4rem 0rem 5rem 0rem;
-
   }
+ 
   uni-scroll-view {
     height: calc(100% - 2rem);
   }
