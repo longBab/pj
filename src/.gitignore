@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/unpackage
+**/sessions
+**/.hbuilderx/
+**/package-lock.json
+**/*copy.vue
+PB*.js
+.log
+*.zip
+*.tar
+*.gz
+*.7z

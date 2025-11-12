@@ -1,0 +1,8 @@
+{
+    "name": "Wintermute",
+    "title": "WINTERMUTE",
+    "logo": "src/assets/logo.png",
+    "authorizations":["",""],
+    "API_URL": "/api/",
+    "API_KEY": ""
+}

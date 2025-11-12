@@ -1,0 +1,164 @@
+
+uni-page-body,html,body{  
+   height: 100%;  
+   background-color:transparent;
+}
+uni-button,uni-view{font-family: "MyriadPro-Regular";}
+.w100{width:100%;}
+.w80{width:80%;}
+.w60{width:60%;}
+.bdr05{border-radius:5px;}
+.bdr10{border-radius:10px;}
+.bggr01{background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);}
+uni-button.clear{display: inline-block;color:#fff;border:0;background: transparent;}
+uni-button.clear:after{border:0;}
+uni-view.w60,uni-button.w60{width: 60%;}
+uni-view.w80,uni-button.w80{width: 80%;}
+uni-view.w100,uni-button.w100{width: 100%;}
+uni-button.s01{ 
+     font-family: "MyriadPro-Regular";
+     background:#4267fa;margin:1rem auto 0 auto;font-weight:none;color:#fff; 
+}
+uni-button.s01.red{background:#d7135f;}
+uni-button.s02{ color:white;}
+uni-view.bold,uni-text.bold{font-family: "MyriadPro-Bold";}
+.body{
+	width:100%;height: 100%;
+	background:url("../static/images/body-bg.png") top center no-repeat;
+    background-size: 100% auto;
+    background-color:#010101;
+}
+
+.toper{
+	display: block;
+	width:100%;
+	margin-top:calc(44px + env(safe-area-inset-top)); 
+	white-space:pre-wrap;
+	color: #ffffff;
+	.menu{display: block;width:100%;}
+} 
+.wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height:100%;
+}
+.form{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+	.row{width:100%;margin:0.6rem auto;}
+	.row.center{text-align:center;}
+	.row.s01{color:#0d75d0;}
+	.row.s02{color: #fff;}
+	.ctl{
+		width:100%;
+		display: flex;
+		align-items: center;
+	}
+    .arrow-right-wrapper{
+        width: 64rpx;
+        height: 64rpx;
+        border-radius: 50%;
+        background-color: #0EFFB0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16rpx;
+    }
+    .right-btn{
+        padding: 0 20rpx 0 20rpx;
+        height: 46rpx;
+        border-radius: 20rpx;
+        background-color: #0EFFB0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16rpx;
+    }
+}
+.login,.register,.forget{
+    &.body{background:#181c18;}
+	::v-deep .u-form-item{padding:0.6rem 0 0.6rem 0;width:100%;}
+    ::v-deep .u-form-item--left__content__icon {
+        display: flex;
+    }
+    ::v-deep .u-input__input{color:#fff;}
+    
+    ::v-deep .u-form-item__body {
+        display: flex;
+        background: transparent;
+        border: 1px solid #417B68;
+        padding: 0.1rem 0.3rem;
+        border-radius: .4rem;
+    }
+    .panel{
+        background: url("../static/images/login-bg.png") no-repeat center / 100% 100%;
+        width:90%;
+        border:1px solid #000;
+        background-color:#000;
+        padding:0 0 3rem 0;
+		border-radius:10px;
+        .title{
+            font-size:1.3rem;
+            text-align: center;
+            background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight:bold;
+            line-height:2.3rem;
+            padding: 20rpx;
+        }
+        
+        .logo{
+            position:relative;
+            width: 5rem;
+            height:5rem; 
+            border-radius: 50%;
+            border:1px solid #000;
+            background-color:#000;
+            margin:-2.5rem auto 0 auto;
+            .image{
+            position:absolute;
+            width:8rem;height:5rem;
+            left:-1.5rem;
+            background:url(../static/images/logo.png) center center no-repeat;
+            background-size:8rem auto;
+            z-index:99;
+            } 
+        }
+        .ctl{width:80%;margin:1rem auto 0 auto;}
+        .foot-link{
+            padding-top: 70rpx;
+            padding-left: 40rpx;
+            color:#0EFFB0;
+            font-size: 24rpx;
+            text-decoration: underline;
+            width:250rpx;
+        }
+    }
+    .form {
+        width:90%;
+        margin:0 auto;
+        color:#fff;
+        .uni-input-input{
+            color:#ffffff;
+        }
+        .item {
+            margin-bottom: .2rem;
+            width:100%;
+            ::v-deep input {
+                color: #000;
+                font-size: 1rem;
+            }
+        }
+    }
+    .form,.ctl{
+        .btn{font-weight:bold;}
+    }
+}
+
+

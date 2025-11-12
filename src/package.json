@@ -1,0 +1,12 @@
+{
+    "name": "smallPlate-frontends",
+    "version": "0.0.0",
+    "scripts": {
+
+    },
+    "dependencies": {
+        "web3": "~1.7.3",
+        "tp-js-sdk": "~3.7.11",
+        "uniapp-qrcode":"~1.0.2"
+    }
+}

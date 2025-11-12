@@ -1,0 +1,10 @@
+**/node_modules
+**/package-lock.json
+**/licensing
+dist/
+.hbuilderx/
+.idea/
+languages.sql
+*.zip
+*.gz
+*.7z
