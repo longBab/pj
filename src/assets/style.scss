@@ -27,6 +27,7 @@ uni-view.bold,uni-text.bold{font-family: "MyriadPro-Bold";}
 	background:url("../static/images/body-bg.png") top center no-repeat;
     background-size: 100% auto;
     background-color:#010101;
+    font-size:0.65rem;
 }
 
 .toper{
@@ -37,12 +38,54 @@ uni-view.bold,uni-text.bold{font-family: "MyriadPro-Bold";}
 	color: #ffffff;
 	.menu{display: block;width:100%;}
 } 
+.panel{
+    width:98%;
+    margin:0 auto;
+    position: relative;
+    border: 1px solid #00FFFF70;
+    border-radius: 10px;
+    .bdlg{
+        position: absolute;
+        border: 1px solid;
+        top: -1px;
+        bottom: -1px;
+        right: -1px;
+        left: -1px;
+        z-index:1;
+        border-image-source: linear-gradient(109deg, #00FFFF -29.08%, #000000 46.11%, #00FFBD 117.09%);
+        border-image-slice: 1;
+        border-image-repeat: round;
+        clip-path: inset(0 round 10px);
+    }
+    .icon-top{ 
+        position: absolute;
+        top:-1.5rem;
+        width:3rem;height:3rem; 
+        left:calc(50% - 1.5rem);
+        z-index:2;
+        background: url(/static/images/member/m4.png) center center no-repeat;
+        background-size: 3rem 3rem;
+    }
+    .container{
+        position: absolute;
+        top: 1px;
+        bottom: 1px;
+        right: 1px;
+        left: 1px;
+        z-index:2;
+        display: flex;
+        justify-content: center;
+    }
+     
+ 
+}
 .wrapper{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	height:100%;
+    
 }
 .form{
 	display: flex;
