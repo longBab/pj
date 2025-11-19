@@ -1,5 +1,5 @@
 <template>
-<view class="nabBar">
+<view :class="'nabBar '+page">
     <uni-icons class="back" v-if="back&&back.length>2" @click="chose($event,'back')"  type="left" size="20" style="color:inherit"></uni-icons>
     <view v-if="logo"  class="logo">
       <image class="img" :src="logo" mode="scaleToFill" />
@@ -7,7 +7,6 @@
     <view class="title" v-if="title">{{$t(title?title:"none")}}</view>
     <slot name="tabs" v-bind="this"></slot>
     <view class="quicker">
-     
     </view>
     <slot name="quicker" v-bind="this"></slot>
 </view>
@@ -21,7 +20,7 @@ export default {
       
     };
   },
-  props: ['title','back','logo','source'],
+  props: ['title','back','logo','source','page'],
   mounted() {
  
    var that=this;
@@ -51,14 +50,17 @@ export default {
   color: #fff;
   font-size: 0.9rem;
   line-height:6vh;
-  .back,.logo {
+  .back{
         width: 2rem;
 	      height: 2rem;
   }
   .logo {
-    width:40%; justify-content: flex-start;margin:auto;text-align: center;
+    width:60%; 
+    justify-content: flex-start;
+    margin:1vh auto;
+    text-align: center;
     .img{
-      width: 4vh;
+      width: 100%;
       height: 4vh;
     }
   }

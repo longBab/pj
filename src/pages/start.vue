@@ -37,28 +37,13 @@
         padding: 0.1rem 0.3rem;
         border-radius: .4rem;
     }
-    .fixed-bottom-png {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        z-index: 2;
-        width: 300rpx;
-        transform: rotate(180deg);
-    }
-    .fixed-top-png {
-        width: 300rpx;
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        z-index: 2;
-    }
     .loader{
         width:70%;
         text-align: center;
         color:#fff;
         .logo{
             height:5rem;
-            background:url(../static/images/logo.png) center center no-repeat;
+            background:url(../static/images/logo-01.png) center center no-repeat;
             background-size:8rem auto;
             overflow:hidden;
         }

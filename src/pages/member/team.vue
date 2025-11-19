@@ -1,5 +1,5 @@
 <template>
-  <view class="team">
+  <view class="team body" :class="$store.state.setting.theme">
     <navBar :logo="logo">
       <template #quicker="{}">
         <navLanguage :source="this" />

@@ -1,5 +1,5 @@
 <template>
-  <view class="withdraw">
+  <view class="withdraw body" :class="$store.state.setting.theme">
     <navBar :title="title" :back="back"></navBar>
     <view class=" wrapper">
       <scroll-view scroll-y="true" scroll-x="false">

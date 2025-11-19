@@ -6,7 +6,7 @@
                 <view class="image"></view>
             </view>
             <view class="title">欢迎登录</view>
-            <view style="padding:10rpx 40rpx 40rpx 40rpx;">
+            <view class="tab-panel">
                 <u-tabs
                     :list="tabList"    
                     :current="current"
@@ -84,11 +84,14 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
+.tab-panel{
+    padding:0.22rem 0.5rem 1.5rem 0.5rem;
+}
 ::v-deep .u-tabs {
   background: transparent !important;
 }
 ::v-deep .u-tab-item{
-  font-size: 24rpx !important;
+  font-size: 0.75rem !important;
   font-weight:normal !important;
 }
 .login {

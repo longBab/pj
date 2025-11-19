@@ -63,6 +63,39 @@
 			}
 		},
 		{
+			"path": "pages/product/detail",
+			"style": {
+				"navigationBarTitleText": "Detail",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/product/myproduct",
+			"style": {
+				"navigationBarTitleText": "Myproduct",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/product/income",
+			"style": {
+				"navigationBarTitleText": "Income",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path" : "pages/introduction",
 			"style" : 
 			{
@@ -218,7 +251,85 @@
 					"navigationBarTextStyle": "white"
 				}
 			}
-		} 
+		},
+		{
+			"path": "pages/member/wallet",
+			"style": {
+				"navigationBarTitleText": "Wallet",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/certifying",
+			"style": {
+				"navigationBarTitleText": "Certifying",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/support",
+			"style": {
+				"navigationBarTitleText": "Support",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/exchange",
+			"style": {
+				"navigationBarTitleText": "Exchange",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		
+		{
+			"path": "pages/member/exchange/sell",
+			"style": {
+				"navigationBarTitleText": "Sell",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/QView",
+			"style": {
+				"navigationBarTitleText": "QuantifyView",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/DCenter",
+			"style": {
+				"navigationBarTitleText": "DataCenter",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "#ffffff",

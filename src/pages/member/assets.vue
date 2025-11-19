@@ -1,5 +1,5 @@
 <template>
-  <view class="assets">
+  <view class="assets body" :class="$store.state.setting.theme">
     <navBar :back="back" :title="title">
     </navBar>
     <view class="wrapper">

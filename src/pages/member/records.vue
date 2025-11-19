@@ -1,5 +1,5 @@
 <template>
-  <view class="records">
+  <view class="records body" :class="$store.state.setting.theme">
     <navBar :back="back">
     <template #tabs="{}">
       <view class="title-wrap">

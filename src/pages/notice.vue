@@ -16,7 +16,8 @@ export default {
   components: {navBar},
 		data() {
 			return {
-				back:"notices"
+				back:"notices",
+				_title:"公告"
 			};
 		},
 	onLoad(sender) {

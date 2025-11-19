@@ -1,246 +1,410 @@
 <template>
-<view class="products body">
-  <navBar :title="title" :back="back">
-    <!--
-    <template #quicker="{}">
-      <navLanguage :source="this" />
-    </template>
-    -->
-  </navBar>
-  <view class="wrapper">
-    <scroll-view scroll-y="true" scroll-x="false">
-      <view style="margin-top: 20rpx;text-align: center;font-size:36rpx;">
-         {{$t('量化中心')}}
-      </view>
-      <view style="margin: 70rpx 0 0 0; ">
-          <view>
-            <u-row >
-              <u-col span="6" style="position: relative;">
-                <view style="text-align: center;position: absolute;top:-90rpx;left:60rpx;z-index: 2;width: 400rpx;">
-                  <view style="font-size: 38rpx;">
-                    {{$t('量化总金额')}}
-                  </view>
-                  <view style="margin: auto; height:80rpx;font-size: 38rpx;line-height:80rpx;border-radius: 20rpx; border: 2rpx solid #00FFFF70;margin-top:60rpx;">
-                    {{$t('53,971,407.27153')}}
-                  </view>
+    <view class="products body" :class="$store.state.setting.theme">
+        <navBar :back="back" :title="title">
+        </navBar>
+        <view class="wrapper">
+            <view class="mt5 wc93 income-panel">
+                <view class="title">
+                    当前组合年华收益率（预估）
                 </view>
-              </u-col>
-              <u-col span="6">
-                  <view style="display:flex;justify-content:right;align-items:center;">
-                    <u-image mode="scaleToFill"
-                      src="/static/images/products/p1.png"
-                      width="300rpx"
-                      height="220rpx"
-                    ></u-image>
-                  </view>
-              </u-col>
-            </u-row>
-          </view>
-      </view>
-      <view style="margin: 100rpx 50rpx 0 50rpx;">
-        <view style="display:flex;justify-content:left;align-items:center;height:55rpx;font-size: 18rpx;line-height:55rpx;border-radius: 40rpx; border: 2rpx solid #00FFFF70;">
-          <view style="margin:0 20rpx 0 15rpx;width: 440rpx;border-radius: 40rpx; height: 8rpx;background-color: #726B6B;">
-            <view style="width: 140rpx;border-radius: 40rpx;height: 8rpx;background-color: #0EFFB0;">
-            </view>
-          </view>
-          <view>
-            6500/100000 USDT
-          </view>
-        </view>
-      </view>
-      <view style="margin: 50rpx 42rpx 0 42rpx; ">
-          <u-row style="margin-bottom: 10px">
-            <u-col span="6">
-                <view class="col-box">
-                  <view class="col-box-text">
-                    {{$t('个人量化产出比')}}
-                  </view>
-                  <view class="col-box-text">
-                    {{$t('1,399')}}
-                  </view>
+                <view class="percentage">
+                    36,011.9373%
                 </view>
-            </u-col>
-            <u-col span="6">
-                <view class="col-box">
-                  <view class="col-box-text">
-                    {{$t('平台产出比')}}
-                  </view>
-                  <view class="col-box-text">
-                     {{$t('0')}}
-                  </view>
+                <view class="des">
+                    数据由链上真实成交与 AI 回测综合计算，仅作策略表现参考。
                 </view>
-            </u-col>
-          </u-row>
-        </view>
-      <view style="margin-top: 80rpx;text-align: center;font-size:36rpx;">
-         {{$t('参与量化')}}
-      </view>
-      <view class="list-wrapper" style="margin-top:60rpx">
-        <view style="display: flex;font-size: 30rpx;">
-          <view style="flex:1;">
-            餘額
-          </view>
-          <view>
-            9,048 USDT
-          </view>
-        </view>
-        <view style="display: flex;font-size: 30rpx;">
-          <view style="flex:1;">
-            产口金额
-          </view>
-          <view>
-            9,048 USDT
-          </view>
-        </view>
-        <view v-for="(item, i) in list" :key="i">
-          <view class="list-item">
-            <view class="list-item-left">
-              {{ item.t }}
+                <view class="dp mt5 board">
+                    <view class="f1 box">
+                        <view>当前托管本金</view>
+                        <view class="money">24,146.30 U</view>
+                    </view>
+                    <view class="f1 box">
+                        <view>今日已实现收益</view>
+                        <view class="money">+760.00 U</view>
+                    </view>
+                    <view class="f1 box">
+                        <view>当前托管本金</view>
+                        <view class="money">97.60%</view>
+                    </view>
+                </view>
             </view>
-            <view class="list-item-right">
-              {{ item.n }}
+            <view class="mt5 dp wc93 t1">
+                <view class="f1 t">
+                    请选择量化周期
+                </view>
+                <view class="des">
+                    <view class="panel des-panel">
+                        <view class="container des-container">
+                            <view class="text">
+                                托管随进随出 · 到期可续约
+                            </view>
+                        </view>
+                        <view class="bdlg bdlg-cp20"></view>
+                    </view>
+                </view>
             </view>
-          </view>
-        </view>
-        <view style="margin-top:60rpx;">
-          <view class="ctl">
-            <button style=" width:340rpx;height:80rpx;line-height: 80rpx; font-size: 32rpx;background-color: #0EFFB0; border-radius: 30rpx;" >{{$t('开启量化')}}</button>
-          </view>
-        </view>
-      </view>
-      <view style="margin-top: 80rpx;text-align: center;font-size:36rpx;">
-         {{$t('您的量化')}}
-      </view>
-      <view style="display:flex;justify-content:center;align-items:center;">
-        <view style="">
-          <u-image mode="scaleToFill"
-            src="/static/images/products/p2.png"
-            width="150rpx"
-            height="150rpx"
-          ></u-image>
-        </view>
-        <view>
-            量化保护仓
-        </view>
-      </view>
-      
-      <view class="list-wrapper" style="margin-top:60rpx">
-        <view style="display: flex;font-size: 30rpx;">
-          <view style="flex:1;">
-            餘額
-          </view>
-          <view>
-            9,048 USDT
-          </view>
-        </view>
-        <view style="display: flex;font-size: 30rpx;">
-          <view style="flex:1;">
-            产口金额
-          </view>
-          <view>
-            9,048 USDT
-          </view>
-        </view>
-        <view v-for="(item, i) in list" :key="i">
-          <view class="list-item">
-            <view class="list-item-left">
-              {{ item.t }}
+            <view class="mt5 wc93 tab">
+                <view class="panel tab-panel">
+                    <view class="container tab-container">
+                        <view class="tab-wp">
+                            <view class="dp row">
+                                <view class="f1 active">
+                                    7天 · 入门
+                                </view>
+                                <view class="f1">
+                                    15天 · 加强
+                                </view>
+                                <view class="f1">
+                                    30天 · 稳健
+                                </view>
+                                <view class="f1">
+                                    60天 · 进阶
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="bdlg bdlg-cp20"></view>
+                </view>
             </view>
-            <view class="list-item-right">
-              {{ item.n }}
-            </view>
-          </view>
-        </view>
-        <view style="margin-top:60rpx;">
-          查看全部
-        </view>
-      </view>
-    </scroll-view>
-  </view>
-  <mrFooter page="products" />
-</view>
-</template>
+            <scroll-view scroll-y="true" scroll-x="true">
+                <view class="list">
+                    <view class="item">
+                        <view class="panel item-panel item-active">
+                            <view class="container item-container">
+                                <view class="box">
+                                    <view class="title">24 小时快返</view>
+                                    <view class="dp">
+                                        <view class="f1">
+                                            日化区间
+                                        </view>
+                                        <view style="color:#0EFFB0;">
+                                            0.40% - 2.00%
+                                        </view>
+                                    </view>
+                                    <view class="dp">
+                                        <view class="f1">
+                                            结算方式
+                                        </view>
+                                        <view style="color:#0EFFB0;">
+                                            T+1 复利
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="bdlg"></view>
+                        </view>
+                    </view>
 
+                    <view class="item" v-for="(item, i) in rows" :key="i">
+                        <view class="panel item-panel">
+                            <view class="container item-container">
+                                <view class="box">
+                                    <view class="title">24 小时快返</view>
+                                    <view class="dp">
+                                        <view class="f1">
+                                            日化区间
+                                        </view>
+                                        <view style="color:#0EFFB0;">
+                                            0.40% - 2.00%
+                                        </view>
+                                    </view>
+                                    <view class="dp">
+                                        <view class="f1">
+                                            结算方式
+                                        </view>
+                                        <view style="color:#0EFFB0;">
+                                            T+1 复利
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="bdlg"></view>
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+
+
+            <view class="mt10 wc93 buy">
+                <view class="panel buy-panel">
+                    <view class="container">
+                        <view class="dp box">
+                            <view class="f1 col1">
+                                <view>
+                                    您当前选择的收益方案
+                                </view>
+                                <view class="title">
+                                    60 天进阶收益
+                                </view>
+                                <view class="des">
+                                    家期进阶策略，净值波动 相对
+                                </view>
+                            </view>
+                            <view class="col2" @click="gotoPage('/pages/product/detail')">
+                                <view class="dp btn">
+                                    确认并进入产品
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="bdlg"></view>
+                </view>
+            </view>
+            <view class="nodata mt5 wc93">
+                风险提示：以上为策略目标区间，并非固定收益承诺。实际表现受市场波动、流动性以 及成交滑点影响，以系统最终结算结果为准。
+            </view>
+        </view>
+        <mrFooter page="products" />
+    </view>
+</template>
 <script>
 import navBar from "@/components/navBar.vue";
 import mrFooter from "@/components/footer";
 import navLanguage from "@/components/navLanguage";
-
 export default {
-  components: {
+    components: {
     mrFooter,
     navBar,
     navLanguage
-  },
-  setup() {},
-  data() {
-    return {
-      back:"home",
-      title: "产品",
-      list:[],
-    };
-  },
-  onLoad(sender) {
-    var that = this;
-    if(sender&&sender.code)that.inviteCode=sender.code;
-    this.loadlist();
- 
-  },
-  onReady() {
-    //this.getServerData();
-  },
-  methods: {
-    loadlist() {
-      this.list.push({'t':'量化周期','n':'天，周，月，季，年'});
-      this.list.push({'t':'周期产出比例','n':'0 %'});
-      this.list.push({'t':'周期总产出','n':'0 USDT'});
-    }
-  },
+    },
+    data() {
+        return {
+            back: "/pages/home",
+            title: "产品",
+            currency: "",
+            status: "",
+            path: "",
+            rows: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+        };
+    },
+    onReady() {
+
+    },
+    onLoad(sender) {
+        var that = this, sender = sender || {};
+        that.sender = sender;
+        that.load(sender);
+    },
+    methods: {
+        load(sender) {
+            var that = this, sender = that.sender || sender || {};
+
+        }
+
+    },
 };
 </script>
-
+      
 <style lang="scss" scoped>
-
-.list-wrapper{
-  margin: 70rpx 50rpx 0 50rpx; border-radius: 20rpx; padding: 30rpx 30rpx 30rpx 30rpx;  border: 2rpx solid #00FFFF70; background-color: #00000099;
-  .list-item{
-    display: flex; font-size: 22rpx;font-weight: 100; height:45rpx;line-height: 45rpx;
-    .list-item-left{
-      flex:1;
-    }
-    .list-item-right{
-      margin-left:auto; text-align: left;
-    }
-  }
-}
-.col-box {
-  border: 2rpx solid #00FFFF70; 
-  border-radius: 25rpx; 
-  background: #00000099;
-  
-  height:180rpx;
-  .col-box-wrapper{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-top:-30rpx;
-  }
-  .col-box-text{
-    text-align: center;
-    font-size: 28rpx;
-    margin-top: 30rpx;
-  }
-}
 .products {
-  .wrapper{
-    justify-content: flex-start;
-    height: calc(100% - 4rem);
-    padding: 4rem 0 5rem 0;
-    color:#fff;
-  }
- 
-  uni-scroll-view {
-    height: calc(100vh - 9rem);
-  }
-}
-</style>
+    .wrapper {
+        justify-content: flex-start;
+        height: calc(100% - 6vh);
+        padding: 6vh 0rem 0 0rem;
+        color: #fff;
+
+        .income-panel {
+            background: radial-gradient(141.52% 176.06% at -23.26% 15.47%, #1a6b5167 0%, #0b213139 47.64%, #16669f3b 100%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #00000000 100%);
+            border: 1px solid #2abdbd2d;
+            border-width: 1px;
+            border-radius: 10px;
+            backdrop-filter: blur(2px);
+            padding: 0.8rem 0.3rem;
+
+            .title {
+                text-align: center;
+                font-size: 0.7rem;
+            }
+
+            .percentage {
+                text-align: center;
+                font-size: 1.2rem;
+                margin-top: 0.2rem;
+            }
+
+            .des {
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            .board {
+                text-align: center;
+
+                .box {
+                    height: 3.5rem;
+                    backdrop-filter: blur(24px);
+                    padding-top: 0.7rem;
+                    margin: 0 0.2rem;
+                    border-radius: 8px;
+                    border: 1px solid transparent;
+                    background-image: linear-gradient(to bottom, #000000cc 0%, #121a2488 100%), linear-gradient(180deg, #3BD3D344, transparent);
+                    background-origin: border-box;
+                    background-clip: padding-box, border-box;
+
+                    .money {
+                        margin-top: 0.2rem;
+                    }
+                }
+            }
+        }
+
+        .t1 {
+            .t {
+                font-size: 0.7rem;
+            }
+
+            .des {
+                .des-panel {
+                    height: 1.2rem;
+                    width: 7rem;
+                    font-size: 0.5rem;
+                    border-radius: 1rem;
+
+                    .des-container {
+                        height: 1.2rem;
+                        line-height: 1.2rem;
+                        border-radius: 1rem;
+
+                        .text {
+                            margin-top: -1px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tab {
+            .tab-panel {
+                height: 2rem;
+                width: 100%;
+                font-size: 0.5rem;
+                border-radius: 1rem;
+
+                .tab-container {
+                    height: 2rem;
+                    line-height: 2rem;
+                    border-radius: 1rem;
+
+                    .tab-wp {
+                        margin-top: -1px;
+                        width: 100%;
+
+                        .row {
+                            text-align: center;
+                            font-weight: bold;
+                            font-size: 0.6rem;
+                            padding-right: 2px;
+
+                            .active {
+                                background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
+                                border-radius: 20px;
+                                margin-top: 1px;
+                                color: #000000;
+                                height: 1.8rem;
+                                line-height: 1.8rem;
+                                font-size: 0.7rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 0.5rem;
+
+            .item {
+                margin: 0.5rem 0 0.25rem 0;
+                width: 50%;
+                padding: 0 0.4rem;
+
+                .item-active {
+                    border: 0.8px solid;
+                    border-image-source: linear-gradient(0deg, #00FFAB, #00FFAB),
+                        linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
+                    box-shadow: 0px 0px 1.09px 0px #EEFFFF;
+                    box-shadow: 0px 0px 2.18px 0px #EEFFFF;
+                    box-shadow: 0px 0px 7.62px 0px #EEFFFF;
+                    box-shadow: 0px 0px 15.24px 0px #0DFFB5;
+                    box-shadow: 0px 0px 26.13px 0px #0DFFB5;
+                    box-shadow: 0px 0px 45.73px 0px #0DFFB5;
+                }
+
+                .item-panel {
+                    height: 4rem;
+
+                    .item-container {
+                        height: 4rem;
+
+                        .box {
+                            width: 100%;
+                            text-align: left;
+                            padding: 0.5rem;
+
+                            .title {
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .buy {
+            .buy-panel {
+                height: 5rem;
+
+                .box {
+                    padding: 0.5rem;
+                    width: 100%;
+
+                    .col1 {
+                        width: 100%;
+
+                        .title {
+                            color: #0EFFB0;
+                            font-weight: bold;
+                            font-size: 0.7rem;
+                        }
+
+                        .des {
+                            color: #FFFFFFB2;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            -webkit-line-clamp: 2;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                        }
+
+                    }
+
+                    .col2 {
+                        width: 3rem;
+
+                        .btn {
+                            background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
+                            border-radius: 20px;
+                            margin-top: 1px;
+                            color: #000000;
+                            height: 4rem;
+                            font-size: 0.7rem;
+                            text-align: center;
+                            justify-content: center;
+                            align-items: center;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    uni-scroll-view {
+        height: calc(100vh - 6vh - 29.5rem);
+    }
+
+
+}</style>

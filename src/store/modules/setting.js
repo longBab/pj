@@ -1,6 +1,6 @@
 export default {
     state: {
-       name:"App",title:"App",logo:"src/assets/logo.png",API_URL:"",API_KEY:"",BASE_DIR:"/",loaded:false
+       name:"App",title:"App",logo:"src/assets/logo.png",API_URL:"",API_KEY:"",BASE_DIR:"/",loaded:false,theme:"default"
     },
     mutations: {
 

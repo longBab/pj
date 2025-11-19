@@ -3,7 +3,38 @@
     <navBar :title="title" :back="back"></navBar>
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
-        
+        <view class="mt15" @click="gotoPage('/pages/notice')">
+          <view class="panel itme-panel">
+            <view class="container">
+              <view class="dp w100 item">
+                <view class="f1">
+                  公告1
+                </view>
+                <view class="f1 tr">
+                  <u-icon name="arrow-right" size="32"></u-icon>
+
+                </view>
+              </view>
+            </view>
+            <view class="bdlg"></view>
+          </view>
+        </view>   
+        <view class="mt15">
+          <view class="panel itme-panel">
+            <view class="container">
+              <view class="dp w100 item">
+                <view class="f1">
+                  公告2
+                </view>
+                <view class="f1 tr">
+                  <u-icon name="arrow-right" size="32"></u-icon>
+
+                </view>
+              </view>
+            </view>
+            <view class="bdlg"></view>
+          </view>
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -16,7 +47,7 @@ export default {
   data() {
     return {
       back:"home",
-      title:"公告"
+      title:"公告列表"
     };
   },
   onLoad(sender) {
@@ -37,14 +68,23 @@ export default {
 .notices {
   .wrapper{
     justify-content: flex-start;
-    margin:3.5rem auto;
-    height: calc(100% - 4rem);
-    padding: 0rem 0 5rem 0;
+    height: calc(100% - 6vh);
+    padding: 6vh 1rem 0 1rem;
+    color: #fff;
+    .itme-panel {
+    height: 2.8rem;
+    line-height: 2.8rem;
+
+    .item {
+      padding: 0 1.5rem;
+      font-size: 0.75rem;
+    }
+  }
   }
  
  
 }
-uni-scroll-view {
-  height: calc(100% - 2rem);
-}
+  uni-scroll-view {
+    height: calc(100vh - 6vh);
+  }
 </style>
