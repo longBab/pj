@@ -55,6 +55,9 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
     background-color:#010101;
     font-size:0.65rem;
     overflow: hidden;
+    uni-scroll-view {
+        height:100%;
+    }
    
 }
 
@@ -231,13 +234,17 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
             z-index:99;
             } 
         }
-        .ctl{width:80%;margin:1rem auto 0 auto;}
+        
+        .ctl,.foot-link{
+            width:80%;margin:0.5rem auto 0 auto;
+        }
         .foot-link{
-            padding-top: 2rem;
-            padding-left: 1.5rem;
+            display: flex;
             color:#0EFFB0;
             text-decoration: underline;
-            width:5rem;
+            text-decoration: underline;
+            flex-direction: row;
+            justify-content: space-between
         }
     }
     .form {
@@ -257,8 +264,9 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
         }
     }
     .form,.ctl{
-        .btn{font-weight:bold;}
+        .btn{font-weight:bold;line-height:2rem;font-size: .7rem;}
     }
+     
 }
 
 

@@ -39,7 +39,8 @@ export default {
 
 <style scoped lang="scss">
 .footer {
-	height: 8vh;
+	$_height:3rem;
+	height: $_height;
 	display: flex;
 	position: fixed;
 	width: 100%;
@@ -48,6 +49,7 @@ export default {
 	background-color:rgba(0, 0, 0, 0.65);
     background-size: cover;
 	align-items: center;
+	overflow: hidden;
 	
 	.ul {
 		width: 100%;
@@ -65,9 +67,7 @@ export default {
 			align-content: space-around;
 			flex-wrap: nowrap;
 		}
-	}
-
-	 
+	} 
 	
 }
 </style>

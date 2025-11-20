@@ -1,5 +1,5 @@
 <template>
-<view :class="'nabBar '+page">
+<view :class="'nabBar '+page+' flag'+flag">
     <uni-icons class="back" v-if="back&&back.length>2" @click="chose($event,'back')"  type="left" size="20" style="color:inherit"></uni-icons>
     <view v-if="logo"  class="logo">
       <image class="img" :src="logo" mode="scaleToFill" />
@@ -20,12 +20,17 @@ export default {
       
     };
   },
-  props: ['title','back','logo','source','page'],
+  props: {
+    title:{type:String,default:''},
+    back:{type:String,default:''},
+    logo:{type:String,default:''},
+    source:{type:Object,default:null},
+    page:{type:String,default:''},
+    flag:{type:Number,default:0}
+},
+ // props: ['title','back','logo','source','page','flag'],
   mounted() {
- 
    var that=this;
-  
-   
   },
   methods: {
     chose(event, type) {
@@ -39,20 +44,21 @@ export default {
 
 <style lang="scss"  scoped>
 .nabBar {
+  $_height:2.5rem;
   position: fixed;
   top: 0;
   left: 0;
   background-color:rgba(0, 0, 0, 0.65);
   display: flex;
-  height: 6vh;
+  height: $_height;
+  line-height:$_height;
   width:100%;
   z-index: 9999999;
   color: #fff;
   font-size: 0.9rem;
-  line-height:6vh;
   .back{
-        width: 2rem;
-	      height: 2rem;
+      width: 2rem;
+	    line-height: $_height;
   }
   .logo {
     width:60%; 
@@ -69,7 +75,7 @@ export default {
        
   }
   .title {
-      width: calc(100% - 5rem);
+      width: calc(100% - 2rem);
       text-align: center;
   }
   .quicker {

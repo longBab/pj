@@ -275,6 +275,50 @@
 			}
 		},
 		{
+			"path": "pages/member/certifying/identity",
+			"style": {
+				"navigationBarTitleText": "Identity",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/certifying/alipay",
+			"style": {
+				"navigationBarTitleText": "Alipay",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/certifying/bank",
+			"style": {
+				"navigationBarTitleText": "Bank",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/certifying/wechat",
+			"style": {
+				"navigationBarTitleText": "Wechat",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path": "pages/member/support",
 			"style": {
 				"navigationBarTitleText": "Support",

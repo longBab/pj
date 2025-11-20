@@ -1,11 +1,12 @@
 <template>
 <view class="register body">
-    <view class="wrapper">
+    <view class=" wrapper">
         <view class="panel">
             <view class="logo">
                 <view class="image"></view>
             </view>
             <view class="title">{{$t('用户注册')}}</view>
+            <scroll-view scroll-y="true" scroll-x="false">
             <u-form class="form" ref="uForm" :model="form">
                 <view>{{$t('手机号码')}}</view>
                 <u-form-item :border-bottom="false">
@@ -31,11 +32,12 @@
                     <u-input v-model="form.password" :placeholder="$t('邀请码')" />
                 </u-form-item>
             </u-form>
+            </scroll-view>
             <view class="ctl">
                 <button class="btn bdr05 bggr01" @click="onSubmit($event)">{{$t('立即注册')}}</button>
             </view>
-            <view class="foot-link" @click="gotoPage('login')">
-                返回登录
+            <view class="foot-link" >
+                <text @click="gotoPage('login')">返回登录</text> <text @click="gotoPage('forget')">忘记密码</text>
             </view>
         </view> 
     </view>
@@ -74,7 +76,18 @@ export default {
      
 <style lang="scss" scoped>
 .register{
-
+    .wrapper{
+        justify-content: flex-start;
+        padding: 3.5rem 0 2rem 0;
+        color:#fff;
+    }
+    .panel{
+        height:100%;
+    }
+    
+    uni-scroll-view {
+        height:calc(100% - 8rem);
+    }
     
 }
 </style>

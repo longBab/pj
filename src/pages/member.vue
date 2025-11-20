@@ -34,7 +34,7 @@
           <view class="col des">
             <text class="title">{{$t('全球推广')}}</text>
             加入全球推广，共创未来！
-            <text class="join bdr05 bggr01">{{$t('一键开启')}}</text>
+            <text class="join bdr05 bggr01" @click="gotoPage('/pages/member/invite')">{{$t('一键开启')}}</text>
           </view>
           <view class="row">
             <text class="link">邀请链接:https://oga...3618</text>
@@ -279,13 +279,11 @@ export default {
   }
   .wrapper{
     justify-content: flex-start;
-    height: calc(100% - 14vh);
-    padding: 6vh 0 8vh 0;
+    height: calc(100% - 3rem);
+    padding: 2.5rem 0 0.1 0;
     color:#fff;
   }
-  uni-scroll-view {
-        height: calc(100vh - 14vh - 0.3rem);
-  }
+  
  
 }
 </style>

@@ -4,8 +4,8 @@
   </navBar>
   <view class="wrapper">
     <view class="tab">
-        <text class="item active">购买</text>
-        <text class="item">出售</text>
+        <text class="item" :class="[currentTab=='buy'?'buy-active':'']" @click="tabChange('buy')">购买</text>
+        <text class="item" :class="[currentTab=='sell'?'sell-active':'']" @click="tabChange('sell')">出售</text>
       </view>
 
       <view class="statistics">
@@ -29,11 +29,36 @@
     
     <scroll-view scroll-y="true" scroll-x="false">
 
-      <view class="record" v-for="(row,i) in rows" :key="i">
+      <view class="record" v-for="(row,i) in rows" :key="i" v-if="currentTab=='buy'">
         <view class="row r01">鸿运-实名付款-安全零冻结</view>
         <view class="row r02">30日成單31069(99.80%)</view>
-        <view class="row r03">¥7.07 / <text class="currency">USDT</text></view>
-        <view @click="gotoPage('/pages/member/exchange/sell')">出售</view>
+        <view class="row r03 dp">
+          <view class="f1">¥7.07 / <text class="currency">USDT</text></view>
+          <view>
+            <view class="btn buy-btn">购买</view>
+          </view>
+        </view>
+        
+        <view class="row r04">
+          <view class="c01">限額 1,000 - 1,408,865 CNY</view>
+          <view class="c02">可用余额 199,273.7 USDT</view>
+        </view>
+        <view class="bdlg tl"></view>
+        <view class="bdlg tr"></view>
+        <view class="bdlg bl"></view>
+        <view class="bdlg br"></view>
+      </view>
+
+      <view class="record" v-for="(row,i) in rows" :key="i" v-if="currentTab=='sell'">
+        <view class="row r01">鸿运-实名付款-安全零冻结</view>
+        <view class="row r02">30日成單31069(99.80%)</view>
+        <view class="row r03 dp">
+          <view class="f1">¥7.07 / <text class="currency">USDT</text></view>
+          <view >
+            <view  class="btn sell-btn" @click="gotoPage('/pages/member/exchange/sell')">出售</view>
+          </view>
+        </view>
+        
         <view class="row r04">
           <view class="c01">限額 1,000 - 1,408,865 CNY</view>
           <view class="c02">可用余额 199,273.7 USDT</view>
@@ -62,7 +87,8 @@ export default {
       path:"",
       rows:[
         {},{},{},{},{},{}
-      ]
+      ],
+      currentTab:'buy'
     };
   },
   onReady() {
@@ -77,6 +103,9 @@ export default {
     load(sender){
       var that=this,sender=that.sender||sender||{};
       
+    },
+    tabChange(tabName){
+      this.currentTab=tabName;
     },
     change(event,type){
 
@@ -105,10 +134,15 @@ export default {
       text-align: center;
       line-height:$_height;
       color:#fff;
-      &.active{
+      &.buy-active{
         border-radius:10px;
         background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
         color:#000;
+      }
+      &.sell-active{
+        border-radius:10px;
+        background-color: #F74660;
+        color:#fff;
       }
 
     }
@@ -154,7 +188,7 @@ export default {
       width:90%;height:1.1rem;line-height:1.1rem;
     }
     .r01{
-      font-size:1rem;color:#fff;font-weight:500;
+      font-size:0.7rem;color:#fff;font-weight:500;
       height:1.3rem;line-height:1.3rem;
     }
     .r02{
@@ -211,6 +245,24 @@ export default {
       }
 
   }
+  .btn {
+      border-radius: 5px;
+      width: 2.3rem;
+      height: 1rem;
+      line-height: 1rem;
+      text-align: center;
+      font-size: 0.5rem;
+      margin: 0 auto;
+    }
+    .buy-btn{
+      background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+      color: #000000;
+    }
+    .sell-btn{
+      background-color: #F74660;
+      color: #fff;
+      
+    }
   .wrapper{
     justify-content: flex-start;
     height: calc(100% - 6vh);

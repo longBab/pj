@@ -33,8 +33,8 @@
             <view class="ctl" v-if="!checkshow">
                 <button class="btn bdr05 bggr01" @click="onUpdate($event)">{{$t('确认修改')}}</button>
             </view>
-            <view class="foot-link" @click="gotoPage('login')">
-                返回登录
+            <view class="foot-link" >
+                <text @click="gotoPage('login')">注册帐号</text> <text @click="gotoPage('forget')">忘记密码</text>
             </view>
         </view> 
     </view>

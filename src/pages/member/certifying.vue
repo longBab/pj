@@ -5,21 +5,43 @@
   <view class="wrapper">
     <scroll-view scroll-y="true" scroll-x="false">
       
-      <view class="nav panel">
+      <view class="panel mt5 wc93" style="height:2rem;">
         <view class="container">
-          <view class="c01">{{$t('身份认证')}}</view>
-          <view class="arrow"><u-icon  name="arrow-right" style="color:inherit" size="28" /></view>
+          <view class="dp" style="width:100%;height:2rem;line-height: 2rem;padding:0 1rem;" @click="gotoPage('/pages/member/certifying/identity')">
+            <view class="f1"><u-icon  name="account-fill" style="color:inherit;margin-right:0.3rem;" size="24" />{{$t('身份认证')}}</view>
+            <view>{{$t('去认证')}}</view>
+          </view>
+        </view>
+        <view class="bdlg"></view>
+      </view>
+      <view class="panel mt5 wc93" style="height:2rem;">
+        <view class="container">
+          <view class="dp" style="width:100%;height:2rem;line-height: 2rem;padding:0 1rem;" @click="gotoPage('/pages/member/certifying/alipay')">
+            <view class="f1"><u-icon  name="zhifubao-circle-fill" style="color:inherit;margin-right:0.3rem;" size="24" />{{$t('绑定支付宝')}}</view>
+            <view>{{$t('去绑定')}}</view>
+          </view>
+        </view>
+        <view class="bdlg"></view>
+      </view>
+      <view class="panel mt5 wc93" style="height:2rem;">
+        <view class="container">
+          <view class="dp" style="width:100%;height:2rem;line-height: 2rem;padding:0 1rem;" @click="gotoPage('/pages/member/certifying/wechat')">
+            <view class="f1"><u-icon  name="weixin-fill" style="color:inherit;margin-right:0.3rem;" size="24" />{{$t('绑定微信')}}</view>
+            <view>{{$t('去绑定')}}</view>
+          </view>
+        </view>
+        <view class="bdlg"></view>
+      </view>
+      <view class="panel mt5 wc93" style="height:2rem;">
+        <view class="container">
+          <view class="dp" style="width:100%;height:2rem;line-height: 2rem;padding:0 1rem;" @click="gotoPage('/pages/member/certifying/bank')">
+            <view class="f1"><u-icon  name="rmb-circle-fill" style="color:inherit;margin-right:0.3rem;" size="24" />{{$t('绑定银行卡')}}</view>
+            <view>{{$t('去绑定')}}</view>
+          </view>
         </view>
         <view class="bdlg"></view>
       </view>
 
-      <view class="nav panel">
-        <view class="container">
-          <view class="c01">{{$t('账号支付配置')}}</view>
-          <view class="arrow"><u-icon  name="arrow-right" style="color:inherit" size="28" /></view>
-        </view>
-        <view class="bdlg"></view>
-      </view>
 
     </scroll-view>
   </view>
@@ -62,19 +84,6 @@ export default {
 <style lang="scss" scoped>
 .certifying {
   
-  .nav{
-    width:93%;margin:2rem auto 0 auto;
-    height:3rem;
-    
-    .container{
-      justify-content: space-between;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      padding:0 0.5rem 0 0.5rem;
-      line-height:2.8rem;
-    }
-    .c01,.c02{height:100%;}
-  }
   .wrapper{
     justify-content: flex-start;
     padding: 6vh 0 0 0;

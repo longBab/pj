@@ -8,15 +8,15 @@
                     当前组合年华收益率（预估）
                 </view>
                 <view class="percentage">
-                    36,011.9373%
+                    36,01136,01136,011.9373%
                 </view>
                 <view class="des">
                     数据由链上真实成交与 AI 回测综合计算，仅作策略表现参考。
                 </view>
                 <view class="dp mt5 board">
-                    <view class="f1 box">
+                    <view class="f1 box" style="width: 33%;">
                         <view>当前托管本金</view>
-                        <view class="money">24,146.30 U</view>
+                        <view class="money">924,1424,146.30 U</view>
                     </view>
                     <view class="f1 box">
                         <view>今日已实现收益</view>
@@ -125,7 +125,7 @@
             </scroll-view>
 
 
-            <view class="mt10 wc93 buy">
+            <view class="mt5 wc93 buy">
                 <view class="panel buy-panel">
                     <view class="container">
                         <view class="dp box">
@@ -210,7 +210,7 @@ export default {
             border-width: 1px;
             border-radius: 10px;
             backdrop-filter: blur(2px);
-            padding: 0.8rem 0.3rem;
+            padding: 0.2rem 0.3rem;
 
             .title {
                 text-align: center;
@@ -224,7 +224,7 @@ export default {
             }
 
             .des {
-                margin-top: 1rem;
+                margin-top: 0.5rem;
                 text-align: center;
             }
 
@@ -232,9 +232,9 @@ export default {
                 text-align: center;
 
                 .box {
-                    height: 3.5rem;
+                    height: 2.5rem;
                     backdrop-filter: blur(24px);
-                    padding-top: 0.7rem;
+                    padding-top: 0.2rem;
                     margin: 0 0.2rem;
                     border-radius: 8px;
                     border: 1px solid transparent;
@@ -317,7 +317,7 @@ export default {
             padding: 0 0.5rem;
 
             .item {
-                margin: 0.5rem 0 0.25rem 0;
+                margin: 0.2rem 0 0.2rem 0;
                 width: 50%;
                 padding: 0 0.4rem;
 
@@ -334,17 +334,19 @@ export default {
                 }
 
                 .item-panel {
-                    height: 4rem;
+                    height: 3rem;
 
                     .item-container {
-                        height: 4rem;
+                        height: 3rem;
 
                         .box {
                             width: 100%;
                             text-align: left;
-                            padding: 0.5rem;
+                            padding: 0.2rem 0.5rem;
+                            font-size: 0.5rem;
 
                             .title {
+                                font-size: 0.55rem;
                                 font-weight: 600;
                             }
                         }
@@ -355,7 +357,7 @@ export default {
 
         .buy {
             .buy-panel {
-                height: 5rem;
+                height: 4rem;
 
                 .box {
                     padding: 0.5rem;
@@ -382,14 +384,15 @@ export default {
                     }
 
                     .col2 {
-                        width: 3rem;
 
                         .btn {
                             background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
                             border-radius: 20px;
                             margin-top: 1px;
                             color: #000000;
-                            height: 4rem;
+                            padding: 1rem 1rem;
+                            height: 2.5rem;
+                            width: 5rem;
                             font-size: 0.7rem;
                             text-align: center;
                             justify-content: center;
@@ -403,7 +406,7 @@ export default {
     }
 
     uni-scroll-view {
-        height: calc(100vh - 6vh - 29.5rem);
+        height: calc(100vh - 6vh - 27rem);
     }
 
 

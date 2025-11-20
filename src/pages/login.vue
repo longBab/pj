@@ -18,7 +18,7 @@
                     @change="tabChange" 
                     />
             </view>
-            <u-form class="form" ref="uForm" :model="form">
+            <u-form class="form" ref="uForm" :model="form" v-if="current!==2">
                 <view>{{$t('手机号码')}}</view>
                 <u-form-item :border-bottom="false">
                     <u-input v-model="form.account" :placeholder="$t('手机号码')" />
@@ -38,11 +38,16 @@
                     </view>
                 </u-form-item>
             </u-form>
-            <view class="ctl">
+            <view class="ctl" v-if="current!=2">
                 <button class="btn bdr05 bggr01" @click="onSubmit($event)">{{$t('立即登录')}}</button>
             </view>
-            <view class="foot-link" @click="gotoPage('register')">
-                注册帐号
+            <view class="ctl" v-if="current==2">
+                <button class=" btn bdr05 bggr01" @click="onSubmit($event)">{{$t('导入助记词')}}</button>
+                <button class="mt15 btn bdr05 bggr01" @click="onSubmit($event)">{{$t('创建钱包')}}</button>
+            </view>
+            
+            <view class="foot-link" >
+                <text @click="gotoPage('register')">注册帐号</text> <text @click="gotoPage('forget')">忘记密码</text>
             </view>
         </view>
     </view>
@@ -58,7 +63,8 @@ data() {
       current: 0,   // 默认选中第 0 项
       tabList: [
         { name: '验证码登录' },
-        { name: '密码登录' }
+        { name: '密码登录' },
+        { name: '钱包登录' }
       ],
         form:{
             
@@ -96,8 +102,6 @@ methods: {
 }
 .login {
 
-    uni-scroll-view {
-        height: calc(100% - 2rem);
-    }
+    
 }
 </style>

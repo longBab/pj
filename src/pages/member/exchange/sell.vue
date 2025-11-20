@@ -16,14 +16,14 @@
                     <view class="cdr"></view>
                     <view class="cr"></view>
                 </view>
-                <view class="" style="text-align: center;color:#FFFFFFB2">
+                <view class="tab-label">
                     (USDT)
                 </view>
 
                 <view class="mt10 wc93 momey-panel">
                     <view class="dp input-row">
                         <view class="f1">
-                            <input class="input" placeholder="请输入提现金额" type="number" max="10" />
+                            <input class="input" placeholder="请输入提现金额" type="number" max="20" />
                         </view>
                         <view class="icon-box">
                             <view class="icon"></view>
@@ -48,21 +48,21 @@
                     {{ $t('请选择收款方式') }}
                 </view>
 
-                <view class="wc93 dp pay-checkbox" style="">
-                    <view class="dp ck active" style="">
-                        <view class="ck-box" style="">
+                <view class="wc93 dp pay-checkbox">
+                    <view class="dp ck active">
+                        <view class="ck-box">
                             <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
                         </view>
                         微信
                     </view>
-                    <view class="dp ck" style="">
-                        <view class="ck-box" style="">
+                    <view class="dp ck">
+                        <view class="ck-box">
                             <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
                         </view>
                         支付宝
                     </view>
-                    <view class="dp ck" style="">
-                        <view class="ck-box" style="">
+                    <view class="dp ck">
+                        <view class="ck-box">
                             <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
                         </view>
                         银行卡
@@ -75,11 +75,11 @@
                 </view>
                 <view class="wc93 mt20 dp">
                     <view class="dp record-btn">
-                            <view class="icon-box icon1"></view>
+                        <view class="icon-box icon1"></view>
                         换汇资金方式管理
                     </view>
                     <view class="dp record-btn">
-                            <view class="icon-box icon2"></view>
+                        <view class="icon-box icon2"></view>
                         换汇记录
                     </view>
                 </view>
@@ -127,7 +127,7 @@ export default {
         height: 1px;
         margin: 0.5rem 0 0 0;
         border-radius: 1.5px;
-        background: linear-gradient(90deg, #00FFBD 0%, #000000 100%);
+        background: linear-gradient(90deg, #00FFBD 0%, #00000000 100%);
     }
 
     .cdl,
@@ -186,6 +186,9 @@ export default {
 
             }
         }
+        .tab-label{
+            text-align: center;color:#FFFFFFB2;
+        }
 
         .momey-panel {
             height: 6rem;
@@ -210,6 +213,8 @@ export default {
                     outline: none;
                     color: #fff;
                     line-height: normal;
+                    height:1.5rem;
+                    line-height:1.5rem;
                 }
 
                 .icon-box {
@@ -301,33 +306,39 @@ export default {
             line-height: 1.8rem;
             text-align: center;
             font-weight: 600;
-            font-size:0.7rem;
+            font-size: 0.7rem;
             margin: 0 auto;
         }
-        .record-btn{
-	background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+
+        .record-btn {
+            background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
             border-radius: 5px;
             color: #000000;
             width: 40%;
             height: 1.8rem;
             line-height: 1.8rem;
             margin: 0 auto;
-            justify-content: center;align-items: center;
-	.icon-box{
-		width:1.8rem;height: 1.8rem;
-            line-height: 1.8rem;
-	}
-	.icon1{
-		
-                        background: url(/static/images/member/m11.png) center center no-repeat;
-                        background-size: 50% 50%;
-	}
-	.icon2{
-		
-                        background: url(/static/images/member/m12.png) center center no-repeat;
-                        background-size: 50% 50%;
-	}
-}
+            justify-content: center;
+            align-items: center;
+
+            .icon-box {
+                width: 1.8rem;
+                height: 1.8rem;
+                line-height: 1.8rem;
+            }
+
+            .icon1 {
+
+                background: url(/static/images/member/m11.png) center center no-repeat;
+                background-size: 50% 50%;
+            }
+
+            .icon2 {
+
+                background: url(/static/images/member/m12.png) center center no-repeat;
+                background-size: 50% 50%;
+            }
+        }
     }
 
     uni-scroll-view {
