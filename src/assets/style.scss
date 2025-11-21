@@ -147,6 +147,15 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
 	height:100%;
     overflow: hidden;
 }
+.popuper{
+    ::v-deep .u-mode-center-box{
+        width:80% !important;
+        border-radius:10px;
+        border:1px solid #000;
+        background:#000 !important;
+    }
+    
+}
 .form{
 	display: flex;
 	align-items: center;

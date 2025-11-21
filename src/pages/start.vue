@@ -10,7 +10,7 @@
                 <view class="enter" v-if="isEnter">
                      <u-form class="form" ref="uForm" :model="form">
                         <u-form-item :border-bottom="false">
-                            <u-input v-model="form.account" :placeholder="$t('准入码')" />
+                            <u-input v-model="form.code" :placeholder="$t('准入码')" />
                             <view class="arrow-right-wrapper" @click="gotoPage('login')">
                                 <u-icon name="arrow-right" color="#000" size="20"></u-icon>
                             </view>
@@ -64,10 +64,10 @@ export default {
     data() {
         return {
             form:{
-                
+                code:""
             },
           version:"0.0.0",
-          isEnter:true
+          isEnter:false
         }
     },
     onLoad(sender) {
@@ -79,6 +79,9 @@ export default {
     methods: {
         async load(sender){
             var that=this,sender=that.sender||sender||{};
+            setTimeout(function(){
+                that.gotoPage("home");
+            },5000);
         } 
     }
 }

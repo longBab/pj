@@ -1,9 +1,11 @@
 <template>
 <view class="informations body">
-  <navBar :logo="logo">
+  <navBar :title="title" :back="back">
+    <!--
     <template #quicker="{}">
       <navLanguage :source="this" />
     </template>
+    -->
   </navBar>
   <view class="wrapper">
     <scroll-view scroll-y="true" scroll-x="false">
@@ -31,7 +33,8 @@ export default {
       confirm: true,
       keyword: "",
       service: false,
-      logo: "../static/images/logo.png",
+      title:"国际资讯",
+      back:"home",
     };
   },
   onLoad() {

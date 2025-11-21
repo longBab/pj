@@ -154,6 +154,39 @@
 			}
 		},
 		{
+			"path": "pages/content/fee",
+			"style": {
+				"navigationBarTitleText": "Fee",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/content/ecology",
+			"style": {
+				"navigationBarTitleText": "Ecology",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/content/qualified",
+			"style": {
+				"navigationBarTitleText": "Qualified",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path" : "pages/member",
 			"style" : 
 			{

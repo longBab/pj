@@ -28,7 +28,7 @@ export default defineConfig({
 		allowedHosts: ["*"],
 		proxy: {
 			'/api': {
-				target: 'http://magadi.vps24.ko.mrte.top/', 
+				target: 'http://wintermute.app:8180/', 
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ''),
 				configure: (proxy) => {

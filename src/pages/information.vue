@@ -1,6 +1,6 @@
 <template>
-<view class="informations body">
-  <navBar :logo="logo">
+<view class="information body">
+  <navBar :title="_title" :back="back">
     <template #quicker="{}">
       <navLanguage :source="this" />
     </template>
@@ -28,7 +28,8 @@ export default {
   setup() {},
   data() {
     return {
-      logo: "../static/images/logo.png",
+      _title:"国际资讯",
+      back:"informations",
     };
   },
   onLoad(sender) {
@@ -44,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.informations {
+.information {
   .wrapper{
     justify-content: flex-start;
     height: calc(100% - 4rem);

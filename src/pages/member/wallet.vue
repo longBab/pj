@@ -16,8 +16,8 @@
     </view>
     <view class="guider">
       <text class="item" @click="gotoPage('deposit')">{{$t('充值')}}</text>
-      <text class="item" @click="gotoPage('withdraw')">{{$t('提现')}}</text>
-      <text class="item">{{$t('转账')}}</text>
+      <text v-if="false" class="item" >{{$t('提现')}}</text>
+      <text class="item" @click="gotoPage('withdraw')">{{$t('转账')}}</text>
     </view>
     <view class="tabs">
       <view class="item">
