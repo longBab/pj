@@ -95,7 +95,7 @@ export default {
       logo: "/static/images/logo-02.png",
       guiders: [
         {name:"wallet",icon:"wallet",title:"我的钱包"},
-        {name:"certifying",icon:"certifying",title:"安全认证"},
+        {name:"security",icon:"security",title:"安全认证"},
         {name:"support",icon:"support",title:"在线支持"},
         {name:"exchange",icon:"exchange",title:"一键兑换"},
         {name:"QView",icon:"QView",title:"量化视图"},
@@ -249,7 +249,7 @@ export default {
     }
     .panel .icon-top{
       &.wallet{ background-image:url(/static/images/member/m4.png);}
-      &.certifying{ background-image:url(/static/images/member/m5.png);}
+      &.security{ background-image:url(/static/images/member/m5.png);}
       &.support{ background-image:url(/static/images/member/m6.png);}
       &.exchange{ background-image:url(/static/images/member/m7.png);}
       &.QView{ background-image:url(/static/images/member/m8.png);}

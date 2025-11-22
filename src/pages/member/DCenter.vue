@@ -18,17 +18,22 @@
       </view> 
 
       <view class="item">
-        <view class="r01">团队收益</view>
+        <view class="r01">深度数据</view>
         <view class="r02">+700U</view>
         <view class="bdlg"></view>
       </view> 
 
       <view class="item">
-        <view class="r01">团队收益</view>
+        <view class="r01">量化数据</view>
         <view class="r02">+700U</view>
         <view class="bdlg"></view>
       </view> 
-
+      
+      <view class="item">
+        <view class="r01">代数数据</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
     </view>
     <view class="split-row">
         <view class="cl"></view>

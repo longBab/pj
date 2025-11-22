@@ -30,7 +30,9 @@
           <u-swiper style="background-color:inherit" :list="_banners"></u-swiper>
           <view class="bdlg"></view>
         </view>
-        <view class="panel introduced">
+      
+        <!--
+        <view class="introduced panel">
           <view class="container">
             <view class="col des">
               <text class="title">{{ $t(introduced.title||"暂无") }}</text>
@@ -47,8 +49,8 @@
           </view>
           <view class="cr"></view>
         </view>
-       
-        <view class="board">
+        
+        <view class="navigations">
           <view class="cell" v-for="(item, i) in navigations" :key="i" @click="gotoPage(item.url)">
             <image class="icon" :src="formatUrl(item.icon,'local')" mode="scaleToFill"/>
             <view class="title">
@@ -56,7 +58,32 @@
             </view>
           </view>
         </view>
-        
+        -->
+        <view class="split-row">
+          <view class="cl"></view>
+          <view class="cc">
+            <text>{{$t('主流行情')}}</text>
+          </view>
+          <view class="cr"></view>
+        </view>
+        <view class="quotes panel">
+          <view class="header">
+            <view class="c01">名称</view>
+            <view class="c02">最新值</view>
+            <view class="c03">24h涨跌%</view>
+          </view>
+          <view class="row" v-for="(item,i) in quotes">
+            <view class="c01">
+              <text class="name">{{ item.name }}</text>
+            </view>
+            <view class="c02">
+              <text class="price">{{ item.v }}</text>
+              <text class="total">{{ item.v1 }}</text>
+            </view>
+            <view class="c03"><text class="chat" :class="item.p<0?'down':''">{{ item.p }}%</text></view>
+          </view>
+          <view class="bdlg"></view>
+        </view>
         <view class="split-row">
           <view class="cl"></view>
           <view class="cc">
@@ -67,7 +94,7 @@
 
         
         <view class="partner">
-          <view class="cell" v-for="(item, i) in partners" :key="i">
+          <view class="cell" v-for="(item, i) in partners" :key="i" @click="changePopuper(item,'dialog')">
                 <image class="img" :src="formatUrl(item.icon,'local')" mode="scaleToFill"/>
                 <view class="name">{{ item.name }}</view>
           </view>
@@ -77,8 +104,12 @@
     </view>
     <mrFooter page="home" />
     <u-popup class="popuper" v-model="popuper.isShow" mode="center" >
-      <u-icon name="close"></u-icon>
-      dd
+      <u-icon class="close" name="close" @click="changePopuper(null,'close')"></u-icon>
+      <view class="dialog">
+        <view class="icon"><image  :src="formatUrl(popuper.dialog.icon,'local')" mode="scaleToFill"/></view>
+        <view class="title">{{$t(popuper.dialog.title||"暂无")}}</view>
+        <view class="content">{{$t(popuper.dialog.content||"暂无")}}</view>
+      </view>
     </u-popup>
   </view>
 </template>
@@ -104,19 +135,26 @@ export default {
       _banners:[],
       introduced:{},
       navigations:[],
+      quotes:[],
       partners: [],
-      popuper:{isShow:true}
+      popuper:{isShow:false,dialog:{icon:"",title:"",content:""}}
     }
   },
   onLoad(sender) {
     var that = this;
     that.sender = sender;
     that.load(sender);
+    //that.extend(that.popuper,{isShow:true});
   },
   onReady() {
     var that = this;
   },
   methods: {
+    changePopuper(sender,type){
+      var that=this,item=sender||{};
+      if(type=='close'){that.extend(that.popuper,{isShow:false});return false;}
+      that.extend(that.popuper,{isShow:true,dialog:{icon:item.icon,title:item.name}});
+    },
     load(sender) {
       var that = this, sender = that.sender || sender || {};
       that.transfer.request({
@@ -134,6 +172,18 @@ export default {
             {url:"informations",title:"国际资讯",icon:"static/images/home/h3.png"},
             {url:"content/ecology",title:"团队生态布局",icon:"static/images/home/h4.png"},
             {url:"content/qualified",title:"国际资质",icon:"static/images/home/h5.png"}
+          ],
+          quotes:[
+            {name:"BTC",hot:true,v:"95,084.01",v1:"$95,084.01",p:10.37,s:true},
+            {name:"ETH",hot:true,v:"3,102.95",v1:"$3,102.95",p:10.37,s:true},
+            {name:"MET",hot:true,v:"0.4491",v1:"$0.4491",p:10.37,s:true},
+            {name:"SOL",hot:false,v:"137.34",v1:"$137.34",p:-10.37,s:false},
+            {name:"DOGE",hot:false,v:"0.15958",v1:"$0.15958",p:-10.37,s:false},
+            {name:"ADA",hot:false,v:"0.5059",v1:"$0.5059",p:-10.37,s:false},
+            {name:"ZEC",hot:false,v:"574.76",v1:"$574.76",p:-10.37,s:false},
+            {name:"XRP",hot:false,v:"2.2696",v1:"$2.26",p:-10.37,s:false},
+            {name:"ASTER",hot:false,v:"1.055",v1:"$1.05",p:-10.37,s:false},
+            {name:"LINK",hot:false,v:"14.00",v1:"$14",p:-10.37,s:false}
           ],
           partners: [
             { name: "Chiliz",icon:"static/images/home/partner/11.png",content:"" },
@@ -195,7 +245,7 @@ export default {
       font-size: 0.8rem;
     }
   }
-  .split-row,.notices,.banners,.introduced,.board{
+  .split-row,.notices,.banners,.introduced,.quotes,.board{
     width:93%;
     margin:0.5rem auto;
   }
@@ -267,7 +317,7 @@ export default {
     }
   }
 
-  .board {
+  .navigations {
     display: flex;
     flex-wrap: wrap;
     .icon{ 
@@ -275,25 +325,6 @@ export default {
         height:1.5rem;
         width:1.5rem;
     }
-    ::v-deep .u-iconfont{
-        height:1.5rem;
-        width:1.5rem;
-        background: none center center no-repeat;
-        background-size: 1.5rem 1.5rem;
-        &.uicon-fee{
-          background-image:url(/static/images/home/h2.png);
-        }
-        &.uicon-news{
-          background-image:url(/static/images/home/h3.png);
-        }
-        &.uicon-team{
-          background-image:url(/static/images/home/h4.png);
-        }
-        &.uicon-qualified{
-          background-image:url(/static/images/home/h5.png);
-        }
-    }
-
     .cell {
       display: flex;
       border: 0px solid;
@@ -317,7 +348,52 @@ export default {
      
     }
   }
-
+  .quotes{
+    padding:0 0 10px 0;
+    .header,.row{
+      display:flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    .header{
+      $_heightH:1.6rem;
+      border-radius: 10px 10px 0px 0px;
+      height:$_heightH;
+      line-height:$_heightH;
+      background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+    }
+    
+    .c01,.c02,.c03{
+      text-align:right;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around
+    }
+    .c01{text-align:left;width:3rem;}
+    .c02{width:calc(100% - 10rem);}
+    .c03{width:5rem;}
+    .row{
+      height:2.6rem;
+      border-bottom:1px solid #00FFBD;
+      width:calc(100% - 0.4rem);
+      margin:0 auto;
+      .c03{
+        .chat{
+          width:90%;
+          margin:0 auto;
+          height:1.2rem;
+          line-height:1.2rem;
+          background:#F74660;
+          font-size: 0.6rem;
+          border-radius: 5px;
+          padding:0 0.1rem 0 0.1rem;
+          text-align:center;
+          &.down{background:#00FF73;color:#797979;}
+        }
+      }
+    }
+ 
+  }
   .partner {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -344,6 +420,7 @@ export default {
       }
     }
   }
+ 
   .wrapper {
     justify-content: flex-start;
     height: calc(100% - 3.5rem);

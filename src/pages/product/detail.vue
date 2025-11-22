@@ -9,152 +9,7 @@
     </navBar>
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
-        <view class="split-row  mt5">
-          <view class="cl"></view>
-          <view class="cc">
-            <text>{{ $t('量化中心') }}</text>
-          </view>
-          <view class="cr"></view>
-        </view>
-        <view class=" box1">
-          <view class="box1-text">
-            <view class="box1-text-t">
-              {{ $t('量化总金额') }}
-            </view>
-            <view class="box1-text-n panel">
-              <view class="container">
-                {{ $t('53,971,407.27153') }}
-              </view>
-              <view class="bdlg"></view>
-            </view>
-          </view>
-          <view class="box1-img">
-            <view class="box1-img-bg"></view>
-          </view>
-        </view>
-        <view class="panel progress-panel mt5 ">
-          <view class="container progress-container">
-            <view class="progress-container-bg">
-              <view class="line">
-                <view class="active"></view>
-              </view>
-              <view class="text">
-                6500/100000 USDT
-              </view>
-            </view>
-          </view>
-          <view class="bdlg bdlg-cp20"></view>
-        </view>
-        <view class="mt10">
-          <view class="col-box">
-            <view class="panel col-panel">
-              <view class="container">
-                <view>
-                  <view class="t">
-                    {{ $t('个人量化产出比') }}
-                  </view>
-                  <view class="n">
-                    {{ $t('1,399') }}
-                  </view>
-                </view>
-              </view>
-              <view class="bdlg"></view>
-            </view>
-            <view class="w5"></view>
-            <view class="panel col-panel">
-              <view class="container">
-                <view>
-                  <view class="t">
-                    {{ $t('个人量化产出比') }}
-                  </view>
-                  <view class="n">
-                    {{ $t('1,399') }}
-                  </view>
-                </view>
-              </view>
-              <view class="bdlg"></view>
-            </view>
-          </view>
-        </view>
-        <view class="split-row mt10">
-          <view class="cl"></view>
-          <view class="cc">
-            <text>{{ $t('参与量化') }}</text>
-          </view>
-          <view class="cr"></view>
-        </view>
-
-        <view class="statistics panel">
-          <view class="container">
-            <view class="row">
-              <view class="c3">餘額</view>
-              <view class="c1 c4">9,048 USDT</view>
-            </view>
-            <view class="panel row-panel">
-              <view class="container" style="padding: inherit;">
-                <view class="row">
-                  <view class="c3">产品金额</view>
-                  <view class="c4">9,048 USDT</view>
-                </view>
-              </view>
-              <view class="bdlg"></view>
-            </view>
-            <view class="row" v-for="(item, i) in statistics.groups[0]" :key="i">
-              <view class="c0">{{ $t(item.title) }}</view>
-              <view class="c1">{{ statistics.data[item.field] }}</view>
-            </view>
-
-            <view>
-              <view class="ctl">
-                <button class="sbtn">{{ $t('开启量化') }}</button>
-              </view>
-            </view>
-          </view>
-          <view class="bdlg"></view>
-        </view>
-        <view class="split-row mt5">
-          <view class="cl"></view>
-          <view class="cc">
-            <text>{{ $t('您的量化') }}</text>
-          </view>
-          <view class="cr"></view>
-        </view>
-        <view class="mt08 img1-box">
-          <view class="col">
-            <view class="img">
-              <view class="img-bg"></view>
-            </view>
-          </view>
-          <view class="col">
-            <view class="panel col-panel">
-              <view class="container">
-                {{ $t('量化保护仓') }}
-              </view>
-              <view class="bdlg"></view>
-            </view>
-          </view>
-        </view>
-        <view class="statistics panel" style="height:12rem;">
-          <view class="container">
-            <view class="row" v-for="(item, i) in statistics.groups[1]" :key="i">
-              <view class="c0">{{ $t(item.title) }}</view>
-              <view class="c1">{{ statistics.data[item.field] }}</view>
-            </view>
-            <view class="w25" @click="gotoPage('/pages/member/QView')">
-              <view class="panel row-panel1">
-                <view class="">
-                  {{ $t('查看全部') }}
-                </view>
-                <view class="bdlg"></view>
-              </view>
-            </view>
-
-          </view>
-          <view class="bdlg"></view>
-        </view>
-        <view class="nodata">
-          沒有更多數據了
-        </view>
+         
       </scroll-view>
     </view>
   </view>
@@ -162,7 +17,6 @@
 
 <script>
 import navBar from "@/components/navBar.vue";
-
 export default {
   components: {
     navBar
@@ -170,53 +24,22 @@ export default {
   setup() { },
   data() {
     return {
-      back: "/pages/products",
+      back: "/pages/product",
       title: "产品详情",
-      list: [],
-      statistics: {
-        groups: [
-          [
-            { field: "v01", title: "量化周期" },
-            { field: "v02", title: "周期产出比例" },
-            { field: "v03", title: "周期总产出" }
-          ],
-          [
-            { field: "v01", title: "保障银行" },
-            { field: "v02", title: "狀態" },
-            { field: "v03", title: "操作類型" },
-            { field: "v04", title: "个人量化产出" },
-            { field: "v05", title: "購買時間" }
-          ]
-        ],
-        data: {
-          v01: '天，周，月，季，年',
-          v02: '0 %',
-          v03: '0 USDT',
-        },
-        data: {
-          v01: '量化保护',
-          v02: '能量释放中',
-          v03: '$1221,399',
-          v04: '$1,399',
-          v05: '2025-10-21 00:00:00'
-        }
-      }
+      list: []
     };
   },
   onLoad(sender) {
     var that = this;
-    if (sender && sender.code) that.inviteCode = sender.code;
-    this.loadlist();
-
+    that.sender = sender;
+    that.load(sender);
   },
   onReady() {
     //this.getServerData();
   },
   methods: {
-    loadlist() {
-      this.list.push({ 't': '量化周期', 'n': '天，周，月，季，年' });
-      this.list.push({ 't': '周期产出比例', 'n': '0 %' });
-      this.list.push({ 't': '周期总产出', 'n': '0 USDT' });
+    load(sender) {
+      var that = this, sender = that.sender || sender || {};
     }
   },
 };

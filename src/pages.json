@@ -54,7 +54,19 @@
 			"path" : "pages/products",
 			"style" : 
 			{
-				"navigationBarTitleText" : "products",
+				"navigationBarTitleText" : "Products",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path" : "pages/product",
+			"style" : 
+			{
+				"navigationBarTitleText" : "Product",
 				"app-plus": {
 					"titleNView": false,
 					"navigationStyle": "custom",
@@ -297,9 +309,9 @@
 			}
 		},
 		{
-			"path": "pages/member/certifying",
+			"path": "pages/member/security",
 			"style": {
-				"navigationBarTitleText": "Certifying",
+				"navigationBarTitleText": "Security",
 				"app-plus": {
 					"titleNView": false,
 					"navigationStyle": "custom",
@@ -308,7 +320,7 @@
 			}
 		},
 		{
-			"path": "pages/member/certifying/identity",
+			"path": "pages/member/security/identity",
 			"style": {
 				"navigationBarTitleText": "Identity",
 				"app-plus": {
@@ -317,9 +329,19 @@
 					"navigationBarTextStyle": "white"
 				}
 			}
+		},{
+			"path": "pages/member/security/payment",
+			"style": {
+				"navigationBarTitleText": "Payment",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
 		},
 		{
-			"path": "pages/member/certifying/alipay",
+			"path": "pages/member/security/alipay",
 			"style": {
 				"navigationBarTitleText": "Alipay",
 				"app-plus": {
@@ -330,7 +352,7 @@
 			}
 		},
 		{
-			"path": "pages/member/certifying/bank",
+			"path": "pages/member/security/bank",
 			"style": {
 				"navigationBarTitleText": "Bank",
 				"app-plus": {
@@ -341,7 +363,7 @@
 			}
 		},
 		{
-			"path": "pages/member/certifying/wechat",
+			"path": "pages/member/security/wechat",
 			"style": {
 				"navigationBarTitleText": "Wechat",
 				"app-plus": {

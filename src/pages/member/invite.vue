@@ -2,53 +2,29 @@
   <view class="invite body" :class="$store.state.setting.theme">
     <navBar :title="title" :back="back"></navBar>
     <view class=" wrapper">
-      <scroll-view scroll-y="true" scroll-x="false">
-        <view class="mt10 wc93" style="background: linear-gradient(180deg, rgba(14, 255, 175, 0.175) 1.92%, rgba(14, 255, 175, 0.121) 20.19%, rgba(74, 85, 81, 0.099) 100%);
+      
+        <view class="box-main">
+          <view class="sider"></view>
+          <view class="sider right"></view>
+          <view class="title">我的邀请码</view>
+          <view class="r1">
+            <text class="cl">A7B9C2</text>
+            <u-icon name="order" style="color:inherit" size="28" />
+          </view>
 
-        border: 1px solid #134D3A;
-border-width: 1px;
-border-radius: 10px;
-padding:1rem;
+          <view class="statistics">
+          <view class="item">
+            <text class="value">1</text>
+            <text class="name">已邀请好友</text>
+          </view>
 
-">
-          <view class="" style="text-align: center;font-size:0.7rem;">我的邀请码</view>
-          <view class="mt10 dp" style="background: #0EFFB01A;border: 1px solid #417B68;
-border-width: 1px;
-border-radius: 10px;
-height: 2rem;
-line-height: 2rem;
-padding:0 1rem;
-">
-            <view class="f1">
-              A7B9C2
-            </view>
-            <view>
-              <u-icon  name="order" style="color:inherit" size="28" />
+          <view class="item">
+              <text class="value">0.00</text>
+              <text class="name">累计奖励(USDT)</text>
             </view>
           </view>
-          <view class="mt10 dp">
-            <view class="f1" style="background: #0EFFB01A;border: 1px solid #417B68;
-border-width: 1px;
-border-radius: 10px;
-height: 3rem;
-padding:0 1rem;
-">
-              <view style="margin-top:0.4rem;">9</view>
-              <view style="margin-top:0.3rem;">已邀请好友</view>
-            </view>
-            <view style="width:1rem;"></view>
-            <view class="f1" style="background: #0EFFB01A;border: 1px solid #417B68;
-border-width: 1px;
-border-radius: 10px;
-height: 3rem;
-padding:0 1rem;
-">
-              <view  style="margin-top:0.4rem;">80.5</view>
-              <view  style="margin-top:0.3rem;">累计奖励(USDT)</view>
-            </view>
-          </view>
-          
-          <view class="split-row mt10">
+
+          <view class="split-row">
               <view class="cl"></view>
               <view class="cdl"></view>
               <view class="cc">
@@ -58,18 +34,15 @@ padding:0 1rem;
               <view class="cr"></view>
           </view>
 
-        <view class="nodata mt5" style="text-align: left;">
-          每成功邀请1位好友注册并完成实位好友注册并完成实名认证，您可获得10USDT奖励
-        </view>
+          <view class="content">
+            <text class="item">每成功邀请1位好友注册并完成实位好友注册并完成实名认证，您可获得10USDT奖励</text>
+            <text class="item">好友首次充值，您可获得充值金额5%的额外奖励</text>
+            <text class="item"> 奖励自动发放至您的账户余额</text>
+          </view>
 
-        <view class="nodata mt5" style="text-align: left;">
-          好友首次充值，您可获得充值金额5%的额外奖励
         </view>
-        <view class="nodata mt5" style="text-align: left;">
-          奖励自动发放至您的账户余额
-        </view>
-        </view>
-      </scroll-view>
+       
+   
     </view>
   </view>
 </template>
@@ -105,49 +78,92 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.split-row {
-
-    .cl,
-    .cr {
-        width: 20%;
-        text-align: center;
-        height: 1px;
-        margin: 0.5rem 0 0 0;
-        border-radius: 1.5px;
-        background: linear-gradient(90deg, #00FFBD 0%, #00000000 100%);
-    }
-
-    .cdl,
-    .cdr {
-        width: 6px;
-        height: 6px;
-        background: #0EFFB0;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    }
-
-    .cdl {
-        margin: 0.35rem 0 0 -0.2rem;
-    }
-
-    .cdr {
-        margin: 0.35rem -0.2rem 0 0;
-    }
-
-    .cc {
-        font-size: 0.8rem;
-    }
-}
 .invite {
+  .split-row,.box-main,.statistics,.content{
+    width:90%;
+    margin: 0.5rem auto;
+  }
+  .statistics{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    .item{
+      display:flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      background: #0EFFB01A;border: 1px solid #417B68;
+      border-width: 1px;
+      border-radius: 10px;
+      height: 3rem;
+      padding:0 1rem;
+      text-align: center;
+    }
+  }
+  .content{
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    .item{line-height:1.2rem;}
+  }
+  .box-main{
+   
+    background: linear-gradient(180deg, rgba(14, 255, 175, 0.175) 1.92%, rgba(14, 255, 175, 0.121) 20.19%, rgba(74, 85, 81, 0.099) 100%);
+    border: 1px solid #134D3A;
+    border-width: 1px;
+    border-radius: 10px;
+    padding:1rem;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: space-around;
+    position: relative;
+    overflow: hidden;
+    .sider{
+      position: absolute;
+      width: 3rem;
+      height: 2rem;
+      top: calc(50% - 1rem);
+      left: -2rem;
+      border: 1px solid #134D3A;
+      border-radius: 5px;
+      z-index:2;
+      &.right{left:auto;right:-2rem;}
+    }
+    .title{
+      text-align: center;
+      font-size:1rem;
+      height: 3rem;
+    }
+    .r1{
+      background: #0EFFB01A;border: 1px solid #417B68;
+      border-width: 1px;
+      border-radius: 10px;
+      height: 2rem;
+      line-height: 2rem;
+      padding:0 1rem;
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .copy{
+
+      }
+
+    }
+  }
   .wrapper {
-    justify-content: flex-start;
-    height: calc(100% - 14vh);
-    padding: 6vh 0 8vh 0;
+    //justify-content: flex-start;
+    height: calc(100% - 3rem);
+    padding: 2.5rem 0 0 0;
     color: #fff;
   }
-
   uni-scroll-view {
-    height: calc(100vh - 14vh - 0.3rem);
+    height: auto;
   }
+
+  
 }
+ 
+
 </style>

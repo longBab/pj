@@ -3,7 +3,7 @@
   <navBar :back="back" :title="title">
   </navBar>
   <view class="wrapper">
-    <view class="tab">
+    <view class="tabs">
         <text class="item" :class="[currentTab=='buy'?'buy-active':'']" @click="tabChange('buy')">购买</text>
         <text class="item" :class="[currentTab=='sell'?'sell-active':'']" @click="tabChange('sell')">出售</text>
       </view>
@@ -119,7 +119,7 @@ export default {
 .exchange {
   $_marginT:0.5rem;//面板下移
   $_heightT:1.5rem;//tab,statistics高
-  .tab{
+  .tabs{
     $_height:$_heightT;
     width:70%;
     margin:$_marginT auto;
