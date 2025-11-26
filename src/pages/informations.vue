@@ -34,17 +34,31 @@ export default {
       keyword: "",
       service: false,
       title:"国际资讯",
-      back:"home",
+      back:"/pages/introduction",
     };
   },
   onLoad() {
-    var that = this;
+    var that = this, sender = sender || {};
+    that.sender = sender;
+    that.load(sender);
    
   },
   onReady() {
     
   },
-  methods: {},
+  methods: {
+    load(sender) {
+      var that = this, sender = that.sender || sender || {};
+      that.transfer.request({
+          url: "GET app/informations",
+      })
+      .then((resp) => {
+          var data = resp.data;
+          data = data.data || data;
+          that.extend(data);
+      });
+    }
+  },
 };
 </script>
 

@@ -1,61 +1,197 @@
 <template>
-  <view class="team body" :class="$store.state.setting.theme">
-    <navBar :logo="logo">
-      <template #quicker="{}">
-        <navLanguage :source="this" />
-      </template>
-    </navBar>
-    <view class="wrapper">
-      <scroll-view scroll-y="true" scroll-x="false">
-       
-      </scroll-view>
-    </view>
-    <mrFooter page="team" />
-  </view>
-</template>
+<view class="team body" :class="$store.state.setting.theme">
+  <navBar :back="back" :title="title">
+  </navBar>
+  <view class="wrapper">
+    <view class="chat"></view>
+    <view class="statistics">
+      <view class="item" :class="{active:showType==1}" @click="chose($event,'showType',1)">
+        <view class="r01">团队数据</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
+      
+      <view class="item" :class="{active:showType==2}" @click="chose($event,'showType',2)">
+        <view class="r01">团队收益</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
 
+      <view class="item" :class="{active:showType==3}" @click="chose($event,'showType',3)">
+        <view class="r01">深度数据</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
+
+      <view class="item" :class="{active:showType==4}" @click="chose($event,'showType',4)">
+        <view class="r01">量化数据</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
+      
+      <view class="item" :class="{active:showType==5}" @click="chose($event,'showType',5)">
+        <view class="r01">代数数据</view>
+        <view class="r02">+700U</view>
+        <view class="bdlg"></view>
+      </view> 
+    </view>
+    <view class="split-row">
+        <view class="cl"></view>
+        <view class="cc">
+          <text>用户列表</text>
+        </view>
+        <view class="cr"></view>
+      </view>
+    <scroll-view scroll-y="true" scroll-x="false">
+
+      <view class="record panel" v-for="(item,i) in rows" :key="i">
+        <view class="c01">
+          <text class="name">王阳(666888@qq.com)</text>
+          <text class="time">{{$t('推广时间')}}:0000-00-00 00:00</text>
+        </view>
+        <view class="c02">
+          <text class="value">+50U</text>
+        </view>
+        <view class="bdlg"></view>
+      </view>
+      
+    </scroll-view>
+  </view>
+</view>
+</template>
 <script>
 import navBar from "@/components/navBar.vue";
-import mrFooter from "@/components/footer";
-import navLanguage from "@/components/navLanguage";
 export default {
   components: {
-    mrFooter,
-    navBar,
-    navLanguage
+    navBar
   },
   data() {
     return {
-      logo: "../../static/images/logo.png"
-     
+      back:"/pages/member",
+      title:"数据中心",
+      showType:1,
+      rows:[
+        {},{},{},{},{},{},{},{},{},{},{},{}
+      ]
     };
   },
-
-  onReady() {},
+  onReady() {
+    
+  },
   onLoad(sender) {
-    var that = this;
+    var that = this,sender=sender||{};
     that.sender=sender;
     that.load(sender);
   },
   methods: {
-    load(sender){
-      var that=this,sender=that.sender||sender||{};
-       
+    load(sender) {
+      var that = this, sender = that.sender || sender || {},filter=sender;
+      filter.showType=that.showType;
+      that.transfer.request({
+        url: "GET app/member/team",
+        data:filter
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        that.extend(data);
+      });
+    },
+    chose(event,type,index){
+      var that=this;
+      that.set(index,type);
+      that.load();
     }
-   
+      
   },
 };
 </script>
-
+      
 <style lang="scss" scoped>
 .team {
+  .chat,.statistics,.split-row{width:93%;margin:0 auto;}
+  .chat{
+    height:7rem;
+    background:url(../../static/images/DCenter-chat.png) center center no-repeat;
+    background-size:10rem auto;
+  }
+  .statistics{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .item{
+      position:relative;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      width:30%;height:3.5rem;
+      margin:0.5rem auto 0 auto;
+      text-align: center;
+      border-image-source:linear-gradient(180deg, rgba(59, 211, 211, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+      border-image-slice: 1;
+      border-image-repeat: round;
+      clip-path: inset(0 round 10px);
+      background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
+      .r02{color:#0EFFB0;}
+      .bdlg{
+        position: absolute;
+        top: 1px;
+        bottom: -1px;
+        right: 1px;
+        left: 1px;
+        z-index:1;
+        border: 1px solid rgba(59, 211, 211, 0.2);
+        border-radius: 10px;
+      }
+      &.active{
+          background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
+          border-radius:10px;  
+          color:#000;
+      }
+    }
+  }
+  .split-row{margin:1rem auto 0.5rem auto;}
+
+  .record{
+    margin:0.3rem auto;
+    display:flex;
+    height:3rem;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    padding:0.5rem;
+    .c01{
+      width:13rem;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      .name{
+        font-weight:400;
+        font-size:0.4rem;
+      }
+      .time{font-size:0.3rem;}
+    }
+    .c02{
+      width:calc(100% - 13rem);
+      text-align:right;
+      .value{
+        line-height:2rem;
+        font-size:0.4rem;
+        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+
   .wrapper{
     justify-content: flex-start;
-    height: calc(100% - 4rem);
-    padding: 4rem 0 5rem 0;
+    padding: 2.5rem 0 0 0;
+    color:#fff;
   }
-  uni-scroll-view {
-    height: calc(100% - 2rem);
-  }
+ 
+
+  
 }
 </style>

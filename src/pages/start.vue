@@ -64,10 +64,10 @@ export default {
     data() {
         return {
             form:{
-                code:""
+            code:""
             },
-          version:"0.0.0",
-          isEnter:false
+            version:"0.0.0",
+            isEnter:false
         }
     },
     onLoad(sender) {

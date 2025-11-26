@@ -19,15 +19,15 @@
       <view class="statistics">
         <view class="r01">量化总金额</view>
         <view class="r02 panel"> 
-          27153.00
+          {{formatMoney(totalAmount,2)}}
           <view class="bdlg"></view>
         </view>
       </view>
       <view class="progress panel">
         <view class="line">
-              <view class="active"></view>
+              <view class="active" :style="{width:(purchedAmount/totalAmount)+'0%'}"></view>
         </view>
-        <view class="value">6500/100000 USDT</view>
+        <view class="value">{{formatMoney(purchedAmount,2)}}/{{formatMoney(totalAmount,2)}}USDT</view>
       </view>
 
       <view class="board">
@@ -38,7 +38,7 @@
         </view>
 
         <view class="item panel">
-          <text class="title">{{ $t('个人量化产出比') }}</text>
+          <text class="title">{{ $t('平台产出比') }}</text>
           <text class="value">1.39</text>
           <view class="bdlg"></view>
         </view>
@@ -56,21 +56,38 @@
 
       <view class="detail panel">
         <view class="row">
-          <text class="cl">余额</text>
-          <text class="cr clr1">9,048 USDT</text>
+          <text class="cl">{{$t('余额')}}</text>
+          <text class="cr clr1">{{formatMoney(user.balance,2)}} USDT</text>
         </view>
         <view class="row">
-          <text class="cl">量化周期</text>
-          <text class="cr">天，周，月，季，年</text>
-        </view>
-          <view class="row">
-          <text class="cl">周期产出比例</text>
-          <text class="cr">0%</text>
+          <text class="cl">{{$t('配置量化')}}</text>
+          <text class="cr clr1">{{formatMoney(purchedAmount,2)}} USDT</text>
         </view>
         <view class="row">
-          <text class="cl">周期总产出</text>
-          <text class="cr">0USDT</text>
+          <text class="cl">{{$t('最高量化')}}</text>
+          <text class="cr clr1">{{formatMoney(maxInvestment-purchedAmount,2)}} USDT</text>
         </view>
+        <view class="row">
+          <text class="cl">{{$t('量化周期')}}</text>
+          <text class="cr">{{$t("暂无")}}</text>
+        </view>
+        <view class="row">
+          <text class="cl">{{$t('项目总长')}}</text>
+          <text class="cr">{{projectDuration}}</text>
+        </view>
+        <view class="row">
+          <text class="cl">{{$t('配置区间')}}</text>
+          <text class="cr">{{formatMoney(minInvestment,2)}}-{{formatMoney(maxInvestment,2)}}</text>
+        </view>
+         <view class="row">
+          <text class="cl">{{$t('总结算比例')}}</text>
+          <text class="cr">{{formatMoney(expectedTotalRevenue,2)}}%</text>
+        </view>
+        <view class="row">
+          <text class="cl">{{$t('周期产出比例')}}</text>
+          <text class="cr">{{formatMoney(expectedRevenue,2)}}%</text>
+        </view>
+      
         <view class="ctl">
               <button class="sbtn">{{ $t('开启量化') }}</button>
         </view>
@@ -95,7 +112,7 @@
           <text class="cr">{{ statistics.data[item.field] }}</text>
         </view>
         <view class="ctl">
-              <view class="btn panel" @click="gotoPage('product/detail')">
+              <view class="btn panel" @click="gotoPage('product/detail?id='+id)">
                 {{ $t('查看全部') }}
                 <view class="bdlg"></view>
               </view>
@@ -103,39 +120,41 @@
       </view>
 
       <view class="nodata">
-        沒有更多数据了
+        {{$t('沒有更多数据了')}}
       </view>
     </scroll-view>
   </view>
   <u-popup class="popuper" v-model="popuper.isShow" mode="center" >
     <u-icon class="close" name="close" @click="changePopuper(null,'close')"></u-icon>
     <view class="safeBox">
-      <view class="r1">量化保护仓</view> 
+      <view class="r1">{{$t('量化保护仓')}}</view> 
       <view class="r2 panel">
-        <text class="cl">保护仓金额</text>
+        <text class="cl">{{$t('保护仓金额')}}</text>
         <text class="cr">$1399</text>
         <view class="bdlg"></view>
       </view>
-      <view class="r3"><u-icon name="bell"></u-icon>保护本金</view>
+      <view class="r3"><u-icon name="bell"></u-icon>{{$t('保护本金')}}</view>
       <view class="r4">
         <input v-model="popuper.safeBox.isCheck" class="check" type="checkbox" placeholder="" />
-        查看合约并勾选确认
+        {{$t('查看合约并勾选确认')}}
       </view>
       <view class="ctl">
         <button class="sbtn">{{ $t('确认开启') }}</button>
       </view>
     </view>
   </u-popup>
+  <keyBoard :isOpen="keyBoardIsOpen" :length="6" :title="keyBoardTitle" />
   
 </view>
 </template>
   
 <script>
 import navBar from "@/components/navBar.vue";
-
+import keyBoard from "@/components/keyBoard.vue";
 export default {
   components: {
-    navBar
+    navBar,
+    keyBoard
   },
   setup() { },
   data() {
@@ -143,6 +162,18 @@ export default {
       back: "/pages/products",
       title: "产品详情",
       popuper:{isShow:false,safeBox:{isCheck:false},dialog:{icon:"",title:"",content:""}},
+      id:0,
+      releaseCycle:"",
+      projectDuration:0,
+      expectedRevenue:0,
+      expectedTotalRevenue:0,
+      purchedAmount:0,
+      totalAmount:0,
+      minInvestment:0,
+      maxInvestment:0,
+      keyBoardIsOpen:0,
+      keyBoardTitle:"支付密码",
+      user:{balance:0},
       list: [],
       statistics: {
         groups: [
@@ -153,10 +184,10 @@ export default {
           ],
           [
             { field: "v01", title: "保障银行" },
-            { field: "v02", title: "狀態" },
-            { field: "v03", title: "操作類型" },
+            { field: "v02", title: "状态" },
+            { field: "v03", title: "操作类型" },
             { field: "v04", title: "个人量化产出" },
-            { field: "v05", title: "購買時間" }
+            { field: "v05", title: "购买时间" }
           ]
         ],
         data: {
@@ -176,25 +207,34 @@ export default {
   },
   onLoad(sender) {
     var that = this;
-    if (sender && sender.code) that.inviteCode = sender.code;
-    this.loadlist();
+    that.sender = sender;
+    that.load(sender);
 
   },
   onReady() {
     //this.getServerData();
   },
   methods: {
+    load(sender) {
+          var that = this,sender=sender|| that.sender|| {},id=sender.id||0;
+          that.transfer.request({
+              url: "GET app/product/"+id,
+          })
+          .then((resp) => {
+              var data = resp.data;
+              data = data.data || data;
+              that.extend(data);
+              if(data.dataView) that.extend(data.dataView);
+          });
+    },
     changePopuper(sender,type){
       var that=this,item=sender||{};
-      console.log(["....",item]);
+     
       if(type=='close'){that.extend(that.popuper,{isShow:false});return false;}
-      that.extend(that.popuper,{isShow:true,dialog:{icon:item.icon,title:item.name}});
+      that.extend(that.popuper,{isShow:true,safeBox:{}});
+      console.log(["....",item]);
     },
-    loadlist() {
-      this.list.push({ 't': '量化周期', 'n': '天，周，月，季，年' });
-      this.list.push({ 't': '周期产出比例', 'n': '0 %' });
-      this.list.push({ 't': '周期总产出', 'n': '0 USDT' });
-    }
+    
   },
 };
 </script>

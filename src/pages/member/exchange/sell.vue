@@ -3,11 +3,11 @@
         <navBar :title="title" :back="back"></navBar>
         <view class=" wrapper">
             <scroll-view scroll-y="true" scroll-x="false">
-                <view class="mt5 wc93 tab">
+                <view class=" tabs">
                     <text class="item">购买</text>
                     <text class="item active">出售</text>
                 </view>
-                <view class="split-row mt10">
+                <view class="split-row">
                     <view class="cl"></view>
                     <view class="cdl"></view>
                     <view class="cc">
@@ -20,7 +20,7 @@
                     (USDT)
                 </view>
 
-                <view class="mt10 wc93 momey-panel">
+                <view class="momey-panel">
                     <view class="dp input-row">
                         <view class="f1">
                             <input class="input" placeholder="请输入提现金额" type="number" max="20" />
@@ -50,21 +50,15 @@
 
                 <view class="wc93 dp pay-checkbox">
                     <view class="dp ck active">
-                        <view class="ck-box">
-                            <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
-                        </view>
+                        <u-icon  name="weixin-fill" style="color:#08ba00;margin-right:0.3rem;" size="40" />
                         微信
                     </view>
                     <view class="dp ck">
-                        <view class="ck-box">
-                            <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
-                        </view>
+                        <u-icon  name="zhifubao-circle-fill" style="color:#00b6ff;margin-right:0.3rem;" size="40" />
                         支付宝
                     </view>
                     <view class="dp ck">
-                        <view class="ck-box">
-                            <u-icon name="checkbox-mark" color="#0EFFB0" size="16"></u-icon>
-                        </view>
+                        <u-icon  name="rmb-circle-fill" style="color:#ffd731;margin-right:0.3rem;" size="40" />
                         银行卡
                     </view>
                 </view>
@@ -74,11 +68,11 @@
                     </view>
                 </view>
                 <view class="wc93 mt20 dp">
-                    <view class="dp record-btn">
+                    <view class="dp record-btn" @click="gotoPage('/pages/member/security/payment')">
                         <view class="icon-box icon1"></view>
                         换汇资金方式管理
                     </view>
-                    <view class="dp record-btn">
+                    <view class="dp record-btn" @click="gotoPage('records')">
                         <view class="icon-box icon2"></view>
                         换汇记录
                     </view>
@@ -120,8 +114,7 @@ export default {
 <style lang="scss" scoped>
 .split-row {
 
-    .cl,
-    .cr {
+    .cl,.cr {
         width: 20%;
         text-align: center;
         height: 1px;
@@ -152,16 +145,10 @@ export default {
 }
 
 .sell {
-    .wrapper {
-        justify-content: flex-start;
-        height: calc(100% - 14vh);
-        padding: 6vh 0 8vh 0;
-        color: #fff;
-
-        $_marginT: 0.5rem; //面板下移
-        $_heightT: 1.5rem; //tab,statistics高
-
-        .tab {
+    $_marginT: 0.5rem; //面板下移
+    $_heightT: 1.5rem; //tab,statistics高
+    .split-row,.momey-panel,.tabs{width:93%;margin:0.5rem auto;}
+    .tabs {
             height: $_heightT;
             width: 70% !important;
             display: flex;
@@ -186,6 +173,15 @@ export default {
 
             }
         }
+    .wrapper {
+        justify-content: flex-start;
+        height: calc(100% - 14vh);
+        padding: 6vh 0 8vh 0;
+        color: #fff;
+
+      
+
+       
         .tab-label{
             text-align: center;color:#FFFFFFB2;
         }

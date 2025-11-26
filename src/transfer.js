@@ -95,8 +95,10 @@ function request(options) {
   else if (url.substring(0, 1) != "/" && !/:\/\//i.test(url))
     url = API_URL + url;
     //"Bearer " + 
-  if (state.user && state.user.token)headers["Authorization"] = state.user.token;
+  if (state.user && state.user.token)headers["Authorization"] ="Bearer "+state.user.token;
   if (setting.lang)headers["lang"] = setting.lang;
+  if(setting.clientId)headers["clientId"] = setting.clientId;
+  if(setting.tenantId)headers["tenantId"] = setting.tenantId;
   return new Promise((resolve, reject) => {
     if((flag&1)==1)uni.showLoading({});
     
@@ -114,25 +116,22 @@ function request(options) {
         }
         code=data.code||code;
         if((flag&2)==2){resolve(data);return;}
-        msg=data.message||"";
+        msg=data.message||data.msg||"";
         if(code=="401"||(data.error!="0"&&msg.indexOf("/App/Member")!=-1))isAuth=true;
         data=data.data||data||{};
+        data.error="0";
         if(code!="200")data.error=code;
       
         //console.log(["xxxxxxxxxxxxxxxxxxxxxxx",isAuth]);
        
-        if(data.error!="0"&&data.message){
+        if(data.error!="0"&&msg){
           if(isAuth){
-           
             var user=store&&store.state&&store.state.user?store.state.user:{};
-           
             if(user.account){
-             
               store.commit("setUser",{id:"",account:user.account,mail:"",mobile:"",userName:"",roles:"",token:"",__KEY:"account"});
             }
-            
             setTimeout(function(){
-              that.gotoPage("/pages/home");
+              that.gotoPage("/pages/login");
             },2000);
             return;
           }

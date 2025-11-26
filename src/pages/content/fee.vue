@@ -1,6 +1,6 @@
 <template>
 	<view class="fee body">
-		<navBar :title="_title" :back="back"></navBar>
+		<navBar :title="title" :back="back"></navBar>
 		<view class="wrapper">
 			<scroll-view scroll-y="true" scroll-x="false">
 				 
@@ -16,8 +16,8 @@ export default {
   components: {navBar},
 		data() {
 			return {
-				back:"/pages/home",
-				_title:"平台手续费"
+				back:"/pages/introduction",
+				title:"平台手续费"
 			};
 		},
 	onLoad(sender) {
@@ -27,8 +27,21 @@ export default {
   	},
 	methods: {
 		load(sender){
-      		var that=this,sender=that.sender||sender||{},id=sender.id;
-    	}
+			var that = this,path=that.$route.path||"",url;
+			var sender=(sender&&sender.id?sender:null)||that.sender||{},id=sender.id;
+			path=path.replace(/[\/]?pages\/content\/(.*?)/g,"$1");
+			url= "GET app/content/"+path;
+			if(id)url="GET app/content?id="+id;
+			if(that.get("sender.back"))that.set(that.get("sender.back").replace(/\./g,"/"),"back");
+			that.transfer.request({
+			url: url,
+			})
+			.then((resp) => {
+				var data=resp.data;
+				data=data.data||data;
+				that.extend(data);
+			});
+		}
 	},
 };
 </script>

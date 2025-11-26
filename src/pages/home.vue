@@ -84,6 +84,7 @@
           </view>
           <view class="bdlg"></view>
         </view>
+
         <view class="split-row">
           <view class="cl"></view>
           <view class="cc">
@@ -92,7 +93,6 @@
           <view class="cr"></view>
         </view>
 
-        
         <view class="partner">
           <view class="cell" v-for="(item, i) in partners" :key="i" @click="changePopuper(item,'dialog')">
                 <image class="img" :src="formatUrl(item.icon,'local')" mode="scaleToFill"/>
@@ -161,7 +161,7 @@ export default {
         url: "GET app/home",
       })
       .then((resp) => {
-        let data = resp.data;
+        var data = resp.data;
         data = data.data || data;
         data={
           notices:[{title:"公告1"},{title:"公告2"},{title:"公告3"}],

@@ -100,9 +100,16 @@ export default {
     that.load(sender);
   },
   methods: {
-    load(sender){
-      var that=this,sender=that.sender||sender||{};
-      
+    load(sender) {
+      var that = this, sender = that.sender || sender || {};
+      that.transfer.request({
+        url: "GET app/member/exchange",
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        that.extend(data);
+      });
     },
     tabChange(tabName){
       this.currentTab=tabName;

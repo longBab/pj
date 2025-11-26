@@ -9,7 +9,7 @@
     </navBar>
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
-         
+        {{format(content)}}
       </scroll-view>
     </view>
   </view>
@@ -26,7 +26,8 @@ export default {
     return {
       back: "/pages/product",
       title: "产品详情",
-      list: []
+      content:""
+   
     };
   },
   onLoad(sender) {
@@ -38,10 +39,24 @@ export default {
     //this.getServerData();
   },
   methods: {
-    load(sender) {
-      var that = this, sender = that.sender || sender || {};
+    load(sender){
+			var that = this,path=that.$route.path||"",url;
+			var sender=sender||that.sender||{},id=sender.id||0;
+		  that.extend({back:"/pages/product?id="+id});
+			if(that.get("sender.back"))that.set(that.get("sender.back").replace(/\./g,"/"),"back");
+			that.transfer.request({
+			url: url="GET app/product/detail/"+id,
+			})
+			.then((resp) => {
+				var data=resp.data;
+				data=data.data||data;
+				that.extend(data);
+			});
+		},
+    format(value,type){
+      return value;
     }
-  },
+  }
 };
 </script>
 

@@ -6,19 +6,19 @@
         <view class="navigations" v-if="page=='default'">
           <view class="row panel"  @click="change($event,'alipay')">
             <view class="cl"><u-icon  name="zhifubao-circle-fill" style="color:#00b6ff;margin-right:0.3rem;" size="40" />{{$t('绑定支付宝')}}</view>
-            <view class="cr">{{$t('去绑定')}}</view>
+            <view class="cr">{{$t(alipayAccount&&alipayCertificate?'去查看':'去绑定')}}</view>
             <view class="bdlg"></view>
           </view>
     
           <view class="row panel" @click="change($event,'weixin')">
             <view class="cl"><u-icon  name="weixin-fill" style="color:#08ba00;margin-right:0.3rem;" size="40" />{{$t('绑定微信')}}</view>
-            <view class="cr">{{$t('去绑定')}}</view>
+            <view class="cr">{{$t(wxpayAccount&&wxpayCertificate?'去查看':'去绑定')}}</view>
             <view class="bdlg"></view>
           </view>
     
           <view class="row panel"  @click="change($event,'bank')">
             <view class="cl"><u-icon  name="rmb-circle-fill" style="color:#ffd731;margin-right:0.3rem;" size="40" />{{$t('绑定银行卡')}}</view>
-            <view class="cr">{{$t('去绑定')}}</view>
+            <view class="cr">{{$t(openBank&&bankCardAccount&&cardholderName?'去查看':'去绑定')}}</view>
             <view class="bdlg"></view>
           </view>
         </view>
@@ -29,19 +29,41 @@
             <text class="item" :class="{active:page=='bank'}" @click="change($event,'bank')">绑定银行卡</text>
           </view>
           <view class="form s01">
-            <view class="split">请输入支付宝账号(可选)</view>
-            <view class="row">
+            <view class="split" v-if="form.split">{{$t(form.split||"未知")}}</view>
+            <view class="row" v-if="form.split">
               <view class="cc">
-                <input class="input" placeholder="请输入" />
+                <input class="input" v-model="form.value" :placeholder="$t(form.tips||'未知')" />
               </view>
             </view>
-            <view class="split">上传收款二维码</view>
-            <view class="box-cc">
+            <view class="split" v-if="form.split01">{{$t(form.split01||"未知1")}}</view>
+            <view class="box-cc" v-if="form.split01">
               <view class="item panel" :class="page">
-                  <text class="image">收款码照片</text>
-                  <view class="bdlg"></view>
+                
+                  <text v-if="!form.image">{{$t(form.tips01||"未知1")}}</text>
+                  <image 
+                    :src="formatUrl(form.image)"
+                    mode="scaleToFill" v-if="form.image"
+                  />
+                 
+                <view class="bdlg"></view>
               </view>
             </view>
+
+            <view class="split" v-if="form.split02">{{$t(form.split02||"未知")}}</view>
+            <view class="row" v-if="form.split02">
+              <view class="cc">
+                <input class="input" v-model="form.value01" :placeholder="$t(form.tips02||'未知')" />
+              </view>
+            </view>
+
+            <view class="split" v-if="form.split03">{{$t(form.split03||"未知")}}</view>
+            <view class="row" v-if="form.split03">
+              <view class="cc">
+                <input class="input" v-model="form.value02" :placeholder="$t(form.tips03||'未知')" />
+              </view>
+            </view>
+
+
             <view class="ctl">
               <button class="btn">确认提交</button>
             </view>
@@ -62,6 +84,58 @@
           back:"/pages/member/security",
           title:"支付方式",
           page:"default",
+          id:"",
+          alipayAccount:"",
+          alipayCertificate:"",
+          bankCardAccount:"",
+          cardholderName:"",
+          openBank:"",
+          wxpayAccount:"",
+          wxpayCertificate:"",
+          form:{
+            tips:"",
+            tips01:"",
+            tips02:"",
+            tips03:"",
+            tips04:"",
+            value:"",
+            value01:"",
+            value02:"",
+            value03:"",
+            image:""
+          },
+          maps:{
+            alipay:{
+              split:"支付宝账号(可选)",
+              tips:"请输入支付宝账号",
+              split01:"上传支付宝收款二维码",
+              tips01:"支付宝收款码照片",
+              split02:"",
+              tips02:"",
+              split03:"",
+              tips03:""
+            },
+            weixin:{
+              split:"微信号(可选)",
+              tips:"请输入微信号",
+              split01:"上传微信收款二维码",
+              tips01:"微信收款码照片",
+              split02:"",
+              tips02:"",
+              split03:"",
+              tips03:""
+            },
+            bank:{
+              split:"开户行",
+              tips:"请输入开户行",
+              split01:"",
+              tips01:"",
+              split02:"银行卡号",
+              tips02:"请输入银行卡号",
+              split03:"持卡人姓名",
+              tips03:"请输入持卡人姓名"
+            }
+          },
           rows:[]
         };
       },
@@ -74,16 +148,42 @@
         that.load(sender);
       },
       methods: {
-        load(sender){
-          var that=this,sender=that.sender||sender||{};
-          if(!sender.page)page="default";
-          that.extend(sender);
+        load(sender) {
+            var that = this, sender = that.sender || sender || {};
+            sender.page=that.page||"default";
+            that.extend(sender);
+            if(sender.page!="default")return;
+            that.transfer.request({
+                url: "GET app/member/security/payment?way="+that.page,
+            })
+            .then((resp) => {
+                var data = resp.data;
+                data = data.data || data;
+                that.extend(data);
+                if(data.dataView)that.extend(data.dataView);
+            });
         },
         change(event,page){
           var that=this;
           if(page=='alipay'||page=='weixin'||page=='bank')that.back="/pages/member/security/payment";
           else that.back="/pages/member/security/security";
-          that.extend({page:page});
+          var form=that.get("maps."+page);
+          if(page=="alipay"){
+            form.value=that.alipayAccount||"";
+            form.image=that.alipayCertificate||"";
+          }
+          else if(page=="weixin"){
+            form.value=that.wxpayAccount||"";
+            form.image=that.wxpayCertificate||"";
+          }
+          else if(page=="bank"){
+            form.value=that.openBank||"";
+            form.value01=that.bankCardAccount||"";
+            form.value02=that.cardholderName||"";
+          }
+          that.extend({page:page,form:form});
+
+          that.load({page:page});
 
         }
           
@@ -135,6 +235,7 @@
                 flex-wrap: wrap;  
                 justify-content: space-around;
                 align-content: space-around;
+                uni-image{width:100%;height:100%;}
                 &.bank{width:90%;}
             }
         }

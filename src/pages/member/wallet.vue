@@ -8,7 +8,7 @@
       <view class="c0">
         <text class="name">{{ $t('总余额') }}</text>
         <view class="value">
-          {{formatMoney(statistics.balance,2)}}
+          {{formatMoney(user.balance,2)}}
           <u-icon name="order" size="20"></u-icon>
         </view> 
       </view>
@@ -20,30 +20,34 @@
       <text class="item" @click="gotoPage('withdraw')">{{$t('转账')}}</text>
     </view>
     <view class="tabs">
-      <view class="item">
-        <view class="c01"><u-icon name="order" size="40"></u-icon></view>
+      <view class="item" :class="{active:showType==1}" @click="chose($event,'showType',1)">
+        <view class="c01"><u-icon name="fire" size="60"></u-icon></view>
         <view class="c02">
           <text class="name">{{$t('活跃资金')}}</text>
-          <view class="value">9999999USDT<u-icon name="order" size="16"></u-icon></view>
+          <view class="value">{{formatMoney(user.balance,2)}} USDT
+           <!--<u-icon name="order" size="16"></u-icon>--> 
+          </view>
         </view>
         <view class="bdlg"></view>
       </view>
-      <view class="item">
-        <view class="c01"><u-icon name="order" size="40"></u-icon></view>
+      <view class="item" :class="{active:showType==2}" @click="chose($event,'showType',2)">
+        <view class="c01"><u-icon name="time-list" size="60"></u-icon></view>
         <view class="c02"><text class="name">{{$t('结算资金')}}</text>
-          <view class="value">9999999USDT<u-icon name="order" size="16"></u-icon></view>
+          <view class="value">{{formatMoney(user.rechargeAmount,2)}}USDT
+            <!--<u-icon name="order" size="16"></u-icon>-->
+          </view>
         </view>
         <view class="bdlg"></view>
       </view>
     </view>
     <scroll-view scroll-y="true" scroll-x="false">
-      <view class="record panel" v-for="(item,i) in rows" :key="i">
+      <view class="record panel" v-for="(row,i) in rows" :key="i">
         <view class="c01">
-          <text class="name">划转接收</text>
-          <text class="time">0000-00-00 00:00</text>
+          <text class="name">{{$t(row.title)}}</text>
+          <text class="time">{{formatDate(row.createdTime,'yyyy/MM/dd HH:mm')}}</text>
         </view>
         <view class="c02">
-          <text class="value">+50枚</text>
+          <text class="value">{{row.pm==0?"-":"+"}}{{ formatMoney(row.amount,2) }}</text>
         </view>
         <view class="bdlg"></view>
       </view>
@@ -66,10 +70,9 @@ export default {
     return {
       back:"/pages/member",
       title:"我的钱包",
-      statistics:{balance:99999999},
-      rows:[
-        {},{},{},{},{},{},{},{},{},{},{},{}
-      ]
+      showType:1,
+      user:{balance:0},
+      rows:[]
     };
   },
   onReady() {
@@ -81,8 +84,25 @@ export default {
     that.load(sender);
   },
   methods: {
-    load(sender){
-      var that=this,sender=that.sender||sender||{};
+    load(sender) {
+      var that = this, sender = sender||that.sender||{},filter=sender;
+      filter.showType=that.showType;
+      that.transfer.request({
+        url: "GET app/member/wallet",
+        data:filter
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        var rows=(data.dataView?data.dataView.rows:null)||data.rows||[];
+        data.rows=rows;
+        that.extend(data);
+      });
+    },
+    chose(event,type,index){
+      var that=this;
+      that.set(index,type);
+      that.load();
       
     }
       
@@ -109,6 +129,7 @@ export default {
       text-align:center;
       .name{
         font-size:0.7rem;
+        
       }
       .value{
 
@@ -174,7 +195,9 @@ export default {
         flex-direction: column;
         justify-content: space-evenly;
         text-align:center;
-        .name{ font-weight:400;font-size:0.7rem;}
+        .name{ 
+          font-weight:400;font-size:0.7rem;
+        }
         .value{font-size:0.5rem;}
         .u-icon{color:#1ba27a;margin:0 0 0 0.1rem; }
       }
@@ -192,7 +215,14 @@ export default {
         border-image-repeat: round;
         clip-path: inset(0 round 10px);
       }
+      &.active{
+          background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
+          border-radius:10px;  
+          height:100%;
+          color:#000;
+      }
     }
+    
   }
   .record{
     margin:0.3rem auto;
@@ -211,6 +241,8 @@ export default {
         color: #0EFFB0;
         font-weight:400;
         font-size:0.4rem;
+        white-space:nowrap;
+        text-overflow:ellipsis;
       }
       .time{font-size:0.3rem;}
     }

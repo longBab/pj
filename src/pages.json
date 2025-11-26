@@ -199,6 +199,18 @@
 			}
 		},
 		{
+			"path" : "pages/coins",
+			"style" : 
+			{
+				"navigationBarTitleText" : "Coins",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path" : "pages/member",
 			"style" : 
 			{
@@ -254,6 +266,17 @@
 			}
 		},
 		{
+			"path": "pages/member/vip",
+			"style": {
+				"navigationBarTitleText": "VIP",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path": "pages/member/invite",
 			"style": {
 				"navigationBarTitleText": "Invite",
@@ -276,6 +299,39 @@
 			}
 		},
 		{
+			"path": "pages/member/team/data",
+			"style": {
+				"navigationBarTitleText": "VIP",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/team/node",
+			"style": {
+				"navigationBarTitleText": "Node",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/team/stage",
+			"style": {
+				"navigationBarTitleText": "Stage",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path": "pages/member/invest",
 			"style": {
 				"navigationBarTitleText": "Invest",
@@ -287,7 +343,7 @@
 			}
 		},
 		{
-			"path": "pages/member/invest/product",
+			"path": "pages/member/product",
 			"style": {
 				"navigationBarTitleText": "Product",
 				"app-plus": {
@@ -341,39 +397,6 @@
 			}
 		},
 		{
-			"path": "pages/member/security/alipay",
-			"style": {
-				"navigationBarTitleText": "Alipay",
-				"app-plus": {
-					"titleNView": false,
-					"navigationStyle": "custom",
-					"navigationBarTextStyle": "white"
-				}
-			}
-		},
-		{
-			"path": "pages/member/security/bank",
-			"style": {
-				"navigationBarTitleText": "Bank",
-				"app-plus": {
-					"titleNView": false,
-					"navigationStyle": "custom",
-					"navigationBarTextStyle": "white"
-				}
-			}
-		},
-		{
-			"path": "pages/member/security/wechat",
-			"style": {
-				"navigationBarTitleText": "Wechat",
-				"app-plus": {
-					"titleNView": false,
-					"navigationStyle": "custom",
-					"navigationBarTextStyle": "white"
-				}
-			}
-		},
-		{
 			"path": "pages/member/support",
 			"style": {
 				"navigationBarTitleText": "Support",
@@ -408,9 +431,9 @@
 			}
 		},
 		{
-			"path": "pages/member/QView",
+			"path": "pages/member/exchange/records",
 			"style": {
-				"navigationBarTitleText": "QuantifyView",
+				"navigationBarTitleText": "Sell",
 				"app-plus": {
 					"titleNView": false,
 					"navigationStyle": "custom",
@@ -419,9 +442,31 @@
 			}
 		},
 		{
-			"path": "pages/member/DCenter",
+			"path": "pages/member/quantization",
 			"style": {
-				"navigationBarTitleText": "DataCenter",
+				"navigationBarTitleText": "Quantization",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/products",
+			"style": {
+				"navigationBarTitleText": "Products",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/member/incomes",
+			"style": {
+				"navigationBarTitleText": "Products",
 				"app-plus": {
 					"titleNView": false,
 					"navigationStyle": "custom",

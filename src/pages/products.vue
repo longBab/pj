@@ -5,36 +5,33 @@
     <view class="wrapper">
         <view class="statistics">
             <view class="r01">{{$t('当前组合年华收益率(预估)')}}</view>
-            <view class="r02">36,011.9373%</view>
+            <view class="r02">{{formatMoney(statistics.value01,0)}}%</view>
             <view class="r03"></view>
             <view class="r04">{{$t('数据由链上真实成交与AI回测综合计算,仅作策略表现参考.')}}</view>
             <view class="rbb">
                 <view class="tab">
-                    <text class="title">当前托管本金</text>
-                    <text class="value">924,1424.30U</text>
+                    <text class="title">{{$t('当前托管本金')}}</text>
+                    <text class="value">{{formatMoney(user.statisticInvests,2)}}U</text>
                     <view class="bdlg"></view>
                 </view>
                 <view class="tab">
-                    <text class="title">当前托管本金</text>
-                    <text class="value">924,146.30U</text>
+                    <text class="title">{{$t('今日已实现收益')}}</text>
+                    <text class="value">{{formatMoney(user.statisticIncomesDays)}}U</text>
                 </view>
                 <view class="tab">
-                    <text class="title">当前托管本金</text>
-                    <text class="value">924,146.30U</text>
+                    <text class="title">{{$t('策略运行胜率')}}</text>
+                    <text class="value">{{formatMoney(statistics.value02,0)}}%</text>
                 </view>
             </view>
         </view>
 
         <view class="guider">
             <view class="rt">
-                <text class="cl">请选择量化周期</text>
-                <text class="cr">请选择量化周期</text>
+                <text class="cl">{{$t('请选择量化周期')}}</text>
+                <text class="cr">{{$t('托管随进随出·到期可续约')}}</text>
             </view>
             <view class="tabs">
-                <text class="item active"> 7天·入门</text>
-                <text class="item">15天·加强</text>
-                <text class="item">30天·稳健</text>
-                <text class="item">60天·进阶</text>
+                <text class="item" @click="chose(item,'typeSetting',i)" :class="{active:i==typeSetting.current}" v-for="(item,i) in typeSetting.items" :key="i">{{item.text}}</text>
             </view>
         </view>
     
@@ -42,17 +39,17 @@
         
         <scroll-view scroll-y="true" scroll-x="false">
             <view class="list">
-                <view class="item panel" v-for="(item, i) in rows" :key="i" :class="{active:itemIndex==i}" >
+                <view class="item panel" @click="chose(item,'row',i)" v-for="(item, i) in rows" :key="i" :class="{active:row.index==i}" >
                     <view class="row rt">
-                        24小时快返
+                        {{item.name}}
                     </view>
                     <view class="row r2">
-                        <text class="cl">日化区间</text>
-                        <text class="cr">0.40%-2.00%</text>
+                        <text class="cl">{{$t('日化区间')}}</text>
+                        <text class="cr">{{item.expectedRevenue}}%-{{item.expectedTotalRevenue}}%</text>
                     </view>
                     <view class="row rb">
-                        <text class="cl">结算方式</text>
-                        <text class="cr">T+1复利</text> 
+                        <text class="cl">{{$t('结算方式')}}</text>
+                        <text class="cr">{{$t('T+1复利')}}</text> 
                     </view>
                     <view class="bdlg"></view>
                 </view>
@@ -60,21 +57,21 @@
         </scroll-view>
         <view class="shower panel">
             <view class="cl">
-                <view class="r1">您当前选择的收益方案</view>
-                <view class="r2">天进阶收益</view>
-                <view class="r3">预估日化:0.90% - 2.60%,中周期进阶策略,净值波动相对更大，适合进阶玩家</view>
+                <view class="r1">{{$t('您当前选择的收益方案')}}</view>
+                <view class="r2">{{$t(row.name||"暂无")}}</view>
+                <view class="r3">{{ $t(row.remark||"暂无") }}</view>
             </view>
             <view class="cr">
-                <view class="btn" @click="gotoPage('product')">
-                    <text>确认并</text>
-                    <text>进入产品</text>
+                <view class="btn" @click="gotoPage('product?id='+row.id)">
+                    <text>{{$t('确认并')}}</text>
+                    <text>{{$t('进入产品')}}</text>
                 </view>
             </view>
             <view class="bdlg"></view>
         </view>
 
         <view class="tips">
-            风险提示：以上为策略目标区间,并非固定收益承诺.实际表现受市场波动、流动性以 及成交滑点影响,以系统最终结算结果为准.
+            {{$t(tips)}}
         </view>
  
     </view>
@@ -95,11 +92,21 @@ export default {
         return {
             back: "/pages/home",
             title: "产品",
-            currency: "",
-            status: "",
-            path: "",
-            itemIndex:0,
-            rows: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+            typeSetting:{
+                current:0,
+                items:[]
+            },
+            statistics:{
+                value01:0,
+                value02:0
+            },
+            user:{
+                statisticInvests:0,
+                statisticIncomesDays:0
+            },
+            rows: [],
+            row:{index:0,id:0,remark:""},
+            tips:""
         };
     },
     onReady() {
@@ -112,8 +119,47 @@ export default {
     },
     methods: {
         load(sender) {
-            var that = this, sender = that.sender || sender || {};
-
+            var that = this, sender = sender||that.sender || {},filter=sender;
+            if(filter.status==undefined)filter.status=-1;
+            if(filter.productType==undefined)filter.productType=-1;
+            if(!filter.pageNum)filter.pageNum=0;
+            if(!filter.pageSize)filter.pageSize=10000;
+            that.transfer.request({
+                url: "GET app/products",
+                data:filter
+            })
+            .then((resp) => {
+                var data = resp.data;
+                data = data.data || data;
+                if(!data.typeSetting){
+                    data.typeSetting={
+                        items:[
+                            {value:0,text:"7天·入门"},
+                            {value:1,text:"15天·加强"},
+                            {value:2,text:"30天·稳健"},
+                            {value:3,text:"60天·进阶"}
+                        ]
+                    }
+                }
+                if(!data.tips)data.tips="风险提示:以上为策略目标区间,并非固定收益承诺.实际表现受市场波动、流动性以 及成交滑点影响,以系统最终结算结果为准.";
+                var rows=(data.dataView?data.dataView.rows:null)||data.rows||[];
+                data.rows=rows;
+                //if(that.get("row.index")>=rows.length)that.set(0,"row.index");
+                if(rows.length>0)that.chose(rows[0],'row',0);
+                that.extend(data);
+            });
+        },
+        chose(event,type,index){
+            var that=this,item=event,sender={};
+            if(type=="row"){
+                item.index=index;
+                console.log(["product",item]);
+                that.extend(that.row,item);
+                return false;
+            }
+            that.set(index,type+".current");
+            sender.productType=item.value;
+            that.load({productType:item.value});
         }
 
     },
@@ -302,14 +348,12 @@ export default {
     }
     .wrapper {
         justify-content: flex-start;
-        height: calc(100% - 3rem);
+        height: calc(100% - 3.2rem);
         padding: 2.5rem 0rem 0 0rem;
         color: #fff;
     }
 
-    uni-scroll-view {
-        height: calc(100% - 19rem);
-    }
+   
 
 
 }</style>

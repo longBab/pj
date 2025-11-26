@@ -70,8 +70,15 @@ export default {
   methods: {
     load(sender) {
       var that = this, sender = that.sender || sender || {};
-
-    },
+      that.transfer.request({
+        url: "GET app/member/invite",
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        that.extend(data);
+      });
+    }
 
   }
 };

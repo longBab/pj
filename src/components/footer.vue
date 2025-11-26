@@ -2,19 +2,23 @@
   <view class="footer" style="z-index: 101">
      <view :class="'ul '+page">
 			<view class="li home" @click="gotoPage('/pages/home')" >
-				<uni-icons  type="shop" size="20" style="color:inherit" />
+				<uni-icons  type="home" size="20" style="color:inherit" />
              	<text>{{$t('首页')}}</text> 
 			</view>
 			<view class="li products" @click="gotoPage('/pages/products')">
-				<uni-icons  type="shop" size="20" style="color:inherit" />
+				<uni-icons  type="products" size="20" style="color:inherit" />
 				<text>{{$t('产品')}}</text>    
 			</view>
+			<view class="li coins" @click="gotoPage('/pages/coins')">
+				<uni-icons  type="vip" size="20" style="color:inherit" />
+				<text>{{$t('安全')}}</text>    
+			</view>
 			<view class="li introduction" @click="gotoPage('/pages/introduction')">
-				<uni-icons  type="shop" size="20" style="color:inherit"/>
+				<uni-icons  type="introduction" size="20" style="color:inherit"/>
                 <text>{{$t('介绍')}}</text>
 			</view>
 			<view class="li member" @click="gotoPage('/pages/member')">
-				<uni-icons  type="shop" size="20" style="color:inherit"/>
+				<uni-icons  type="person" size="20" style="color:inherit"/>
                 <text>{{$t('我的')}}</text>
 			</view>
 		</view>
@@ -57,6 +61,7 @@ export default {
 		justify-content: space-around;
 		&.home .li.home,
 		&.products .li.products,
+		&.coins .li.coins,
 		&.introduction .li.introduction,
 		&.member .li.member{color:#0EFFB0;}
 		

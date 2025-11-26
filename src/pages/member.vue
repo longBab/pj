@@ -11,16 +11,16 @@
         <view class="avatar">
           <view class="img"></view>
         </view>
-        <view class="level">
+        <view class="level" >
           <text class="col">{{$t('我的等级')}}</text>
-          <text class="col c01">{{$t('VIP0')}}</text>
+          <text class="col c01" @click="gotoPage('member/vip')">{{$t('VIP0')}}</text>
         </view>
         <view class="id">
           <view class="panel">
             <view class="container"> 
-              <text>ID:1948656777</text>
+              <text>ID:{{user.invitationCode}}</text>
               <text class="copy">
-                <u-icon  name="order" style="color:inherit" size="28" />
+                <u-icon name="copy" style="color:inherit" size="28" />
               </text>
             </view>
             <view class="bdlg"></view>
@@ -48,7 +48,7 @@
         
       </view>
       
-      <view class="statistics panel">
+      <view class="statistics panel" v-if="false">
         <view class="container">
           <view class="row" v-for="(item,i) in statistics.groups[0]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(statistics.data[item.field],2)}}</view></view>
         </view>
@@ -65,11 +65,15 @@
         </view>
         <view class="cr"></view>
       </view>
-      <view class="statistics panel s01">
+      <view class="statistics panel s01" >
         <view class="container">
-          <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(statistics.data[item.field],2)}}</view></view>
+          <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),2)}}</view></view>
         </view>
         <view class="bdlg"></view>
+      </view>
+
+      <view class="ctl">
+        <button class="btn" @click="gotoPage('/pages/login')">{{$t('退出')}}</button>
       </view>
         
     </scroll-view>
@@ -93,13 +97,16 @@ export default {
   data() {
     return {
       logo: "/static/images/logo-02.png",
+      user:{
+        invitationCode:""
+      },
       guiders: [
         {name:"wallet",icon:"wallet",title:"我的钱包"},
         {name:"security",icon:"security",title:"安全认证"},
         {name:"support",icon:"support",title:"在线支持"},
         {name:"exchange",icon:"exchange",title:"一键兑换"},
-        {name:"QView",icon:"QView",title:"量化视图"},
-        {name:"DCenter",icon:"DCenter",title:"数据中心"}
+        {name:"products",icon:"quantization",title:"量化视图"},
+        {name:"team",icon:"team",title:"数据中心"}
       ],
       statistics:{
         groups:[
@@ -111,15 +118,15 @@ export default {
             {field:"v05",title:"社区总量化运行"}
           ],
           [ 
-            {field:"v06",title:"直推数量"},
-            {field:"v07",title:"公会总人数"},
-            {field:"v08",title:"公会总业绩(USDT)"},
-            {field:"v09",title:"社区总量化投入"},
-            {field:"v10",title:"公会总能量(EG)"}
+            {field:"statisticRecommends",title:"直推数量"},
+            {field:"statisticFansTeams",title:"公会总人数"},
+            {field:"statisticInvestsTeams",title:"公会总业绩(USDT)"},
+            {field:"statisticIncomesTeams",title:"社区总量化投入"},
+            {field:"statisticUnkown",title:"公会总能量(EG)"}
           ]
         ],
         data:{
-          v01:999999999999.00,
+          /*v01:999999999999.00,
           v02:999999999999.00,
           v03:999999999999.00,
           v04:999999999999.00,
@@ -128,28 +135,42 @@ export default {
           v07:999999999999.00,
           v08:999999999999.00,
           v09:999999999999.00,
-          v10:999999999999.00
+          v10:999999999999.00*/
         }
       }
     };
   },
-  onLoad() {
+  onLoad(sender) {
     var that = this;
-   
-   
+    that.sender = sender;
+    that.load(sender);
   },
   onReady() {
      
   },
   methods: {
-    
+    load(sender) {
+      var that = this, sender = that.sender || sender || {};
+      that.transfer.request({
+        url: "GET app/member",
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        that.extend(data);
+      });
+    },
+    format(value,type){
+      var that=this;
+      return that.get(value)||that.get("user."+value)||0;
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .member {
-  .ucenter,.promotion,.guider,.statistics,.split-row{ width:93%;margin:0 auto;}
+  .ucenter,.promotion,.guider,.statistics,.split-row,.ctl{ width:93%;margin:0 auto;}
   .ucenter{
     display:flex;
     flex-direction: column;
@@ -252,8 +273,8 @@ export default {
       &.security{ background-image:url(/static/images/member/m5.png);}
       &.support{ background-image:url(/static/images/member/m6.png);}
       &.exchange{ background-image:url(/static/images/member/m7.png);}
-      &.QView{ background-image:url(/static/images/member/m8.png);}
-      &.DCenter{ background-image:url(/static/images/member/m9.png);}
+      &.quantization{ background-image:url(/static/images/member/m8.png);}
+      &.team{ background-image:url(/static/images/member/m9.png);}
       
     }
   }
@@ -276,6 +297,18 @@ export default {
       background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
     }
     &.s01{height:8rem; }
+  }
+  .ctl{
+    .btn{
+      width: 80%;
+      color:#fff;
+      line-height: 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #0EFFB0;
+      border-radius: 0.65rem;
+    }
+    padding-bottom:1rem;
   }
   .wrapper{
     justify-content: flex-start;

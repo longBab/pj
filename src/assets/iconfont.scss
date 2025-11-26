@@ -1,8 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4232335 */
-  src: url('iconfont.woff2?t=1693462951882') format('woff2'),
-       url('iconfont.woff?t=1693462951882') format('woff'),
-       url('iconfont.ttf?t=1693462951882') format('truetype');
+  src:url('iconfont.ttf?t=1693462951885') format('truetype');
 }
 
 .iconfont {
@@ -12,7 +10,29 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+::v-deep .u-iconfont{
+  font: normal normal normal 14px/1 "iconfont","uicon-iconfont" !important;
+  &.uicon-copy:before{
+    content: "\E68E";
+  }
+  &.uicon-fire:before{
+    content: "\E68F";
+  }
+  &.uicon-time-list:before{
+    content: "\E690";
+  }
+}
+::v-deep .uni-icons{
+  font-family:iconfont,uniicons !important;
+  &.uniui-products:before{
+    content: "\E68C";
+  }
+  &.uniui-introduction:before{
+    content: "\E68D";
+  }
 
+
+}
 .icon-user-vip:before {
   content: "\e600";
 }

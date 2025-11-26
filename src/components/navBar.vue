@@ -53,7 +53,7 @@ export default {
   height: $_height;
   line-height:$_height;
   width:100%;
-  z-index: 9999999;
+  z-index: 9;
   color: #fff;
   font-size: 0.9rem;
   .back{
