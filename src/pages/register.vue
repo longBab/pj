@@ -39,6 +39,7 @@
                     <u-input v-model="form.code" :placeholder="$t('验证码')" />
                     <view class="right-btn" @click="sendVerify($event)">{{senderCode}}</view>
                 </u-form-item>
+
                 <view class="label">{{$t('设置密码')}}</view>
                 <u-form-item :border-bottom="false">
                     <u-input type="password" v-model="form.password" :placeholder="$t('设置密码')" />
@@ -47,6 +48,16 @@
                 <u-form-item :border-bottom="false">
                     <u-input type="password" v-model="form.rePassword" :placeholder="$t('确认密码')" />
                 </u-form-item>
+
+                <view class="label">{{$t('设置支付密码')}}</view>
+                <u-form-item :border-bottom="false">
+                    <u-input type="password" v-model="form.passwordX" @input="onInput($event,'form.passwordX')"  :placeholder="$t('设置支付密码')" />
+                </u-form-item>
+                <view class="label">{{$t('确认支付密码')}}</view>
+                <u-form-item :border-bottom="false">
+                    <u-input type="password" v-model="form.rePasswordX" @input="onInput($event,'form.passwordX')" :placeholder="$t('确认设置支付密码')" />
+                </u-form-item>
+
                 <view class="label">{{$t('邀请码')}}</view>
                 <u-form-item :border-bottom="false">
                     <u-input v-model="form.inviteCode" :placeholder="$t('邀请码')" />
@@ -98,6 +109,8 @@ export default {
                 mail:"",
                 password:"",
                 rePassword:"",
+                passwordX:"",
+                rePasswordX:"",
                 code:"",
                 inviteCode:""
             },
@@ -149,6 +162,13 @@ export default {
             }, 1000);
             });
         },
+        onInput(event,type) {
+            // 使用正则表达式移除非数字字符
+            var that=this,value=event.detail?event.detail.value:event;
+            //console.log(["ww",event]);
+             that.set(value.replace(/[^\d]/g, ''),type);
+           
+        },
         onSubmit() {
             var that = this,url,
             current=that.get("way.current"),way=that.get("way.nameMaps")[current],
@@ -159,6 +179,8 @@ export default {
                 code:that.get("form.code"),
                 password:that.get("form.password"),
                 confirmPassword:that.get("form.rePassword"),
+                payPassword:that.get("form.passwordX"),
+                confirmPayPassword:that.get("form.rePasswordX"),
                 invitationCode:that.get("form.inviteCode")
             }
             if(that.way.current==0){
@@ -175,7 +197,13 @@ export default {
             if(!/[\s\S]{4}/.test(that.get("form.code"))){that.Alert("验证格式无效");return;}
             if(!/[\s\S]{6}/.test(that.get("form.password"))){that.Alert("密码长度不能少于6位");return;}
             if(that.get("form.password")!=that.get("form.rePassword")){that.Alert("确认密码与密码不一致");return;}
+
+            if(!/^[\d]{6}$/.test(that.get("form.passwordX"))){that.Alert("支付密码为6位数字");return;}
+            if(that.get("form.passwordX")!=that.get("form.rePasswordX")){that.Alert("确认支付密码与支付密码不一致");return;}
+
             if(!/[\s\S]{4}/.test(that.get("form.inviteCode"))){that.Alert("邀请码格式无效");return;}
+
+            if(that.get("form.password")==that.get("form.passwordX")){that.Alert("登陆密码与支付密码不能一致");return;}
             that.transfer.request({
             url:"POST "+url,
             data: data,

@@ -5,7 +5,7 @@
     <view class="wrapper">
 
       <view class="page">
-        <view class="title">BSC链</view>
+        <view class="title">{{$t('BSC链')}}</view>
         <view class="qrcode">
           <view class="img"></view>
         </view>
@@ -23,7 +23,7 @@
             21sWEDSSDW3e......324454EDSSD454ED435
           </view>
           <view>
-            <u-icon name="order" style="color:inherit" size="28" />
+            <u-icon name="copy" style="color:inherit" size="28" />
           </view>
         </view>
         <view class="wc93 info">
@@ -83,6 +83,7 @@ export default {
 
 <style lang="scss" scoped>
 .deposit {
+  .split-row .cc{font-size:0.8rem;}
   .page {
     width: 80%;
     background: linear-gradient(180deg, rgba(33, 34, 33, 0.3) 0%, rgba(41, 45, 43, 0.3) 100%);
@@ -153,7 +154,6 @@ export default {
       }
 
       .cc {
-        font-size: 0.8rem;
         font-weight: 600;
         color: #0EFFB0;
       }
@@ -175,7 +175,6 @@ export default {
   }
 
   .info {
-    font-size: 0.4rem;
     height: 2rem;
     line-height: 2rem;
     text-align: center;

@@ -109,6 +109,7 @@
         <view class="icon"><image  :src="formatUrl(popuper.dialog.icon,'local')" mode="scaleToFill"/></view>
         <view class="title">{{$t(popuper.dialog.title||"暂无")}}</view>
         <view class="content">{{$t(popuper.dialog.content||"暂无")}}</view>
+        <view class="ctl"><button class="btn">下载</button></view>
       </view>
     </u-popup>
   </view>

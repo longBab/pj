@@ -56,7 +56,8 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
     color:#0EFFB1 !important;
 }
 .uni-picker-view-mask{
-    background: linear-gradient( 180deg, hsl(0deg 0% 5% / 95%), hsl(0deg 0% 43% / 60%) ), linear-gradient(0deg, hsl(0deg 0% 2% / 95%), hsl(0deg 4% 59% / 60%)) !important;
+    display: none !important;
+    /*background: linear-gradient( 180deg, hsl(0deg 0% 5% / 95%), hsl(0deg 0% 43% / 60%) ), linear-gradient(0deg, hsl(0deg 0% 2% / 95%), hsl(0deg 4% 59% / 60%)) !important;*/
 }
 .body{
 	width:100%;height: 100%;
@@ -275,6 +276,17 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
           color:#fff;
           text-align: left;
         }
+        .ctl{
+            .btn{
+                
+                width: 7.5rem;
+                height: 1.55rem;
+                line-height: 1.55rem;
+                font-size: 0.75rem;
+                background-color: #0EFFB0;
+                border-radius: 0.65rem;
+            }
+        }
       }
     
 }
@@ -465,7 +477,7 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
         }
     }
     .form,.ctl{
-        .btn{font-weight:bold;line-height:2rem;font-size: .7rem;}
+        .btn{font-weight:bold;line-height:2rem;font-size:.7rem;}
         
     }
      

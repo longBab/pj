@@ -1,13 +1,13 @@
 <template>
   <view class="withdraw body" :class="$store.state.setting.theme">
     <navBar :title="title" :back="back"></navBar>
-    <view class=" wrapper">
+    <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
         <view class="split-row mt5">
           <view class="cl"></view>
           <view class="cdl"></view>
           <view class="cc">
-            <text>{{ $t('提现地址') }}</text>
+            <text>{{ $t('转出地址') }}</text>
           </view>
           <view class="cdr"></view>
           <view class="cr"></view>
@@ -15,7 +15,7 @@
         <view class="mt5 wc93 address-panel">
           <view class="dp input-row">
             <view class="f1">
-              <input class="input" placeholder="请输入或粘贴提现地址" />
+              <input class="input" v-model="form.address"  placeholder="请输入或粘贴提现地址" />
             </view>
           </view>
         </view>
@@ -27,56 +27,60 @@
           <view class="cl"></view>
           <view class="cdl"></view>
           <view class="cc">
-            <text>{{ $t('提现数额') }}</text>
+            <text>{{ $t('转出数额') }}</text>
           </view>
           <view class="cdr"></view>
           <view class="cr"></view>
         </view>
-        <view class="tab-label">
+        <view class="tab-label" v-if="false">
           (USDT)
         </view>
         <view class="mt5 wc93 momey-panel">
           <view class="dp input-row">
             <view class="f1">
-              <input class="input" placeholder="请输入提现金额" type="number" max="20" />
+              <input class="input" v-model="form.value" placeholder="请输入转账金额" type="number" max="20" />
             </view>
             <view class="icon-box">
-              <view class="icon"></view>
+              <view class="icon" v-if="false"></view>
             </view>
             <view>
-              USDT
+              $
             </view>
           </view>
           <view class="dp pay-row">
             <view class="f1">
-              可用余额 300.2
+              可用余额 {{formatMoney(user.rechargeAmount,2)}} $
             </view>
-            <view class="btn active">
-              全部
-            </view>
+            <view class="btn active" @click="form.value=user.rechargeAmount">全部</view>
           </view>
         </view>
         <view class="mt5">
-          <view class="sell-btn">
-            确认出售
+          <view class="sell-btn" @click="submit($event)">
+            确认转出
           </view>
         </view>
-        <view class="mt10 nodata">提现手续费:1USDT</view>
-        <view class="mt5 nodata">最小提现金额: 10 USDT</view>
+        <view class="mt10 nodata">转出手续费:{{formatMoney(withdraw_rate,2)}}</view>
+        <view class="mt5 nodata">最小转出金额: {{formatMoney(min_withdraw_amount,2)}} USDT</view>
 
       </scroll-view>
     </view>
+    <keyBoard ref="keyBoard"  @submit="submit"  />
   </view>
 </template>
 
 <script>
 import navBar from "@/components/navBar.vue";
+import keyBoard from "@/components/keyBoard.vue";
 export default {
-  components: { navBar },
+  components: { navBar,keyBoard },
   data() {
     return {
       back: "/pages/member/wallet",
-      title: "提现"
+      title: "转出",
+      user:{rechargeAmount:0},
+      form:{address:"",value:""},
+      withdraw_rate:0,
+      min_withdraw_amount:0
     }
   },
 
@@ -97,6 +101,27 @@ export default {
         data = data.data || data;
         that.extend(data);
       });
+    },
+    submit(event){
+      var that=this,keyBoard=that.get("$refs.keyBoard");
+      if(typeof(event)!=="string"){
+          keyBoard.open({title:"支付密码",length:6});
+          return;
+      }
+      that.transfer.request({
+        url: "POST app/member/withdraw",
+        data:{address:that.get("form.address"),amount:that.get("form.value"),payPassword:event}
+      })
+      .then((resp) => {
+        var data = resp.data;
+        data = data.data || data;
+        that.Alert("转出审请成功");
+        setTimeout(()=>{
+          that.gotoPage("/pages/member/wallet?showType=2");
+        },3000);
+        that.extend(data);
+      });
+
     }
   }
 
@@ -241,7 +266,6 @@ export default {
     }
 
     .info {
-      font-size: 0.4rem;
       height: 2rem;
       line-height: 2rem;
       text-align: center;

@@ -4,8 +4,8 @@
   </navBar>
   <view class="wrapper">
     <view class="tabs">
-        <text class="item" :class="[currentTab=='buy'?'buy-active':'']" @click="tabChange('buy')">购买</text>
-        <text class="item" :class="[currentTab=='sell'?'sell-active':'']" @click="tabChange('sell')">出售</text>
+        <text class="item buy" :class="{active:type==0}" @click="chose($event,'type',0)">购买</text>
+        <text class="item sell" :class="{active:type==1}" @click="chose($event,'type',1)">出售</text>
       </view>
 
       <view class="statistics">
@@ -15,33 +15,33 @@
         </view>
         <view class="item">
           金额
-          <u-icon  name="order" style="color:inherit" size="28" />
+          <u-icon  name="arrow-thin-up" style="color:inherit" size="28" />
         </view>
         <view class="item">
           支付
-          <u-icon  name="order" style="color:inherit" size="28" />
+          <u-icon  name="arrow-thin-up" style="color:inherit" size="28" />
         </view>
         <view class="item">
-          神盾
+          {{$t('神盾')}}
           <u-icon  name="order" style="color:inherit" size="28" />
         </view>
       </view>
     
     <scroll-view scroll-y="true" scroll-x="false">
 
-      <view class="record" v-for="(row,i) in rows" :key="i" v-if="currentTab=='buy'">
-        <view class="row r01">鸿运-实名付款-安全零冻结</view>
-        <view class="row r02">30日成單31069(99.80%)</view>
+      <view class="record" v-for="(row,i) in rows" :key="i" >
+        <view class="row r01">{{$t(row.name)}}</view>
+        <view class="row r02">30日成单{{row.orderPlacementNum}}({{row.conversionRate}}%)</view>
         <view class="row r03 dp">
-          <view class="f1">¥7.07 / <text class="currency">USDT</text></view>
+          <view class="f1">¥{{row.usdtPrice}} / <text class="currency">$</text></view>
           <view>
-            <view class="btn buy-btn">购买</view>
+            <view class="btn" :class="{sell:type===1,buy:type===0}" @click="chose(row,'goto')">{{$t(type===0?'购买':'出售')}}</view>
           </view>
         </view>
         
         <view class="row r04">
-          <view class="c01">限額 1,000 - 1,408,865 CNY</view>
-          <view class="c02">可用余额 199,273.7 USDT</view>
+          <view class="c01">限額 {{formatMoney(row.minQuota,2)}} - {{formatMoney(row.maxQuota,2)}} CNY</view>
+          <view class="c02">可用余额 {{formatMoney(row.balance,2)}} $</view>
         </view>
         <view class="bdlg tl"></view>
         <view class="bdlg tr"></view>
@@ -49,25 +49,7 @@
         <view class="bdlg br"></view>
       </view>
 
-      <view class="record" v-for="(row,i) in rows" :key="i" v-if="currentTab=='sell'">
-        <view class="row r01">鸿运-实名付款-安全零冻结</view>
-        <view class="row r02">30日成單31069(99.80%)</view>
-        <view class="row r03 dp">
-          <view class="f1">¥7.07 / <text class="currency">USDT</text></view>
-          <view >
-            <view  class="btn sell-btn" @click="gotoPage('/pages/member/exchange/sell')">出售</view>
-          </view>
-        </view>
-        
-        <view class="row r04">
-          <view class="c01">限額 1,000 - 1,408,865 CNY</view>
-          <view class="c02">可用余额 199,273.7 USDT</view>
-        </view>
-        <view class="bdlg tl"></view>
-        <view class="bdlg tr"></view>
-        <view class="bdlg bl"></view>
-        <view class="bdlg br"></view>
-      </view>
+     
       
     </scroll-view>
   </view>
@@ -83,11 +65,8 @@ export default {
     return {
       back:"/pages/member",
       title:"一键兑换",
-      status:"",
-      path:"",
-      rows:[
-        {},{},{},{},{},{}
-      ],
+      type:0,
+      rows:[],
       currentTab:'buy'
     };
   },
@@ -97,24 +76,42 @@ export default {
   onLoad(sender) {
     var that = this,sender=sender||{};
     that.sender=sender;
+    if(sender.type)that.set(sender.type,'type');
     that.load(sender);
   },
   methods: {
     load(sender) {
-      var that = this, sender = that.sender || sender || {};
+      var that = this, sender = sender ||that.sender || {},filter=sender;
+      filter.type=that.type||0;
+      if(!filter.pageNum)filter.pageNum=1;
+      if(!filter.pageSize)filter.pageSize=10000;
       that.transfer.request({
         url: "GET app/member/exchange",
+        data:filter
       })
       .then((resp) => {
         var data = resp.data;
         data = data.data || data;
+        var rows=(data.dataView?data.dataView.rows:null)||data.rows||[];
+        data.rows=rows;
         that.extend(data);
       });
     },
-    tabChange(tabName){
-      this.currentTab=tabName;
-    },
-    change(event,type){
+   
+    chose(event,type,index){
+      var that=this;
+      if(type=='goto'){
+        var row=event;
+        if(that.get("type")==1){
+          that.gotoPage("exchange/sell");
+          return false;
+        }
+        if(/(和成)/.test(row.name))that.gotoPage("/pages/serviceChangeX");
+        else that.gotoPage("/pages/serviceChange");
+        return false;
+      }
+      that.set(index,type);
+      that.load();
 
     }
       
@@ -141,12 +138,12 @@ export default {
       text-align: center;
       line-height:$_height;
       color:#fff;
-      &.buy-active{
+      &.buy.active{
         border-radius:10px;
         background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
         color:#000;
       }
-      &.sell-active{
+      &.sell.active{
         border-radius:10px;
         background-color: #F74660;
         color:#fff;
@@ -260,16 +257,18 @@ export default {
       text-align: center;
       font-size: 0.5rem;
       margin: 0 auto;
-    }
-    .buy-btn{
-      background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-      color: #000000;
-    }
-    .sell-btn{
-      background-color: #F74660;
-      color: #fff;
+      &.buy{
+        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+        color: #000000;
+      }
+      &.sell{
+        background-color: #F74660;
+        color: #fff;
+        
+      }
       
     }
+   
   .wrapper{
     justify-content: flex-start;
     height: calc(100% - 6vh);

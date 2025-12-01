@@ -6,21 +6,21 @@
         <view class="box-main">
           <view class="sider"></view>
           <view class="sider right"></view>
-          <view class="title">我的邀请码</view>
+          <view class="title">{{$t('我的邀请码')}}</view>
           <view class="r1">
-            <text class="cl">A7B9C2</text>
-            <u-icon name="order" style="color:inherit" size="28" />
+            <text class="cl">{{user.invitationCode}}</text>
+            <u-icon name="copy" style="color:inherit" @click="utility.copy($event,user.invitationCode)" size="28" />
           </view>
 
           <view class="statistics">
           <view class="item">
-            <text class="value">1</text>
-            <text class="name">已邀请好友</text>
+            <text class="value">{{user.statisticFans}}</text>
+            <text class="name"> {{$t('已邀请好友')}} </text>
           </view>
 
           <view class="item">
-              <text class="value">0.00</text>
-              <text class="name">累计奖励(USDT)</text>
+              <text class="value">{{formatMoney(statistics.s9,2)}}</text>
+              <text class="name">{{$t('累计奖励')}}(USDT)</text>
             </view>
           </view>
 
@@ -35,9 +35,7 @@
           </view>
 
           <view class="content">
-            <text class="item">每成功邀请1位好友注册并完成实位好友注册并完成实名认证，您可获得10USDT奖励</text>
-            <text class="item">好友首次充值，您可获得充值金额5%的额外奖励</text>
-            <text class="item"> 奖励自动发放至您的账户余额</text>
+            <text class="item" v-for="(item,i) in content" :key="i">{{item}}</text>
           </view>
 
         </view>
@@ -56,7 +54,14 @@ export default {
     return {
       back: "/pages/member",
       title: "推广邀请",
-      url: ""
+      url: "",
+      user:{invitationCode:""},
+      statistics:{s3:0,s7:0,s9:0,s10:0,s11:0,s12:0},
+      content:[
+        "每当您成功邀请一位直推好友注册实名并完成量化采购后，",
+        "系统将根据 TA 的实际参与金额，为您自动发放对应代数的邀请奖励如下:",
+        "直推 5%、二代 3%、三代 2%、奖励自动发放至您的钱包结算资金"
+      ],
     };
   },
   onReady() {
@@ -76,6 +81,7 @@ export default {
       .then((resp) => {
         var data = resp.data;
         data = data.data || data;
+         if(data.statistics&&data.statistics.length>=1)data.statistics=data.statistics[0];
         that.extend(data);
       });
     }

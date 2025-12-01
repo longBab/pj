@@ -2,7 +2,8 @@
 <view class="keyBoard" v-if="isOpen">
     <view class="mask"></view>
     <view class="shower">
-        <text class="close" @click="isOpen=false">X</text>
+        <u-icon class="close" name="close" @click="isOpen=0"></u-icon>
+       
         <view class="title">{{$t(title||"支付密码")}}</view>
         <view class="words">
             <view class="key" v-for="(c,i) in keys" key="i">
@@ -21,6 +22,9 @@
 export default {
   data() {
     return {
+        isOpen:0,
+        title:"",
+        length:6,
         current:0,
         keys:[],
         chars:[
@@ -33,22 +37,38 @@ export default {
     };
   },
   props: {
-    isOpen:{type:Number,default:0},
-    title:{type:String,default:''},
-    length:{type:Number,default:6}
+    
   },
   mounted(sender){
-    var that=this,length=that.length||6,keys=[];
+    /*
+    var that=this,length=that.length,keys=[];
     for(var i=0;i<length;i++){
         keys.push("");
     }
     that.keys=keys;
+    */
 
     //console.log(["length",that.length]);
   },
   methods:{
+    open(sender){
+        var that=this,i,sender=sender||{};
+        console.log(["sender",sender]);
+        if(!sender.title)sender.title="支付密码";
+        if(!sender.length)sender.length=6;
+        that.extend(sender);
+        var length=that.length,keys=[];
+        for(var i=0;i<length;i++){
+            keys.push("");
+        }
+        that.keys=keys;
+        that.current=0;
+        that.set(1,"isOpen");
+       
+    },
     chose(event,type,index){
         var that=this,current=this.current,char=event;
+      
         if(char=="x"){
             if(current>0){
             that.keys[current-1]="";
@@ -58,6 +78,13 @@ export default {
         }
         that.keys[current]=char;
         that.current=current+1;
+       
+        if(char=="o"||that.current==that.keys.length){
+            this.set(0,"isOpen");
+            this.$emit('submit', (that.keys+"").replace(/,/g,""));
+            return false;
+        }
+      
         console.log([char,index]);
     }
   }
@@ -73,7 +100,8 @@ export default {
         top:0;bottom:0;
         left:0;right:0;
         background-color:#fff !important;
-        opacity: 0.2 !important;
+        opacity: 0.6 !important;
+        z-index:99;
     }
     .shower{
         display: flex;
@@ -149,7 +177,7 @@ export default {
             }
         }
        
-        z-index:9;
+        z-index:100;
         
 
     }
@@ -164,7 +192,7 @@ export default {
         flex-wrap: wrap;
         justify-content: space-evenly;
         align-content: space-between;
-        z-index:9;
+        z-index:100;
         .key{
             width:33%;
             text-align: center;

@@ -199,6 +199,17 @@
 			}
 		},
 		{
+			"path": "pages/content/vip",
+			"style": {
+				"navigationBarTitleText": "VIP",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path" : "pages/coins",
 			"style" : 
 			{
@@ -395,6 +406,16 @@
 					"navigationBarTextStyle": "white"
 				}
 			}
+		},{
+			"path": "pages/member/security/password",
+			"style": {
+				"navigationBarTitleText": "Password",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
 		},
 		{
 			"path": "pages/member/support",
@@ -467,6 +488,39 @@
 			"path": "pages/member/incomes",
 			"style": {
 				"navigationBarTitleText": "Products",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/service",
+			"style": {
+				"navigationBarTitleText": "Service",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/serviceChange",
+			"style": {
+				"navigationBarTitleText": "ServiceChange",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
+			"path": "pages/serviceChangeX",
+			"style": {
+				"navigationBarTitleText": "ServiceChangeX",
 				"app-plus": {
 					"titleNView": false,
 					"navigationStyle": "custom",

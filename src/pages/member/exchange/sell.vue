@@ -3,9 +3,9 @@
         <navBar :title="title" :back="back"></navBar>
         <view class=" wrapper">
             <scroll-view scroll-y="true" scroll-x="false">
-                <view class=" tabs">
-                    <text class="item">购买</text>
-                    <text class="item active">出售</text>
+                <view class="tabs">
+                    <text class="item" @click="gotoPage('/pages/member/exchange?type=1')">{{$t('购买')}}</text>
+                    <text class="item active">{{$t('出售')}}</text>
                 </view>
                 <view class="split-row">
                     <view class="cl"></view>
@@ -16,81 +16,76 @@
                     <view class="cdr"></view>
                     <view class="cr"></view>
                 </view>
-                <view class="tab-label">
-                    (USDT)
-                </view>
+                <view class="tab-label" v-if="false">(USDT)</view>
 
                 <view class="momey-panel">
                     <view class="dp input-row">
                         <view class="f1">
-                            <input class="input" placeholder="请输入提现金额" type="number" max="20" />
+                            <input class="input" v-model="form.value" :placeholder="$t('请输入提现金额')" type="number" max="20" />
                         </view>
-                        <view class="icon-box">
-                            <view class="icon"></view>
-                        </view>
-                        <view>
-                            USDT
-                        </view>
+                        <view class="icon-box"><view class="icon" v-if="false"></view></view>
+                        <view>$</view>
                     </view>
-                    <view class="dp pay-row">
-                        <view class="btn">
-                            金额
-                        </view>
-                        <view class="btn">
-                            支付
-                        </view>
-                        <view class="btn active">
-                            神盾
-                        </view>
+                    <view class="stat">可用余额 {{formatMoney(user.rechargeAmount,2)}} $</view>
+                    <view class="dp pay-row" v-if="false">
+                        <view class="btn">{{$t('金额')}}</view>
+                        <view class="btn">{{$t('支付')}}</view>
+                        <view class="btn active">{{$t('神盾')}}</view>
                     </view>
                 </view>
                 <view class="mt10 wc93" style="font-size: 0.8rem;margin-left:2rem;">
-                    {{ $t('请选择收款方式') }}
+                    {{ $t('收款方式') }}
                 </view>
 
                 <view class="wc93 dp pay-checkbox">
-                    <view class="dp ck active">
+                    <view class="dp ck" :class="{active:type=='alipay'}" @click="chose($event,'alipay')">
+                        <u-icon  name="zhifubao-circle-fill" style="color:#00b6ff;margin-right:0.3rem;" size="40" />{{$t('支付宝')}}
+                    </view>
+                    <view class="dp ck" :class="{active:type=='wechat'}" @click="chose($event,'wechat')">
                         <u-icon  name="weixin-fill" style="color:#08ba00;margin-right:0.3rem;" size="40" />
-                        微信
+                        {{$t('微信')}}
                     </view>
-                    <view class="dp ck">
-                        <u-icon  name="zhifubao-circle-fill" style="color:#00b6ff;margin-right:0.3rem;" size="40" />
-                        支付宝
-                    </view>
-                    <view class="dp ck">
+                 
+                    <view class="dp ck" :class="{active:type=='bank'}" @click="chose($event,'bank')">
                         <u-icon  name="rmb-circle-fill" style="color:#ffd731;margin-right:0.3rem;" size="40" />
-                        银行卡
+                        {{$t('银行卡')}}
                     </view>
                 </view>
                 <view class="mt5">
-                    <view class="sell-btn">
-                        确认出售
+                    <view class="sell-btn" @click="submit($event)">
+                        {{$t('确认出售')}}
                     </view>
                 </view>
                 <view class="wc93 mt20 dp">
                     <view class="dp record-btn" @click="gotoPage('/pages/member/security/payment')">
                         <view class="icon-box icon1"></view>
-                        换汇资金方式管理
+                        {{$t('换汇资金方式管理')}}
                     </view>
                     <view class="dp record-btn" @click="gotoPage('records')">
                         <view class="icon-box icon2"></view>
-                        换汇记录
+                        {{$t('换汇记录')}}
                     </view>
                 </view>
 
             </scroll-view>
         </view>
+        <keyBoard ref="keyBoard"  @submit="submit"  />
     </view>
 </template>
 
 <script>
 import navBar from "@/components/navBar.vue";
+import keyBoard from "@/components/keyBoard.vue";
 export default {
-    components: { navBar },
+    components: { navBar,keyBoard },
     data() {
         return {
             back: "/pages/member/exchange",
-            title: "一键兑换"
+            title: "一键兑换",
+            type:"alipay",
+            user:{rechargeAmount:0},
+            payment:{id:""},
+            form:{value:""}
         }
 
     },
@@ -103,9 +98,43 @@ export default {
     },
     methods: {
         load(sender) {
-            var that = this, sender = that.sender || sender || {}, currency = sender.currency || that.currency;
-
+            var that = this, sender = that.sender || sender || {};
+            that.transfer.request({
+                url: "GET app/member/exchange/sell",
+            })
+            .then((resp) => {
+                var data = resp.data;
+                data = data.data || data;
+                that.extend(data);
+            });
         },
+        chose(event,page){
+            var that=this;
+            that.set(page,"type");
+        },
+        submit(event){
+            
+           var that=this,keyBoard=that.get("$refs.keyBoard");
+            if(typeof(event)!=="string"){
+                keyBoard.open({title:"支付密码",length:6});
+                return;
+            }
+            that.transfer.request({
+                url: "POST app/member/exchange/sell",
+                data:{amount:that.get("form.value"),type:that.get("type"),payInfoId:that.get("payment.id"),payPassword:event}
+            })
+            .then((resp) => {
+                var data = resp.data;
+                data = data.data || data;
+                that.extend(data);
+                that.Alert("换汇审请成功");
+                setTimeout(()=>{
+                    that.gotoPage("records");
+                },2500);
+                
+            });
+
+        }
     }
 
 };
@@ -167,7 +196,8 @@ export default {
 
                 &.active {
                     border-radius: 10px;
-                    background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+                    //background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+                    background-color: #F74660;
                     color: #000;
                 }
 
@@ -224,7 +254,10 @@ export default {
                     }
                 }
             }
-
+            .stat{
+                text-align:right;
+                line-height:1.3rem;
+            }
             .pay-row {
                 justify-content: center;
                 align-items: center;

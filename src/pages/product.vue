@@ -17,29 +17,29 @@
         <view class="cr"></view>
       </view>
       <view class="statistics">
-        <view class="r01">量化总金额</view>
+        <view class="r01"> {{ $t('量化总金额') }} </view>
         <view class="r02 panel"> 
-          {{formatMoney(totalAmount,2)}}
+          {{formatMoney(totalAmount,2)}} $
           <view class="bdlg"></view>
         </view>
       </view>
       <view class="progress panel">
         <view class="line">
-              <view class="active" :style="{width:(purchedAmount/totalAmount)+'0%'}"></view>
+              <view class="active" :style="{width:(saleAmount/totalAmount*100)+'%'}"></view>
         </view>
-        <view class="value">{{formatMoney(purchedAmount,2)}}/{{formatMoney(totalAmount,2)}}USDT</view>
+        <view class="value">{{formatMoney(saleAmount,2)}}/{{formatMoney(totalAmount,2)}}$</view>
       </view>
-
+ 
       <view class="board">
         <view class="item panel">
           <text class="title">{{ $t('个人量化产出比') }}</text>
-          <text class="value">1.39</text>
+          <text class="value">{{formatMoney(expectedRevenue,2)}}%</text>
           <view class="bdlg"></view>
         </view>
 
         <view class="item panel">
           <text class="title">{{ $t('平台产出比') }}</text>
-          <text class="value">1.39</text>
+          <text class="value">{{formatMoney(expectedRevenue01,2)}}%</text>
           <view class="bdlg"></view>
         </view>
 
@@ -56,20 +56,20 @@
 
       <view class="detail panel">
         <view class="row">
-          <text class="cl">{{$t('余额')}}</text>
-          <text class="cr clr1">{{formatMoney(user.balance,2)}} USDT</text>
+          <text class="cl">{{$t('账号余额')}}</text>
+          <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} $</text>
         </view>
         <view class="row">
-          <text class="cl">{{$t('配置量化')}}</text>
-          <text class="cr clr1">{{formatMoney(purchedAmount,2)}} USDT</text>
+          <text class="cl">{{$t('已配量化')}}</text>
+          <text class="cr clr1">{{formatMoney(purchedAmount,2)}}$</text>
         </view>
         <view class="row">
-          <text class="cl">{{$t('最高量化')}}</text>
-          <text class="cr clr1">{{formatMoney(maxInvestment-purchedAmount,2)}} USDT</text>
+          <text class="cl">{{$t('未配量化')}}</text>
+          <text class="cr clr1">{{formatMoney(maxInvestment-purchedAmount,2)}}$</text>
         </view>
         <view class="row">
           <text class="cl">{{$t('量化周期')}}</text>
-          <text class="cr">{{$t("暂无")}}</text>
+          <text class="cr">{{$t(releaseCycle||'暂无')}}</text>
         </view>
         <view class="row">
           <text class="cl">{{$t('项目总长')}}</text>
@@ -83,13 +83,20 @@
           <text class="cl">{{$t('总结算比例')}}</text>
           <text class="cr">{{formatMoney(expectedTotalRevenue,2)}}%</text>
         </view>
-        <view class="row">
+        <view class="row" v-if="false">
           <text class="cl">{{$t('周期产出比例')}}</text>
           <text class="cr">{{formatMoney(expectedRevenue,2)}}%</text>
         </view>
-      
-        <view class="ctl">
-              <button class="sbtn">{{ $t('开启量化') }}</button>
+        <view class="row">
+          <text class="cl">{{$t('量化金额')}}</text>
+          <text class="cr input"><input class="txt" :placeholder="$t('请输入量化金额')" type="number" v-model="form.value" />$</text>
+        </view>
+        <view class="row">
+          <text class="cl">{{$t('量化总产出')}}</text>
+          <text class="cr">{{formatMoney(expectedTotalRevenue*form.value,2)}}$</text>
+        </view>
+        <view class="ctl" >
+              <button class="sbtn" @click="submit($event)">{{ $t('开启量化') }}</button>
         </view>
         <view class="bdlg"></view>
       </view>
@@ -108,8 +115,8 @@
       </view>
       <view class="detail panel">
         <view class="row" v-for="(item, i) in statistics.groups[1]" :key="i">
-          <text class="cl">{{ $t(item.title) }}</text>
-          <text class="cr">{{ statistics.data[item.field] }}</text>
+          <text class="cl">{{ $t(item.title||'未知') }}</text>
+          <text class="cr">{{ get(item.field)||get('statistics.data.'+item.field)||'暂无' }}</text>
         </view>
         <view class="ctl">
               <view class="btn panel" @click="gotoPage('product/detail?id='+id)">
@@ -119,7 +126,7 @@
         </view>
       </view>
 
-      <view class="nodata">
+      <view class="nodata" v-if="false">
         {{$t('沒有更多数据了')}}
       </view>
     </scroll-view>
@@ -130,7 +137,7 @@
       <view class="r1">{{$t('量化保护仓')}}</view> 
       <view class="r2 panel">
         <text class="cl">{{$t('保护仓金额')}}</text>
-        <text class="cr">$1399</text>
+        <text class="cr">{{form.value}}$</text>
         <view class="bdlg"></view>
       </view>
       <view class="r3"><u-icon name="bell"></u-icon>{{$t('保护本金')}}</view>
@@ -143,7 +150,7 @@
       </view>
     </view>
   </u-popup>
-  <keyBoard :isOpen="keyBoardIsOpen" :length="6" :title="keyBoardTitle" />
+  <keyBoard ref="keyBoard"  @submit="submit"  />
   
 </view>
 </template>
@@ -168,39 +175,42 @@ export default {
       expectedRevenue:0,
       expectedTotalRevenue:0,
       purchedAmount:0,
-      totalAmount:0,
+      totalAmount:1,
       minInvestment:0,
       maxInvestment:0,
-      keyBoardIsOpen:0,
-      keyBoardTitle:"支付密码",
-      user:{balance:0},
-      list: [],
+      expectedRevenue:0,
+      expectedRevenue01:0,
+      expectedTotalRevenue:0,
+      saleAmount:0,
+      startTime:"",
+      regulation:"",
+      user:{balance:0,rechargeAmount:0},
+      statusMap:{
+        "0":"准备中",
+        "1":"量化中",
+        "2":"量化完成"
+      },
+      statusName:"暂无",
+      form: {value:""},
       statistics: {
         groups: [
           [
-            { field: "v01", title: "量化周期" },
-            { field: "v02", title: "周期产出比例" },
-            { field: "v03", title: "周期总产出" }
+           
           ],
           [
-            { field: "v01", title: "保障银行" },
-            { field: "v02", title: "状态" },
-            { field: "v03", title: "操作类型" },
-            { field: "v04", title: "个人量化产出" },
-            { field: "v05", title: "购买时间" }
+            { field: "regulation", title: "监管机构" },
+            { field: "statusName", title: "状态" },
+            { field: "startTime", title: "开启时间",type:"time" },
           ]
         ],
         data: {
-          v01: '天，周，月，季，年',
-          v02: '0 %',
-          v03: '0 USDT',
+           
         },
         data: {
           v01: '量化保护',
           v02: '能量释放中',
-          v03: '$1221,399',
-          v04: '$1,399',
-          v05: '2025-10-21 00:00:00'
+          v03: '0',
+          v04: '0'
         }
       }
     };
@@ -223,8 +233,11 @@ export default {
           .then((resp) => {
               var data = resp.data;
               data = data.data || data;
+              var _data=data.dataView||{};
+              data.statusName=that.get("statusMap")[_data.status];
+              //console.log(["statusMap",that.get("statusMap"),_data.status]);
               that.extend(data);
-              if(data.dataView) that.extend(data.dataView);
+              if(_data) that.extend(_data);
           });
     },
     changePopuper(sender,type){
@@ -234,6 +247,28 @@ export default {
       that.extend(that.popuper,{isShow:true,safeBox:{}});
       console.log(["....",item]);
     },
+    submit(event){
+      var that=this,value=that.get("form.value")||0,keyBoard=that.get("$refs.keyBoard");
+     
+       //console.log(["keyBoard",keyBoard]);
+      if(typeof(event)=="string"){
+         
+         that.transfer.request({
+              url: "POST app/product/"+that.id,
+              data:{productId:that.id,payPassword:event,amount:value}
+          })
+          .then((resp) => {
+              var data = resp.data;
+              data = data.data || data;
+              that.gotoPage("/pages/member/products");
+              console.log(["data",data]);
+          });
+          return false;
+      }
+    
+      keyBoard.open({title:"支付密码",length:6});
+
+    }
     
   },
 };
@@ -277,6 +312,7 @@ export default {
         }
         .r2{
           height:2rem;
+          line-height:0;
           padding:1rem;
           display:flex;
           flex-direction: row;
@@ -303,6 +339,8 @@ export default {
       font-size: 0.75rem;
       background-color: #0EFFB0;
       border-radius: 0.65rem;
+      left:calc(50% - 3.25rem);
+       position: absolute;z-index:9;
     }
     .split-row {
       .cc {
@@ -334,14 +372,14 @@ export default {
       display:flex;
       flex-direction: row;
       flex-wrap: wrap;
-      align-content: center;
+      align-content: flex-end;
       box-shadow: 2px 1px 24.1px 3px #8C8784 inset,4px 4px 5.2px 29px #0EFFB01A inset;
       background: #000000;
       border-radius: 0.7rem;
       .line{
         $_heightL:0.25rem;
         width:95%;
-        margin: 0  auto;
+        margin: 0  auto 0.2rem auto;
         border-radius: 0.65rem;
         height: $_heightL;
         background-color: #726B6B;
@@ -355,7 +393,7 @@ export default {
       .value{
         width:100%;
         position:absolute;
-        top:0;right:0.5rem;
+        top:-0.3rem;right:0.5rem;left:0;text-align:center;
         line-height:$_height;
         width:auto;
         z-index:1;
@@ -401,6 +439,21 @@ export default {
           text-align:right;
           &.clr1{
             color:#9C9C9C;
+          }
+          &.input{
+            position:relative;
+            height:2rem;
+            .txt{
+              border:1px solid rgba(62, 190, 202, 0.6) ;
+              position: absolute;
+              font-size:0.6rem;
+              width:40%;
+              top:0; 
+              right:0.5rem; 
+              text-align: center;
+              z-index:9;
+              border-radius:5px;
+            }
           }
         }
       }

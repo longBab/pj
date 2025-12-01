@@ -17,7 +17,7 @@
                         </text>
                     </view>
                     <view class="item r3">
-                        <text class="text">2,580000 U</text>
+                        <text class="text">0.00 U</text>
                     </view>
 
                 </view>
@@ -61,7 +61,7 @@
                     <view class="row">
                         <text class="cl">我的保险池金额</text>
                         <view class="cr">
-                          <text class="color1">1,250</text>U
+                          <text class="color1">0.00</text>U
                         </view>
                     </view>
                     <view class="row">

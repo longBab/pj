@@ -21,6 +21,9 @@
   &.uicon-time-list:before{
     content: "\E690";
   }
+  &.uicon-arrow-thin-up:before{
+    content: "\E6BD";
+  }
 }
 ::v-deep .uni-icons{
   font-family:iconfont,uniicons !important;

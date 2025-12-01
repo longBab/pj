@@ -10,7 +10,7 @@
             <view class="bdlg"></view>
           </view>
     
-          <view class="row panel" @click="change($event,'weixin')">
+          <view class="row panel" @click="change($event,'wechat')">
             <view class="cl"><u-icon  name="weixin-fill" style="color:#08ba00;margin-right:0.3rem;" size="40" />{{$t('绑定微信')}}</view>
             <view class="cr">{{$t(wxpayAccount&&wxpayCertificate?'去查看':'去绑定')}}</view>
             <view class="bdlg"></view>
@@ -22,10 +22,10 @@
             <view class="bdlg"></view>
           </view>
         </view>
-        <view class="page" v-if="page=='alipay'||page=='weixin'||page=='bank'">
+        <view class="page" v-if="page=='alipay'||page=='wechat'||page=='bank'">
           <view class="tabs">
             <text class="item" :class="{active:page=='alipay'}" @click="change($event,'alipay')" >绑定支付宝</text>
-            <text class="item" :class="{active:page=='weixin'}" @click="change($event,'weixin')">绑定微信</text>
+            <text class="item" :class="{active:page=='wechat'}" @click="change($event,'wechat')">绑定微信</text>
             <text class="item" :class="{active:page=='bank'}" @click="change($event,'bank')">绑定银行卡</text>
           </view>
           <view class="form s01">
@@ -37,7 +37,7 @@
             </view>
             <view class="split" v-if="form.split01">{{$t(form.split01||"未知1")}}</view>
             <view class="box-cc" v-if="form.split01">
-              <view class="item panel" :class="page">
+              <view class="item panel" :class="page" @click="upload($event,'image')">
                 
                   <text v-if="!form.image">{{$t(form.tips01||"未知1")}}</text>
                   <image 
@@ -65,7 +65,7 @@
 
 
             <view class="ctl">
-              <button class="btn">确认提交</button>
+              <button class="btn" @click="submit($event)">确认提交</button>
             </view>
         </view>
 
@@ -115,7 +115,7 @@
               split03:"",
               tips03:""
             },
-            weixin:{
+            wechat:{
               split:"微信号(可选)",
               tips:"请输入微信号",
               split01:"上传微信收款二维码",
@@ -149,7 +149,7 @@
       },
       methods: {
         load(sender) {
-            var that = this, sender = that.sender || sender || {};
+            var that = this, sender = sender|| that.sender|| {};
             sender.page=that.page||"default";
             that.extend(sender);
             if(sender.page!="default")return;
@@ -165,14 +165,14 @@
         },
         change(event,page){
           var that=this;
-          if(page=='alipay'||page=='weixin'||page=='bank')that.back="/pages/member/security/payment";
+          if(page=='alipay'||page=='wechat'||page=='bank')that.back="/pages/member/security/payment";
           else that.back="/pages/member/security/security";
           var form=that.get("maps."+page);
           if(page=="alipay"){
             form.value=that.alipayAccount||"";
             form.image=that.alipayCertificate||"";
           }
-          else if(page=="weixin"){
+          else if(page=="wechat"){
             form.value=that.wxpayAccount||"";
             form.image=that.wxpayCertificate||"";
           }
@@ -184,6 +184,101 @@
           that.extend({page:page,form:form});
 
           that.load({page:page});
+
+        },
+        upload(event,field){
+            var that=this;
+            uni.chooseImage({
+						count: 1,
+						sizeType: ['original', 'compressed'],
+						sourceType: ['album'],
+						success: function(res) {
+							var tempFile = res.tempFilePaths[0];
+                            console.log(["chooseImage",res]);
+							new Promise((resolve, reject) => {
+								const path = tempFile
+								const options = {
+									filePath: path,
+                                    file:res.tempFiles[0],
+									cloudPath: Date.now() + '.jpg'
+								}
+								resolve(options)
+							}).then((options) => {
+								uni.showLoading({
+									title: that.$t('上传中...')
+								})
+								return that.transfer.uploadFile({
+									...options,
+									onUploadProgress(e) {
+
+									}
+								})
+							}).then(res => {
+								uni.hideLoading();
+                                if (res.fileID.indexOf("cloud://") != -1) {
+                                    that.transfer.getTempFileURL({
+                                    fileList: [res.fileID],success(res){
+                                        let file=res.fileList && res.fileList[0]?res.fileList[0]:{},fileURL=file.tempFileURL;
+                                        that.set(fileURL,"form."+field)
+                                        console.log(["fileURL",fileURL]);
+                                        
+                                    }});
+
+                            }		 
+                }).catch((err) => {
+                    uni.hideLoading();
+                    console.log(["uploadFile.err",err]);
+                    if (err.message !== 'Fail_Cancel') {
+                        that.Alert("文件上传失败");
+                    }
+                })
+            }
+          });
+
+
+        },
+        submit(event){
+          var that=this,page=that.page,data={},form=that.get("form");
+          
+
+          if(page=="alipay"){
+            data={
+             alipayAccount:form.value,
+             alipayCertificate:form.image
+            }
+          }
+          else if(page=="wechat"){
+            data={
+             wxpayAccount:form.value,
+             wxpayCertificate:form.image
+            }
+          }
+          else if(page=="bank"){
+            data={
+             openBank:form.value,
+             bankCardAccount:form.value01,
+             cardholderName:form.value02
+            }
+          }
+          data.type=page;
+          that.transfer.request({
+              url: "POST app/member/security/payment",
+              data:data
+          })
+          .then((resp) => {
+              var data = resp.data;
+              data = data.data || data;
+              that.extend(data);
+              
+              if(data.dataView)that.extend(data.dataView);
+              that.Alert("资料更新成功");
+              setTimeout(function(){
+                that.load({page:"default"});
+              },3000);
+          });
+
+          console.log(["data",data]);
+
 
         }
           

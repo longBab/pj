@@ -20,7 +20,7 @@
                 
                 <view class="label" v-if="way.current==0">{{$t('手机号码')}}</view>
                 <u-form-item :border-bottom="false" v-if="way.current==0">
-                    <picker  :range="areaCode.items" @change="change($event,'areaCode')">
+                    <picker :range="areaCode.items" @change="change($event,'areaCode')">
                         <view class="area-code">
                             <text class="value">{{areaCode.items[areaCode.current]}}</text>
                             <!--<text class="arrow">▼</text>-->
@@ -37,7 +37,7 @@
                 <view class="label">{{$t('密码')}}</view>
                 <u-form-item  :border-bottom="false">
                     <u-input type="password" v-model="form.password" :placeholder="$t('密码')" />
-                    <view class="right-btn" @click="gotoPage('forget')">忘记密码？</view>
+                    <view class="right-btn" @click="gotoPage('service?back=/pages/login')">忘记密码？</view>
                 </u-form-item>
             </u-form>
             <view class="ctl">

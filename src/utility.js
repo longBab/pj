@@ -55,6 +55,7 @@ function formatMoney(s,n,u) {
 }
 
 function formatDisplay(str,begin,end,type){
+    if(!str)return "";
 	var str=str||"",begin=begin||0,end=end||end,type=type||0,len=str.length;
     if(type==0) return str;
 	if(type>8)len=type;

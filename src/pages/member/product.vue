@@ -6,7 +6,7 @@
 			<view class="chart">
 				<view class="rt">
 					<view class="cl">
-						<text class="title">成交额趋势</text>
+						<text class="title">{{$t('成交额趋势')}}</text>
 						<text class="name">Sparkline</text>
 					</view>
 					<view class="cr">

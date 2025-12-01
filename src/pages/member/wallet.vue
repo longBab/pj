@@ -8,7 +8,7 @@
       <view class="c0">
         <text class="name">{{ $t('总余额') }}</text>
         <view class="value">
-          {{formatMoney(user.balance,2)}}
+          {{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} $
           <u-icon name="order" size="20"></u-icon>
         </view> 
       </view>
@@ -17,14 +17,14 @@
     <view class="guider">
       <text class="item" @click="gotoPage('deposit')">{{$t('充值')}}</text>
       <text v-if="false" class="item" >{{$t('提现')}}</text>
-      <text class="item" @click="gotoPage('withdraw')">{{$t('转账')}}</text>
+      <text class="item" @click="gotoPage('withdraw')">{{$t('转出')}}</text>
     </view>
     <view class="tabs">
       <view class="item" :class="{active:showType==1}" @click="chose($event,'showType',1)">
         <view class="c01"><u-icon name="fire" size="60"></u-icon></view>
         <view class="c02">
           <text class="name">{{$t('活跃资金')}}</text>
-          <view class="value">{{formatMoney(user.balance,2)}} USDT
+          <view class="value">{{formatMoney(user.balance,2)}} $
            <!--<u-icon name="order" size="16"></u-icon>--> 
           </view>
         </view>
@@ -33,7 +33,7 @@
       <view class="item" :class="{active:showType==2}" @click="chose($event,'showType',2)">
         <view class="c01"><u-icon name="time-list" size="60"></u-icon></view>
         <view class="c02"><text class="name">{{$t('结算资金')}}</text>
-          <view class="value">{{formatMoney(user.rechargeAmount,2)}}USDT
+          <view class="value">{{formatMoney(user.rechargeAmount,2)}} $
             <!--<u-icon name="order" size="16"></u-icon>-->
           </view>
         </view>
@@ -47,7 +47,8 @@
           <text class="time">{{formatDate(row.createdTime,'yyyy/MM/dd HH:mm')}}</text>
         </view>
         <view class="c02">
-          <text class="value">{{row.pm==0?"-":"+"}}{{ formatMoney(row.amount,2) }}</text>
+          <text class="status" v-if="row.busType==1" :class="'c'+row.status">{{$t(statusMap[row.status])}}</text>
+          <text class="value">{{row.pm==0?"-":"+"}}{{ formatMoney(row.amount,2) }} $</text>
         </view>
         <view class="bdlg"></view>
       </view>
@@ -71,7 +72,12 @@ export default {
       back:"/pages/member",
       title:"我的钱包",
       showType:1,
-      user:{balance:0},
+      user:{balance:0,rechargeAmount:0},
+      statusMap:{
+        "0":"申请中",
+        "1":"成功",
+        "2":"退回"
+      },
       rows:[]
     };
   },
@@ -86,6 +92,7 @@ export default {
   methods: {
     load(sender) {
       var that = this, sender = sender||that.sender||{},filter=sender;
+      that.extend(sender);
       filter.showType=that.showType;
       that.transfer.request({
         url: "GET app/member/wallet",
@@ -102,7 +109,7 @@ export default {
     chose(event,type,index){
       var that=this;
       that.set(index,type);
-      that.load();
+      that.load({showType:index});
       
     }
       
@@ -151,13 +158,14 @@ export default {
     }
   }
   .guider{
-    height:2rem;
+    height:1.4rem;
     display:flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: nowrap;
     .item{
-      padding:0.1rem 1rem 0.1rem 1rem;
+      padding:0 1rem 0 1rem;
+      line-height:1.4rem;
       border-radius:20px;
       background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
     }
@@ -196,9 +204,9 @@ export default {
         justify-content: space-evenly;
         text-align:center;
         .name{ 
-          font-weight:400;font-size:0.7rem;
+          font-weight:400;/*font-size:0.7rem;*/
         }
-        .value{font-size:0.5rem;}
+        .value{/*font-size:0.5rem;*/}
         .u-icon{color:#1ba27a;margin:0 0 0 0.1rem; }
       }
       .bdlg{
@@ -240,18 +248,28 @@ export default {
       .name{
         color: #0EFFB0;
         font-weight:400;
-        font-size:0.4rem;
+        /*font-size:0.4rem;*/
         white-space:nowrap;
         text-overflow:ellipsis;
       }
-      .time{font-size:0.3rem;}
+      .time{ /*font-size:0.3rem;*/}
+     
     }
     .c02{
+      display:flex;
+      flex-direction: column;
       width:calc(100% - 13rem);
+      justify-content: space-around;
+      flex-wrap: nowrap;
       text-align:right;
+       .status{
+        &.c0{color:orange;}
+        &.c1{color:green;}
+        &.c2{color:red;}
+      }
       .value{
         line-height:2rem;
-        font-size:0.4rem;
+        /*font-size:0.4rem;*/
         background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
         background-clip: text;
         -webkit-background-clip: text;
@@ -261,12 +279,11 @@ export default {
   }
   .wrapper{
     justify-content: flex-start;
-    height: calc(100% - 14vh);
-    padding: 6vh 0 8vh 0;
+    padding: 2.5rm 0 3rem 0;
     color:#fff;
   }
   uni-scroll-view {
-        height: calc(100vh - 14vh - 12.4rem);
+        height: calc(100% - 17.5rem);
   }
   
 }

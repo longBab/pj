@@ -4,23 +4,23 @@
     </navBar>
     <view class="wrapper">
         <view class="statistics">
-            <view class="r01">{{$t('当前组合年华收益率(预估)')}}</view>
-            <view class="r02">{{formatMoney(statistics.value01,0)}}%</view>
+            <view class="r01">{{$t('组合年量化收益率(预估)')}}</view>
+            <view class="r02">{{formatMoney(statistics.value01,2)}}%</view>
             <view class="r03"></view>
             <view class="r04">{{$t('数据由链上真实成交与AI回测综合计算,仅作策略表现参考.')}}</view>
             <view class="rbb">
                 <view class="tab">
                     <text class="title">{{$t('当前托管本金')}}</text>
-                    <text class="value">{{formatMoney(user.statisticInvests,2)}}U</text>
+                    <text class="value">{{formatMoney(user.statisticInvests,2)}}$</text>
                     <view class="bdlg"></view>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('今日已实现收益')}}</text>
-                    <text class="value">{{formatMoney(user.statisticIncomesDays)}}U</text>
+                    <text class="value">{{formatMoney(user.statisticIncome3sDays,2)}}$</text>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('策略运行胜率')}}</text>
-                    <text class="value">{{formatMoney(statistics.value02,0)}}%</text>
+                    <text class="value">{{formatMoney(statistics.value02,2)}}%</text>
                 </view>
             </view>
         </view>
@@ -28,7 +28,7 @@
         <view class="guider">
             <view class="rt">
                 <text class="cl">{{$t('请选择量化周期')}}</text>
-                <text class="cr">{{$t('托管随进随出·到期可续约')}}</text>
+                <text class="cr" v-if="false">{{$t('托管随进随出·到期可续约')}}</text>
             </view>
             <view class="tabs">
                 <text class="item" @click="chose(item,'typeSetting',i)" :class="{active:i==typeSetting.current}" v-for="(item,i) in typeSetting.items" :key="i">{{item.text}}</text>
@@ -44,12 +44,12 @@
                         {{item.name}}
                     </view>
                     <view class="row r2">
-                        <text class="cl">{{$t('日化区间')}}</text>
-                        <text class="cr">{{item.expectedRevenue}}%-{{item.expectedTotalRevenue}}%</text>
+                        <text class="cl">{{$t('量化产出值')}}</text>
+                        <text class="cr">{{formatMoney(item.expectedRevenue*1+item.expectedRevenue01*1,2)}} %</text>
                     </view>
                     <view class="row rb">
                         <text class="cl">{{$t('结算方式')}}</text>
-                        <text class="cr">{{$t('T+1复利')}}</text> 
+                        <text class="cr">{{$t(releaseCycleMap[item.releaseCycle]||item.releaseCycle||'未知')}}</text> 
                     </view>
                     <view class="bdlg"></view>
                 </view>
@@ -62,7 +62,7 @@
                 <view class="r3">{{ $t(row.remark||"暂无") }}</view>
             </view>
             <view class="cr">
-                <view class="btn" @click="gotoPage('product?id='+row.id)">
+                <view class="btn" @click="chose(row,'product',row.index)">
                     <text>{{$t('确认并')}}</text>
                     <text>{{$t('进入产品')}}</text>
                 </view>
@@ -70,7 +70,7 @@
             <view class="bdlg"></view>
         </view>
 
-        <view class="tips">
+        <view class="tips" v-if="false">
             {{$t(tips)}}
         </view>
  
@@ -93,7 +93,7 @@ export default {
             back: "/pages/home",
             title: "产品",
             typeSetting:{
-                current:0,
+                current:-1,
                 items:[]
             },
             statistics:{
@@ -102,7 +102,13 @@ export default {
             },
             user:{
                 statisticInvests:0,
-                statisticIncomesDays:0
+                statisticIncome3sDays:0
+            },
+            releaseCycleMap:{
+                "按天":"T+天",
+                "按周":"T+周",
+                "按月":"T+月",
+                "按年":"T+年"
             },
             rows: [],
             row:{index:0,id:0,remark:""},
@@ -134,10 +140,10 @@ export default {
                 if(!data.typeSetting){
                     data.typeSetting={
                         items:[
-                            {value:0,text:"7天·入门"},
-                            {value:1,text:"15天·加强"},
-                            {value:2,text:"30天·稳健"},
-                            {value:3,text:"60天·进阶"}
+                            {value:0,text:"灵犀·闪电策略"},
+                            {value:1,text:"灵犀·灵动策略"},
+                            {value:2,text:"灵犀·趋势策略"},
+                            {value:3,text:"灵犀·矩阵策略"}
                         ]
                     }
                 }
@@ -145,12 +151,19 @@ export default {
                 var rows=(data.dataView?data.dataView.rows:null)||data.rows||[];
                 data.rows=rows;
                 //if(that.get("row.index")>=rows.length)that.set(0,"row.index");
+                that.extend({row:{index:0,id:0,remark:""}});
                 if(rows.length>0)that.chose(rows[0],'row',0);
                 that.extend(data);
             });
         },
         chose(event,type,index){
             var that=this,item=event,sender={};
+            if(type=="product"){
+                var id=that.get("row.id");
+                if(!id){that.Alert("请先选择产品!");return false;}
+                that.gotoPage('product?id='+id)
+                return false;
+            }
             if(type=="row"){
                 item.index=index;
                 console.log(["product",item]);
@@ -176,7 +189,7 @@ export default {
         flex-wrap: nowrap;
         justify-content: space-around;
         text-align: center;
-        font-size:0.6rem;
+        /*font-size:0.6rem;*/
         background: radial-gradient(141.52% 176.06% at -23.26% 15.47%, #1a6b5167 0%, #0b213139 47.64%, #16669f3b 100%),
                 linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #00000000 100%);
         border: 1px solid #2abdbd2d;
@@ -187,14 +200,14 @@ export default {
         .r01{color:#fff;}
         .r02{color:#fff;font-weight:800;font-size:1.3rem;}
         .r03{height:0.1rem;}
-        .r03{font-size:0.6rem;}
+        .r03{/*font-size:0.6rem;*/}
         .rbb{
             width:100%;
             display:flex;
             flex-direction: row;
             justify-content: space-around;
             margin:0.5rem auto;
-            font-size:0.62rem;
+            /*font-size:0.62rem;*/
             .tab{
                 width:32%;
                 height:2.2rem;
@@ -252,7 +265,7 @@ export default {
             linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
             border-image-slice: 1;
             border-image-repeat: round;    
-            font-size: 0.7rem;
+            /*font-size: 0.7rem;*/
             line-height:$_height;
             .item{
                 padding:0 0.5rem 0 0.5rem;
@@ -289,7 +302,7 @@ export default {
                 flex-direction: row;
                 justify-content: space-between;
             }
-            .cl,.cr{font-size:0.6rem;}
+            .cl,.cr{/*font-size:0.6rem;*/}
             .cl{width:4rem;}
             .cr{width:calc(100% - 4rem);color:#0EFFB0;text-align:right;}
             &.active{
@@ -303,7 +316,7 @@ export default {
         $_widthR:5rem;
         display:flex;
         padding:0.3rem;
-        font-size:0.5rem;
+        /*font-size:0.5rem;*/
         .cl,.cr{height:100%;}
         .cl{
             display:flex;
@@ -343,7 +356,7 @@ export default {
     }
     .tips{
         margin:0 auto;
-        font-size: 0.5rem;
+        /*font-size: 0.5rem;*/
         color:#929292;  
     }
     .wrapper {

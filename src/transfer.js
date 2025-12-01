@@ -228,6 +228,39 @@ function uploadFile(args){
  
  //#ifdef H5 
  return new Promise((resolve, reject) => {
+
+         
+        
+        var headers={};
+        if (state.user && state.user.token)headers["Authorization"] ="Bearer "+state.user.token;
+        if (setting.lang)headers["lang"] = setting.lang;
+        if(setting.clientId)headers["clientId"] = setting.clientId;
+        if(setting.tenantId)headers["tenantId"] = setting.tenantId;
+        let options={
+          url: API_URL+'api/oss/upload',
+          method:'POST',
+          filePath:args.filePath,
+          fileType:"image",
+          name:"file",
+          header:headers,
+          success: (res) => {
+            res=res.data||res;
+             if(typeof(res)=="string")res=JSON.parse(res);
+            res=res.data||res;
+            console.log(["success",res]);
+            res.url=res.url.replace("http://","https://");
+            resolve({code:0,message:"OK",fileID:"cloud://"+(res.id||res.ossId)+";"+res.url,res});
+          },
+          fail:(res)=>{
+            res=res.data||res;
+            console.log(["fail",res]);
+            resolve({code:501,message:"fail",res});
+          } 
+        }
+ 
+        uni.uploadFile(options);
+        console.log(["uploadFile[1]",args]);
+             /*
              var xhr = new XMLHttpRequest();
              xhr.open('GET', args.filePath);
              xhr.responseType = 'blob';
@@ -236,15 +269,27 @@ function uploadFile(args){
               console.log(["uploadFile[2]",xhr.response]);
               let reader = new FileReader();
               reader.onload = function(res) {
+                var formData = new FormData(); 
+                formData.append('file',new File(res.target.result,"temp.png",{}));
+                console.log(["formData",args]);
+                var headers={};
+                if (state.user && state.user.token)headers["Authorization"] ="Bearer "+state.user.token;
+                if (setting.lang)headers["lang"] = setting.lang;
+                if(setting.clientId)headers["clientId"] = setting.clientId;
+                if(setting.tenantId)headers["tenantId"] = setting.tenantId;
+                //return;
+                //var formData = new FormData();
+                //formData.append('file', file);
+                //console.log(["....",res.target]);return;
                 let data={content:res.target.result,folder:"avatars",name:"avatar",mime:"jpg"},
                 options={
-                  url: API_URL+'file',
-                  method:'PUT',
-                  data:data,
-                  header:{'Accept': 'application/json; charset=utf8'},
+                  url: API_URL+'api/oss/upload',
+                  method:'POST',
+                  formData:formData,//data,
+                  header:headers,
                   success: (res) => {
                     res=res.data||res;
-                   console.log(["success",res]);
+                    console.log(["success",res]);
                     resolve({code:0,message:"OK",fileID:"cloud://"+res.id+";"+res.content,res});
                   },
                   fail:(res)=>{
@@ -253,12 +298,14 @@ function uploadFile(args){
                     resolve({code:501,message:"fail",res});
                   } 
                 }
+                
                console.log(["base64:", res.target.result]);  
-                uni.request(options);
+                uni.uploadFile(options);
               };
-              reader.readAsDataURL(xhr.response);
+              reader.readAsArrayBuffer(xhr.response);
              }
              xhr.send(null);
+             */
    });
  //#endif
 }

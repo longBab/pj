@@ -13,14 +13,14 @@
         </view>
         <view class="level" >
           <text class="col">{{$t('我的等级')}}</text>
-          <text class="col c01" @click="gotoPage('member/vip')">{{$t('VIP0')}}</text>
+          <text class="col c01" @click="gotoPage('member/vip')">{{$t(user.levelName)}}</text>
         </view>
         <view class="id">
           <view class="panel">
             <view class="container"> 
               <text>ID:{{user.invitationCode}}</text>
               <text class="copy">
-                <u-icon name="copy" style="color:inherit" size="28" />
+                <u-icon name="copy" @click="utility.copy($event,user.invitationCode)" style="color:inherit" size="28" />
               </text>
             </view>
             <view class="bdlg"></view>
@@ -36,7 +36,7 @@
             加入全球推广，共创未来！
             <text class="join bdr05 bggr01" @click="gotoPage('/pages/member/invite')">{{$t('一键开启')}}</text>
           </view>
-          <view class="row">
+          <view class="row" v-if="false">
             <text class="link">邀请链接:https://oga...3618</text>
             <text class="copy bdr05 bggr01">{{$t('复制')}}</text>
           </view>
@@ -44,13 +44,18 @@
         <view class="bdlg"></view>
       </view>
       <view class="guider">
-        <view class="item panel" v-for="(item,i) in guiders" :key="i" @click="gotoPage('/pages/member/'+item.name)"><view class="icon-top" :class="item.icon"></view>{{$t(item.title)}}<view class="bdlg"></view></view>
+        <view class="item panel" v-for="(item,i) in guiders" :key="i" @click="gotoPage(item.name)">
+        <view class="icon-top" :class="item.icon"></view>{{$t(item.title)}}<view class="bdlg"></view>
+        </view>
         
       </view>
       
       <view class="statistics panel" v-if="false">
         <view class="container">
-          <view class="row" v-for="(item,i) in statistics.groups[0]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(statistics.data[item.field],2)}}</view></view>
+          <view class="row" v-for="(item,i) in statistics.groups[0]" :key="i">
+            <view class="c0">{{$t(item.title)}}</view>
+          <view class="c1">{{formatMoney(statistics.data[item.field],2)}}</view>
+          </view>
         </view>
         <view class="bdlg"></view>
       </view>
@@ -58,16 +63,15 @@
         <view class="cl"></view>
         <view class="cc">
           <text>我的 WIN 社區</text>
-          <text>
-            <u-icon name="info-circle-fill"  size="20"></u-icon>
-            {{$t('大小区贡献算规则')}}
+          <text v-if="false">
+            <u-icon name="info-circle-fill"  size="20" />
           </text>
         </view>
         <view class="cr"></view>
       </view>
       <view class="statistics panel s01" >
         <view class="container">
-          <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),2)}}</view></view>
+          <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),item.precision)}} {{item.unit}}</view></view>
         </view>
         <view class="bdlg"></view>
       </view>
@@ -98,31 +102,35 @@ export default {
     return {
       logo: "/static/images/logo-02.png",
       user:{
-        invitationCode:""
+      levelName:"Lv0",invitationCode:""
       },
       guiders: [
-        {name:"wallet",icon:"wallet",title:"我的钱包"},
-        {name:"security",icon:"security",title:"安全认证"},
-        {name:"support",icon:"support",title:"在线支持"},
-        {name:"exchange",icon:"exchange",title:"一键兑换"},
-        {name:"products",icon:"quantization",title:"量化视图"},
-        {name:"team",icon:"team",title:"数据中心"}
+        {name:"/pages/member/wallet",icon:"wallet",title:"我的钱包"},
+        {name:"/pages/member/security",icon:"security",title:"安全认证"},
+        {name:"/pages/service",icon:"support",title:"在线支持"},
+        {name:"/pages/member/exchange",icon:"exchange",title:"一键兑换"},
+        {name:"/pages/member/products",icon:"quantization",title:"量化视图"},
+        {name:"/pages/member/team",icon:"team",title:"数据中心"}
       ],
       statistics:{
         groups:[
           [
+            /*
             {field:"v01",title:"直推人数"},
             {field:"v02",title:"社区总人数"},
             {field:"v03",title:"社区有效人数"},
             {field:"v04",title:"社区总量化投入"},
             {field:"v05",title:"社区总量化运行"}
+            */
           ],
           [ 
-            {field:"statisticRecommends",title:"直推数量"},
-            {field:"statisticFansTeams",title:"公会总人数"},
-            {field:"statisticInvestsTeams",title:"公会总业绩(USDT)"},
-            {field:"statisticIncomesTeams",title:"社区总量化投入"},
-            {field:"statisticUnkown",title:"公会总能量(EG)"}
+            {field:"statisticRecommends",title:"有效直推数",precision:0,unit:""},
+            {field:"statisticFansTeams",title:"社区总人数",precision:0,unit:""},
+            {field:"statisticRecommendsTeams",title:"社区有效人数",precision:0,unit:""},
+            {field:"statisticInvestsTeams",title:"社区总量化投入",precision:2,unit:"$"}
+            /*,
+            {field:"statisticUnkown",title:"社区总能量(EG)" ,precision:2,unit:"$"}
+            */
           ]
         ],
         data:{
@@ -191,6 +199,7 @@ export default {
       display:flex;
       flex-direction: row;
       justify-content: space-around;
+      line-height:1rem;
       .col{
         width:50%;text-align:right;
         &.c01{  
@@ -211,14 +220,14 @@ export default {
         height:1.6rem;
         line-height:1.3rem; 
         padding:0 0.3rem 0 0.3rem;
-        .copy{color:#00FFFF;margin:0 0 0 0.3rem; }
+        .copy{color:#00FFFF;margin:0.1rem 0 0 0.3rem; vertical-align: middle; }
         
       }
     }
   }
  
   .promotion{
-    height:10rem;
+    height:6.8rem;
     margin:0.5rem auto;
     .container{
       flex-wrap: wrap;
@@ -262,7 +271,6 @@ export default {
       height:4rem;
       line-height:5rem;
       text-align: center;
-      font-size:0.7rem;
       background: linear-gradient(90deg, #00FFFF 0%, #00FFBD 100%);
       background-clip: text;
       -webkit-background-clip: text;
@@ -278,7 +286,10 @@ export default {
       
     }
   }
-  .split-row{margin:1rem auto;}
+  .split-row{
+    margin:1rem auto;
+    .cc{font-size:0.7rem;}
+  }
   .statistics{
     height:10rem; 
     margin:1rem auto;
@@ -302,11 +313,10 @@ export default {
     .btn{
       width: 80%;
       color:#fff;
-      line-height: 2rem;
-      font-size: 1rem;
       font-weight: bold;
       background-color: #0EFFB0;
-      border-radius: 0.65rem;
+      border-radius: 10px;
+      font-size:0.7rem;
     }
     padding-bottom:1rem;
   }
