@@ -262,7 +262,7 @@ export default {
                 flex-direction: column;
                 justify-content: center;
                 align-items: flex-start;
-                padding: 0.8rem 1rem;
+                padding: 0.8rem 0.6rem;
                 border-radius: 8px;
                 background: url(/static/images/Rectangle3565.png) center center no-repeat;
                 background-size: 100% 100%;
@@ -273,7 +273,7 @@ export default {
                 }
                 .value{
                     color: #0EFFB0;
-                    font-size: 1rem;
+                    font-size: 0.8rem;
                     font-weight: 700;
                 }
             }  
@@ -302,25 +302,36 @@ export default {
             }
         }
         .tabs{
-            $_height:1.8rem;
+            $_height:2.4rem;
             $_radius:999px;
             width:100%;
             min-height:$_height;
-            padding:0.1rem;
+            padding:0.2rem;
             margin:0.4rem auto 0;
             display:flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            background: url(/static/images/Rectangle3566.png) center center no-repeat;
-            background-size: 100% 100%;
-            border:none;
+            background: rgba(29, 29, 29, 1) 100%;
+            border-radius: $_radius;
             position: relative;
+            // 双重边框效果：使用伪元素实现外层渐变边框
+            &::before {
+                content: '';
+                position: absolute;
+                inset: -0.8px;
+                border-radius: $_radius;
+                background: linear-gradient(139deg, rgba(0, 255, 255, 1) 0%, rgba(0, 0, 0, 1) 39%, rgba(0, 255, 189, 1) 100%);
+                z-index: -1;
+            }
+            // 内层灰色半透明边框
+            border: 0.8px solid rgba(128, 128, 128, 0.2);
+            box-sizing: border-box;
             .slider{
                 position: absolute;
-                left: 0.1rem;
-                top: 0.1rem;
-                height: $_height;
+                left: 0.2rem;
+                top: 0.2rem;
+                height: calc($_height - 0.4rem);
                 background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
                 border-radius: $_radius;
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -329,8 +340,8 @@ export default {
             .item{
                 flex: 1;
                 text-align: center;
-                height:$_height;
-                line-height:$_height;
+                height:calc($_height - 0.4rem);
+                line-height:calc($_height - 0.4rem);
                 font-size: 0.75rem;
                 font-weight:700;
                 color:#FFFFFF;
@@ -366,7 +377,6 @@ export default {
                 flex-direction: row;
                 justify-content: space-between;
             }
-            .cl,.cr{/*font-size:0.6rem;*/}
             .cl{width:4rem;}
             .cr{width:calc(100% - 4rem);color:#0EFFB0;text-align:right;}
             &.active{
