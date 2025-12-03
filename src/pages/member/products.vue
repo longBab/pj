@@ -1,7 +1,7 @@
 <template>
-<view class="products body">
+<view class="products body" >
     <navBar :title="title" :back="back"></navBar>
-    <view class="wrapper" style="padding-top:0rem;">
+    <view class="wrapper" >
         <view class="statistics">
             <view class="card-content">
                 <text class="title">{{$t('当前累计收益')}}</text>
@@ -113,7 +113,7 @@
           </view>
           <view class="cr"></view>
         </view> -->
-        <scroll-view scroll-y="true" scroll-x="false">
+        <!-- <scroll-view scroll-y="true" scroll-x="false">
             <view class="records">
                 <view @click="gotoPage('product?id='+item.id)" class="item panel" v-for="(item,i) in rows" :key="i">
                     <view class="r1">{{item.name}}</view>
@@ -130,7 +130,7 @@
                 </view>
 
             </view>
-        </scroll-view> 
+        </scroll-view>  -->
     </view>
 </view>
 </template>

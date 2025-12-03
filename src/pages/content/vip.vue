@@ -1,7 +1,7 @@
 <template>
 	<view class="vip body">
 		<navBar :title="title" :back="back"></navBar>
-		<view class="wrapper" style="padding-top:3rem;">
+		<view class="wrapper" style="padding-top:1rem;">
 			<scroll-view scroll-y="true" scroll-x="false" class="vip-scroll">
 				<!-- 顶部：左侧整块文案（卡片 + 说明） + 右侧插画 ICON -->
 				<view class="vip-top">

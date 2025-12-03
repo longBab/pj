@@ -8,10 +8,10 @@
     </view>
     <view class="statistics">
       <view class="item item-top" :class="{active:showType==1}" @click="chose($event,'showType',1)">
-        <view class="item-icon">
+        <!-- <view class="item-icon">
           <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
           <image src="/static/images/fi-ss-chart-tree.png" mode="widthFix" class="icon-inner" />
-        </view>
+        </view> -->
         <view class="item-content">
         <view class="r01">{{$t('团队数据')}}</view>
           <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}U</view>
@@ -19,10 +19,10 @@
       </view> 
       
       <view class="item item-top" :class="{active:showType==12}" @click="chose($event,'showType',12)">
-        <view class="item-icon">
+        <!-- <view class="item-icon">
           <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
           <image src="/static/images/fi-ss-credit-card.png" mode="widthFix" class="icon-inner" />
-        </view>
+        </view> -->
         <view class="item-content">
         <view class="r01">{{$t('团队量化')}}</view>
           <view class="r02">+{{formatMoney(statistics.s12,2)}}U</view>

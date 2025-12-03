@@ -1,10 +1,14 @@
 <template>
 <view class="member body" :class="$store.state.setting.theme" style="padding-bottom:3rem;" >
-  <navBar :logo="logo">
+  <navBar :logo="logo" style="z-index: 1000;">
     <template #quicker="{}">
       <navLanguage :source="this" />
+       <view class="logout-btn" @click="logout">
+          <image  style="position: relative;top:10rpx; width:1.3rem;height:1.3rem;margin-right:1rem;" src="/static/images/Logout.svg" mode="scaleToFill" />
+        </view>
     </template>
   </navBar>
+  <view style="height:1rem;"></view>
   <view class="top-decor"></view>
   <view class="top-decor-right"></view>
   <view class="wrapper">
@@ -38,7 +42,7 @@
             <text
               class="join bdr05 bggr01"
               style="color:#000;font-weight:bold;text-align:center;background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);"
-              @click="gotoPage('/pages/member/invite')"
+              @click="gotoPage('/pages/member/node-preview')"
             >{{$t('一键开启')}}</text>
           </view>
           <view class="row">
@@ -94,10 +98,10 @@
         </view>
         <view class="bdlg"></view>
       </view>
-
+<!-- 
       <view class="ctl">
-        <button class="btn" @click="gotoPage('/pages/login')">{{$t('退出')}}</button>
-      </view>
+        <button class="btn" @click="logout">{{$t('退出')}}</button>
+      </view> -->
         
     </scroll-view>
   </view>
@@ -188,6 +192,39 @@ export default {
         url += "?ref=" + code;
       }
       this.utility.copy(event, url);
+    },
+    logout() {
+      var that = this;
+      var store = that.$store;
+      var user = store && store.state && store.state.user ? store.state.user : {};
+      
+      // 清除用户数据
+      if (user.account) {
+        store.commit("setUser", {
+          id: "",
+          account: user.account,
+          mail: "",
+          mobile: "",
+          userName: "",
+          roles: "",
+          token: "",
+          __KEY: "account"
+        });
+      } else {
+        // 如果没有 account，直接清空所有用户数据
+        store.commit("setUser", {
+          id: "",
+          account: "",
+          mail: "",
+          mobile: "",
+          userName: "",
+          roles: "",
+          token: ""
+        });
+      }
+      
+      // 跳转到登录页面
+      that.gotoPage("/pages/login");
     },
     load(sender) {
       var that = this, sender = that.sender || sender || {};

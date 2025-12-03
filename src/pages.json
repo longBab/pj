@@ -299,6 +299,17 @@
 			}
 		},
 		{
+			"path": "pages/member/node-preview",
+			"style": {
+				"navigationBarTitleText": "我的节点预览",
+				"app-plus": {
+					"titleNView": false,
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white"
+				}
+			}
+		},
+		{
 			"path": "pages/member/team",
 			"style": {
 				"navigationBarTitleText": "Team",

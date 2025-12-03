@@ -9,7 +9,7 @@
     <view v-if="logo"  class="logo">
       <image class="img" :src="logo" mode="scaleToFill" />
     </view>
-    <view class="title" style="font-size:1.4rem;font-weight:600;" v-if="title">{{$t(title?title:"none")}}</view>
+    <view class="title" style="font-size:1.4rem;font-weight:600;white-space:nowrap;" v-if="title">{{$t(title?title:"none")}}</view>
     <slot name="tabs" v-bind="this"></slot>
     <view class="quicker">
     </view>

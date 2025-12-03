@@ -7,7 +7,7 @@
     </template>
     -->
   </navBar>
-  <view class="wrapper" style="padding-top:4rem;">
+  <view class="wrapper" >
     <scroll-view scroll-y="true" scroll-x="false">
       <view class="split-row" style="margin-bottom:3rem;">
         <view class="cl"></view>
