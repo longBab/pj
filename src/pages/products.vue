@@ -1,10 +1,10 @@
 <template>
-<view class="products body" :class="$store.state.setting.theme" style="padding-bottom:3rem;">
+<view class="products body" :class="[$store.state.setting.theme, { 'page-loaded': pageLoaded }]" style="padding-bottom:3rem;">
     <navBar :back="back" :title="title">
     </navBar>
     
     <view class="wrapper" style="padding-top:5rem;">
-        <view class="statistics">
+        <view class="statistics fade-in-up" :style="{ animationDelay: '0.1s' }">
             <view class="statistics-top">
                 <view class="icon-left">
                     <image src="/static/images/image255.png" mode="widthFix" class="icon-image" />
@@ -32,19 +32,23 @@
 
         </view>
 
-        <view class="guider">
+        <view class="guider fade-in-up" :style="{ animationDelay: '0.2s' }">
             <view class="rt">
                 <text class="cl">{{$t('请选择量化周期')}}</text>
                 <text class="cr" v-if="false">{{$t('托管随进随出·到期可续约')}}</text>
             </view>
             <view class="tabs">
+                <view class="slider" :style="{
+                    width: typeSetting.items.length > 0 ? `calc(${100 / typeSetting.items.length}% - 0.1rem)` : '25%',
+                    transform: `translateX(${typeSetting.current >= 0 ? typeSetting.current * 100 : 0}%)`
+                }"></view>
                 <text class="item" @click="chose(item,'typeSetting',i)" :class="{active:i==typeSetting.current}" v-for="(item,i) in typeSetting.items" :key="i">{{item.text}}</text>
             </view>
         </view>
     
         
         
-        <scroll-view scroll-y="true" scroll-x="false">
+        <scroll-view scroll-y="true" scroll-x="false" class="scroll-container fade-in-up" :style="{ animationDelay: '0.3s' }">
             <view class="list">
                 <view class="item panel" @click="chose(item,'row',i)" v-for="(item, i) in rows" :key="i" :class="{active:row.index==i}" >
                     <view class="row rt">
@@ -63,7 +67,7 @@
             </view>  
 
         </scroll-view>
-        <view class="shower ">
+        <view class="shower fade-in-up" :style="{ animationDelay: '0.4s' }">
             <view class="cl">
                 <view class="r1">{{$t('您当前选择的收益方案')}}</view>
                 <view class="r2">{{$t(row.name||"暂无")}}</view>
@@ -119,11 +123,16 @@ export default {
             },
             rows: [],
             row:{index:0,id:0,remark:""},
-            tips:""
+            tips:"",
+            pageLoaded: false
         };
     },
     onReady() {
-
+        var that = this;
+        // 触发页面动画
+        setTimeout(() => {
+            that.pageLoaded = true;
+        }, 50);
     },
     onLoad(sender) {
         var that = this, sender = sender || {};
@@ -306,6 +315,17 @@ export default {
             background: url(/static/images/Rectangle3566.png) center center no-repeat;
             background-size: 100% 100%;
             border:none;
+            position: relative;
+            .slider{
+                position: absolute;
+                left: 0.1rem;
+                top: 0.1rem;
+                height: $_height;
+                background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
+                border-radius: $_radius;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 0;
+            }
             .item{
                 flex: 1;
                 text-align: center;
@@ -315,9 +335,10 @@ export default {
                 font-weight:700;
                 color:#FFFFFF;
                 border-radius: $_radius;
-                transition: all 0.2s ease-out;
+                position: relative;
+                z-index: 1;
+                transition: color 0.3s ease-out;
                 &.active{
-                    background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
                     color:#000000;
                 }
             }
@@ -361,10 +382,11 @@ export default {
         position: relative;
         display:flex;
         flex-direction: row;
-        padding: 1rem;
+        padding: 0.6rem 0.8rem;
         border-radius: 10px;
         background: url(/static/images/Rectangle3580.png) center center no-repeat;
         background-size: 100% 100%;
+        flex-shrink: 0;
         .cl,.cr{height:100%;}
         .cl{
             flex: 1;
@@ -372,23 +394,23 @@ export default {
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-            padding-right: 1rem;
+            padding-right: 0.8rem;
             .r1{
                 color:#fff;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 font-weight: 600;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.3rem;
             }
             .r2{
                 color:#08E07F;
-                font-size: 1rem;
+                font-size: 0.9rem;
                 font-weight: 700;
-                margin-bottom: 0.3rem;
+                margin-bottom: 0.2rem;
             }
             .r3{
                 color:#929292;
-                font-size: 0.65rem;
-                line-height: 1.4;
+                font-size: 0.6rem;
+                line-height: 1.3;
             }
         }
         .cr{
@@ -400,21 +422,21 @@ export default {
             position: relative;
             
             .btn {
-                width: 6rem;
+                width: 5.5rem;
                 height: auto;
                 background: linear-gradient(to right, #08E07F 100%, #1AFFAA 100%);
                 border-radius: 9990px;
                 color: #000;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 font-weight: bold;
                 text-align: center;
                 display:flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 0.3rem 0.5rem;
+                padding: 0.25rem 0.4rem;
                 text{
-                    line-height: 1.3;
+                    line-height: 1.2;
                 }
            }
         }
@@ -429,6 +451,50 @@ export default {
         height: calc(100% - 3.2rem);
         padding: 2.5rem 0rem 0 0rem;
         color: #fff;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .scroll-container {
+        flex: 1;
+        height: 0;
+        overflow: hidden;
+    }
+
+    // 页面整体淡入动画
+    &.page-loaded {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    // 区块依次出现动画
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    &.page-loaded .fade-in-up {
+        animation-play-state: running;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
    

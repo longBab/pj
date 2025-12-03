@@ -1,5 +1,5 @@
 <template>
-  <view class="home body" :class="$store.state.setting.theme"  style="padding-bottom:3rem;">
+  <view class="home body" :class="[$store.state.setting.theme, { 'page-loaded': pageLoaded }]"  style="padding-bottom:3rem;">
     <navBar :logo="logo">
       <template #quicker="{ }">
         <navLanguage :source="this" />
@@ -9,7 +9,7 @@
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
 
-        <view class="notices " @click="gotoPage('/pages/notices')">
+        <view class="notices fade-in-up" :style="{ animationDelay: '0.1s' }" @click="gotoPage('/pages/notices')">
           <view class="container">
             <view class="lefter">
               <view class="notice-pill">
@@ -34,7 +34,7 @@
         </view>
  
         <!-- 轮播图 -->
-        <view class="banners">
+        <view class="banners fade-in-up" :style="{ animationDelay: '0.2s' }">
           <view class="banner-inner">
             <u-swiper
               class="banner-swiper"
@@ -57,7 +57,7 @@
         </view>
 
         <!-- 欢迎探索模块 -->
-        <view class="welcome-card">
+        <view class="welcome-card fade-in-up" :style="{ animationDelay: '0.3s' }">
           <view class="welcome-left">
             <view class="welcome-title-main">{{ $t('欢迎探索') }}</view>
             <view class="welcome-title-sub">
@@ -77,7 +77,7 @@
         </view>
 
         <!-- WIN生态看板 -->
-        <view class="ecosystem-section">
+        <view class="ecosystem-section fade-in-up" :style="{ animationDelay: '0.4s' }">
           <view class="eco-title-row">
             <view class="eco-line"></view>
             <text class="eco-title">{{ $t('WIN生态看板') }}</text>
@@ -170,7 +170,7 @@
         </view> -->
 
         <!-- 合作夥伴 -->
-        <view class="partner-section">
+        <view class="partner-section fade-in-up" :style="{ animationDelay: '0.5s' }">
           <view class="eco-title-row partner-title-row">
             <view class="eco-line"></view>
             <text class="eco-title">{{ $t('合作夥伴') }}</text>
@@ -257,7 +257,8 @@ export default {
       navigations:[],
       quotes:[],
       partners: [],
-      popuper:{isShow:false,dialog:{icon:"",title:"",content:""}}
+      popuper:{isShow:false,dialog:{icon:"",title:"",content:""}},
+      pageLoaded: false
     }
   },
   onLoad(sender) {
@@ -268,6 +269,10 @@ export default {
   },
   onReady() {
     var that = this;
+    // 触发页面动画
+    setTimeout(() => {
+      that.pageLoaded = true;
+    }, 50);
   },
   methods: {
     changePopuper(sender,type){
@@ -776,6 +781,42 @@ export default {
     height: calc(100% - 3.5rem);
     padding: 2.5rem 0 0  0;
     color: #fff;
+  }
+
+  // 页面整体淡入动画
+  &.page-loaded {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  // 区块依次出现动画
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  &.page-loaded .fade-in-up {
+    animation-play-state: running;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   
