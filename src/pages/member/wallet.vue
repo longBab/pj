@@ -62,7 +62,7 @@
       </view>
     </view>
     <scroll-view scroll-y="true" scroll-x="false">
-      <view class="record panel" v-for="(row,i) in rows" :key="i">
+      <view class="record panel" style="border-radius: 0; border: none ; border-bottom: 1px dashed rgba(8, 224, 127, 0.5);" v-for="(row,i) in rows" :key="i">
         <view class="c01">
           <text class="name">{{$t(row.title)}}</text>
           <text class="time">{{formatDate(row.createdTime,'yyyy/MM/dd HH:mm')}}</text>
@@ -345,19 +345,34 @@ export default {
     justify-content: space-evenly;
     flex-wrap: nowrap;
     padding:0.5rem;
+    border-radius: 10px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.7);
+    border-bottom: 1px dashed rgba(8, 224, 127, 0.5);
+    &:last-child {
+      border-bottom: none;
+    }
     .c01{
       width:13rem;
       display:flex;
       flex-direction: column;
       justify-content: space-evenly;
       .name{
-        color: #0EFFB0;
+        color: #fff;
         font-weight:400;
         /*font-size:0.4rem;*/
-        white-space:nowrap;
-        text-overflow:ellipsis;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size:0.8rem;
+        max-width: 10rem;
+        display: inline-block;
+        vertical-align: bottom;
       }
-      .time{ /*font-size:0.3rem;*/}
+      .time{
+        color: rgba(255, 255, 255, 0.7);
+        /*font-size:0.3rem;*/
+      }
      
     }
     .c02{
@@ -374,12 +389,12 @@ export default {
       }
       .value{
         line-height:2rem;
+        color: #1BFF99;
         /*font-size:0.4rem;*/
-        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
+    }
+    .bdlg{
+      display: none;
     }
   }
   .wrapper{
@@ -389,7 +404,20 @@ export default {
     overflow:visible;
   }
   uni-scroll-view {
-        height: calc(100% - 17.5rem);
+        height: calc(100% - 28.5rem);
+        ::v-deep .uni-scroll-view-content {
+          padding: .5rem;
+          border-radius: 20px;
+          position: relative;
+          background: rgba(0, 0, 0, 0.7);
+          box-sizing: border-box;
+          width: 90%;
+          margin:0 auto;
+          // 渐变色边框渐变的#08E07F #1AFFAA
+          border: 1px solid #08E07F;
+
+          overflow-y: auto; /* 可滚动 */
+        }
   }
   
 }
