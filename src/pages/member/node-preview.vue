@@ -98,7 +98,7 @@ export default {
     },
     applyEvaluation() {
       // 申请节点评估逻辑
-      this.gotoPage('/pages/content/vip');
+      this.gotoPage('/pages/service');
     }
   }
 };
