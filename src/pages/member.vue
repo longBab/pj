@@ -1,55 +1,70 @@
 <template>
-<view class="member body" :class="$store.state.setting.theme">
+<view class="member body" :class="$store.state.setting.theme" style="padding-bottom:3rem;" >
   <navBar :logo="logo">
     <template #quicker="{}">
       <navLanguage :source="this" />
     </template>
   </navBar>
+  <view class="top-decor"></view>
+  <view class="top-decor-right"></view>
   <view class="wrapper">
     <scroll-view scroll-y="true" scroll-x="false">
       <view class="ucenter">
         <view class="avatar">
           <view class="img"></view>
         </view>
-        <view class="level" >
-          <text class="col">{{$t('我的等级')}}</text>
-          <text class="col c01" @click="gotoPage('member/vip')">{{$t(user.levelName)}}</text>
+        <view class="level" style="margin-bottom:0.5rem;">
+          <text class="col" style="font-size:0.8rem;margin-top:0.05rem;">{{$t('我的等级')}}</text>
+          <text class="col c01"  @click="gotoPage('member/vip')">{{$t(user.levelName)}}</text>
         </view>
         <view class="id">
-          <view class="panel">
-            <view class="container"> 
+          <view class="panel" style="width:42%; border-radius:0;height:1.8rem;">
+            <view class="container" style="align-items:center;"> 
               <text>ID:{{user.invitationCode}}</text>
-              <text class="copy">
-                <u-icon name="copy" @click="utility.copy($event,user.invitationCode)" style="color:inherit" size="28" />
+              <text class="copy" @click="utility.copy($event,user.invitationCode)">
+                <view class="copy-icon" style="background:url(/static/images/member/fi-ss-copy-alt.png) center center no-repeat;background-size:100% 100%;"></view>
               </text>
             </view>
-            <view class="bdlg"></view>
-        </view>
+          </view>
         </view>
       </view>
 
-      <view class="promotion panel">
-        <view class="container">
+      <view class="promotion panel" style="padding:5.5rem 0;">
+        <view class="container"  >
           <view class="col icon"></view>
           <view class="col des">
             <text class="title">{{$t('全球推广')}}</text>
-            加入全球推广，共创未来！
-            <text class="join bdr05 bggr01" @click="gotoPage('/pages/member/invite')">{{$t('一键开启')}}</text>
+            <text class="sub">加入全球推广，共创未来！</text>
+            <text
+              class="join bdr05 bggr01"
+              style="color:#000;font-weight:bold;text-align:center;background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);"
+              @click="gotoPage('/pages/member/invite')"
+            >{{$t('一键开启')}}</text>
           </view>
-          <view class="row" v-if="false">
-            <text class="link">邀请链接:https://oga...3618</text>
-            <text class="copy bdr05 bggr01">{{$t('复制')}}</text>
+          <view class="row">
+            <text class="link">{{$t('邀请链接')}}：{{user.invitationCode || 'https://oga...3618'}}</text>
+            <text
+              class="copy bdr05 bggr01"
+              style="color:#000;font-weight:bold; text-align:center;background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);"
+              @click="copyInviteLink($event)"
+            >{{$t('复制')}}</text>
           </view>
         </view>
         <view class="bdlg"></view>
       </view>
-      <view class="guider">
-        <view class="item panel" v-for="(item,i) in guiders" :key="i" @click="gotoPage(item.name)">
-        <view class="icon-top" :class="item.icon"></view>{{$t(item.title)}}<view class="bdlg"></view>
+      <!-- 新uiui -->
+      <view class="member-guiders">
+        <view
+          class="member-guiders__item"
+          v-for="(item, i) in guiders"
+          :key="i"
+          @click="gotoPage(item.name)"
+        >
+          <view class="member-guiders__icon" :class="'icon-' + item.icon"></view>
+          <text class="member-guiders__label">{{$t(item.title)}}</text>
         </view>
-        
       </view>
-      
+ 
       <view class="statistics panel" v-if="false">
         <view class="container">
           <view class="row" v-for="(item,i) in statistics.groups[0]" :key="i">
@@ -69,8 +84,12 @@
         </view>
         <view class="cr"></view>
       </view>
-      <view class="statistics panel s01" >
-        <view class="container">
+      <view class="member-rule">
+        <view class="member-rule__icon"></view>
+        <text class="member-rule__text">大小區貢獻計算規則</text>
+      </view>
+      <view class="statistics  s01 sda"   >
+        <view class="container" >
           <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),item.precision)}} {{item.unit}}</view></view>
         </view>
         <view class="bdlg"></view>
@@ -102,14 +121,14 @@ export default {
     return {
       logo: "/static/images/logo-02.png",
       user:{
-      levelName:"Lv0",invitationCode:""
+      levelName:"VIP 0",invitationCode:""
       },
       guiders: [
         {name:"/pages/member/wallet",icon:"wallet",title:"我的钱包"},
         {name:"/pages/member/security",icon:"security",title:"安全认证"},
         {name:"/pages/service",icon:"support",title:"在线支持"},
         {name:"/pages/member/exchange",icon:"exchange",title:"一键兑换"},
-        {name:"/pages/member/products",icon:"quantization",title:"量化视图"},
+        {name:"/pages/member/quantization",icon:"quantization",title:"量化视图"},
         {name:"/pages/member/team",icon:"team",title:"数据中心"}
       ],
       statistics:{
@@ -157,6 +176,19 @@ export default {
      
   },
   methods: {
+    copyInviteLink(event) {
+      const code = this.user && this.user.invitationCode ? this.user.invitationCode : "";
+      // 复制为完整链接：{origin}/#/pages/register?ref=code
+      let base = "";
+      if (typeof window !== "undefined" && window.location && window.location.origin) {
+        base = window.location.origin;
+      }
+      let url = base + "/#/pages/register";
+      if (code) {
+        url += "?ref=" + code;
+      }
+      this.utility.copy(event, url);
+    },
     load(sender) {
       var that = this, sender = that.sender || sender || {};
       that.transfer.request({
@@ -178,16 +210,39 @@ export default {
 
 <style lang="scss" scoped>
 .member {
-  .ucenter,.promotion,.guider,.statistics,.split-row,.ctl{ width:93%;margin:0 auto;}
+  position:relative;
+  .top-decor{
+    position:absolute;
+    top: 5rem;
+    left:0;
+        width: 12rem;
+    height:18rem;
+    background:url(/static/images/member/image244.png) left top no-repeat;
+    background-size:auto 100%;
+    pointer-events:none;
+  }
+  .top-decor-right{
+    position:absolute;
+    top:.5rem;
+    right:0;
+    width: 12rem;
+    height:18rem;
+    background:url(/static/images/member/image245.png) right top no-repeat;
+    background-size:auto 100%;
+    pointer-events:none;
+  }
+  .ucenter,.promotion,.member-guiders,.statistics,.split-row,.member-rule,.ctl{ width:93%;margin:0 auto;}
   .ucenter{
     display:flex;
     flex-direction: column;
     
     .avatar{
+      margin:.5rem 0;
+      margin-top:4rem;
       width:100%;
       .img{
-        width:6rem;height:6rem;margin:0 auto; 
-        background:url(/static/images/member/m1.png) center bottom no-repeat;
+        width:8rem;height:8rem;margin:0 auto; 
+        background:url(/static/images/member/image243.png) center bottom no-repeat;
         background-size:100% auto;
       }
     }
@@ -205,90 +260,191 @@ export default {
         &.c01{  
           text-indent:1rem;text-align:left;
           font-weight:800;
-          font-size:1rem;
-          background: linear-gradient(90deg, #00FFFF 0%, #00FFBD 100%);
+          font-size:1.3rem;
+          background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
           background-clip: text;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+          margin-bottom:0.1rem;
         }
       }
     }
     .id{
       text-align:center;
       .panel{
-        width:60%;margin:0 auto;
+        width:60%;
+        margin:0 auto;
         height:1.6rem;
         line-height:1.3rem; 
         padding:0 0.3rem 0 0.3rem;
-        .copy{color:#00FFFF;margin:0.1rem 0 0 0.3rem; vertical-align: middle; }
-        
+        border:none;
+        background:url(/static/images/member/Rectangle1113.png) center center no-repeat;
+        background-size:100% 100%;
+        .copy{
+          display:inline-flex;
+          align-items:center;
+          margin:0.1rem 0 0 0.3rem;
+          vertical-align: middle;
+          .copy-icon{
+            width:1rem;
+            height:1rem;
+            background:url(/static/images/member/fi-ss-copy-alt.png) center center no-repeat;
+            background-size:100% 100%;
+          }
+        }
       }
     }
   }
  
   .promotion{
-    height:6.8rem;
-    margin:0.5rem auto;
+    height:9.2rem;
+    margin:0.8rem auto 1.2rem auto;
+    background:url(/static/images/member/Rectangle1119.png) center center no-repeat;
+    background-size:100% 100%;
+    border:none;
+    .bdlg{
+      display:none;
+    }
     .container{
       flex-wrap: wrap;
-      padding:1rem 0.5rem 1rem 0.5rem;
+      padding:1.1rem 1.1rem 1.2rem 1.1rem;
+      align-items: center;
     }
    
     .col{
-      height:4.8rem;
+      height:4.9rem;
       &.icon{
-        width:40%;
+        width:45%;
         background:url(/static/images/member/m3.png) center center no-repeat;
-        background-size:5.6rem 5.6rem;
+        background-size:6.1rem 6.1rem;
       }
       &.des{
         position: relative;
-        .title{width:100%;display:block;font-weight:600;}
-        width:60%;
+        display:flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width:55%;
         text-align: left;
-        .join{position: absolute;bottom:0px;left:0;padding:0 0.5rem 0 0.5rem;}
+        padding-left:0.4rem;
+        .title{
+          width:100%;
+          display:block;
+          font-weight:600;
+          margin-bottom:0.35rem;
+          font-size:0.8rem;
+        }
+        .sub{
+          display:block;
+          width:100%;
+          font-size:.8rem;
+          color:#fff;
+          margin-bottom:0.7rem;
+        }
+        .join{
+          position: absolute;
+          bottom:0.1rem;
+          left:0.4rem;
+          padding:0 1.6rem;
+          height:1.7rem;
+          line-height:1.7rem;
+          border-radius:999px;
+          font-size:0.7rem;
+        }
       }
     }
     .row{
       display:flex;
       width:100%;
-      height:2rem; line-height:2rem;
-      margin:1.2rem auto;
-      text-align:center;
-      border-radius:10px;
-      background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
-      .copy{width:3rem;height:1.4rem;line-height:1.4rem; margin-top:0.2rem;}
-      .link{width:calc(100% - 4rem);}
+      min-height:2.5rem;
+      align-items:center;
+      margin:1.4rem auto 0.1rem auto;
+      border-radius:4px;
+      background:url(/static/images/member/Rectangle1105.png) center center no-repeat;
+      background-size:100% 100%;
+      padding:0 0.45rem 0 1rem;
+      .copy{
+        width:3.8rem;
+        height:1.7rem;
+        line-height:1.7rem;
+        font-size:0.7rem;
+      }
+      .link{
+        flex:1;
+        text-align:left;
+        font-size:0.65rem;
+        margin-right:0.45rem;
+      }
     }
   }
-  .guider{
+  .member-guiders{
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    .item{
-      margin:1.6rem 0 0 0;
-      width:30%;
-      height:4rem;
-      line-height:5rem;
+    justify-content: space-between;
+    margin-top: 1.4rem;
+    &__item{
+      width: 31%;
+      margin-bottom: 1rem;
+      height: 5.3rem;
+      border-radius: 12px;
+      background: url(/static/images/member/Rectangle.png) center center no-repeat;
+      background-size: 100% 100%;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
+      position: relative;
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 0.7rem;
+      color:#fff;
+      font-size:0.7rem;
+      overflow: hidden;
+    }
+    &__icon{
+      position: absolute;
+      top: 0.7rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 9px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 60%;
+    }
+    &__label{
       text-align: center;
-      background: linear-gradient(90deg, #00FFFF 0%, #00FFBD 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      line-height: 1rem;
     }
-    .panel .icon-top{
-      &.wallet{ background-image:url(/static/images/member/m4.png);}
-      &.security{ background-image:url(/static/images/member/m5.png);}
-      &.support{ background-image:url(/static/images/member/m6.png);}
-      &.exchange{ background-image:url(/static/images/member/m7.png);}
-      &.quantization{ background-image:url(/static/images/member/m8.png);}
-      &.team{ background-image:url(/static/images/member/m9.png);}
-      
-    }
+    /* 具体图标 */
+    .icon-wallet{ background-image:url(/static/images/member/qianbao.png);}
+    .icon-security{ background-image:url(/static/images/member/anquanrenzheng.png);}
+    .icon-support{ background-image:url(/static/images/member/chat-smile-2-fill.png);}
+    .icon-exchange{ background-image:url(/static/images/member/duihuan.png);}
+    .icon-quantization{ background-image:url(/static/images/member/lianghuajifen.png);}
+    .icon-team{ background-image:url(/static/images/member/shujutongjixuanzhong.png);}
   }
   .split-row{
     margin:1rem auto;
     .cc{font-size:0.7rem;}
+  }
+  .member-rule{
+    margin-top: 0.6rem;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    &__icon{
+      width: 0.8rem;
+      height: 0.8rem;
+      margin-right: 0.5rem;
+      border-radius: 50%;
+      background: url(/static/images/member/fi-ss-info.png) center center no-repeat;
+      background-size: 100% 100%;
+    }
+    &__text{
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.77);
+    }
   }
   .statistics{
     height:10rem; 
@@ -307,7 +463,11 @@ export default {
     .bdlg{
       background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
     }
-    &.s01{height:8rem; }
+    &.s01{
+      height:8rem;
+      background: url(/static/images/member/Rectangle1126.png) center center no-repeat;
+      background-size: 100% 100%;
+    }
   }
   .ctl{
     .btn{
@@ -328,5 +488,8 @@ export default {
   }
   
  
+}
+.sda{
+  line-height:1.8rem;
 }
 </style>

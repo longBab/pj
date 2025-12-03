@@ -2,31 +2,23 @@
 <view class="security body" :class="$store.state.setting.theme">
   <navBar :back="back" :title="title">
   </navBar>
-  <view class="wrapper">
+  <view class="wrapper" style="justify-content:flex-start;padding-top:5rem;">
     
       <view class="navigations">
-
-        <view class="row panel" @click="gotoPage('security/password')">
-        <view class="cl">{{$t('修改登陆密码')}}</view>
-        <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-        <view class="bdlg"></view>
-        </view>
-        <view class="row panel" @click="changePayPassword($event)">
-        <view class="cl">{{$t('修改支付密码')}}</view>
-        <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-        <view class="bdlg"></view>
+        <view class="card-item" @click="gotoPage('security/identity')">
+          <image class="card-bg" src="/static/images/Rectangle121.png" mode="widthFix" />
+          <view class="card-content">
+            <view class="card-title">{{$t('身份认证')}}</view>
+            <image class="card-icon" src="/static/images/sf.png" mode="widthFix" />
+          </view>
         </view>
 
-        <view class="row panel" @click="gotoPage('security/identity')">
-        <view class="cl">{{$t('身份认证')}}</view>
-        <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-        <view class="bdlg"></view>
-        </view>
-
-        <view class="row panel" @click="gotoPage('security/payment')">
-        <view class="cl">{{$t('账号支付配置')}}</view>
-        <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-        <view class="bdlg"></view>
+        <view class="card-item" @click="gotoPage('security/payment')">
+          <image class="card-bg" src="/static/images/Rectangle121.png" mode="widthFix" />
+          <view class="card-content">
+            <view class="card-title">{{$t('账号支付配置')}}</view>
+            <image class="card-icon" style="width:160%;" src="/static/images/zh.png" mode="widthFix" />
+          </view>
         </view>
     </view>
   </view>
@@ -117,12 +109,52 @@ export default {
       
 <style lang="scss" scoped>
 .security {
- 
   .wrapper{
     color:#fff;
     overflow: hidden;
+    padding: 1rem;
   }
- 
-
+  .navigations{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+  .card-item{
+    position: relative;
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    .card-bg{
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .card-content{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1;
+    }
+    .card-title{
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+    .card-icon{
+      width: 100%; 
+      align-self: center;
+      margin-top: auto;
+    }
+  }
 }
 </style>

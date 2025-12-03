@@ -18,33 +18,47 @@
       </view>
       <view class="statistics">
         <view class="r01"> {{ $t('量化总金额') }} </view>
-        <view class="r02 panel"> 
-          {{formatMoney(totalAmount,2)}} $
-          <view class="bdlg"></view>
+        <view class="r02">
+          <image class="total-bg" src="/static/images/Rectangle1096.png" mode="widthFix" />
+          <view class="total-content">
+            {{formatMoney(totalAmount,2)}} $
+          </view>
         </view>
       </view>
-      <view class="progress panel">
-        <view class="line">
-              <view class="active" :style="{width:(saleAmount/totalAmount*100)+'%'}"></view>
+      <view class="progress">
+        <image class="progress-bg" src="/static/images/Rectangle3533.png" mode="widthFix" />
+        <view class="progress-content">
+          <view class="line">
+            <view class="active" :style="{width:(saleAmount/totalAmount*100)+'%'}"></view>
+          </view>
+          <view class="value">
+            <text class="current">{{formatMoney(saleAmount,2)}}</text>
+            <text class="total">/{{formatMoney(totalAmount,2)}} USDT</text>
+          </view>
         </view>
-        <view class="value">{{formatMoney(saleAmount,2)}}/{{formatMoney(totalAmount,2)}}$</view>
       </view>
  
       <view class="board">
-        <view class="item panel">
-          <text class="title">{{ $t('个人量化产出比') }}</text>
-          <text class="value">{{formatMoney(expectedRevenue,2)}}%</text>
-          <view class="bdlg"></view>
+        <view class="item">
+          <image class="board-card-bg" src="/static/images/Rectangle1098.png" mode="widthFix" />
+          <view class="board-card-content">
+            <text class="title">{{ $t('个人量化产出比') }}</text>
+            <text class="value">{{formatMoney(expectedRevenue,2)}}%</text>
+          </view>
         </view>
 
-        <view class="item panel">
-          <text class="title">{{ $t('平台产出比') }}</text>
-          <text class="value">{{formatMoney(expectedRevenue01,2)}}%</text>
-          <view class="bdlg"></view>
+        <view class="item">
+          <image class="board-card-bg" src="/static/images/Rectangle1098.png" mode="widthFix" />
+          <view class="board-card-content">
+            <text class="title">{{ $t('平台产出比') }}</text>
+            <text class="value">{{formatMoney(expectedRevenue01,2)}}%</text>
+          </view>
         </view>
 
       </view>
-    
+
+      <view  style="height:1.5rem;"></view>
+        
         
       <view class="split-row">
         <view class="cl"></view>
@@ -54,54 +68,46 @@
         <view class="cr"></view>
       </view>
 
-      <view class="detail panel">
-        <view class="row">
-          <text class="cl">{{$t('账号余额')}}</text>
-          <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} $</text>
+      <view class="detail panel" style="border:none;border-radius:0;">
+        <image class="detail-bg" src="/static/images/Rectangle12.png" mode="widthFix" />
+        <view class="detail-content">
+          <view class="row balance-row">
+            <text class="cl">{{$t('余额')}}</text>
+            <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} USDT</text>
+          </view>
+
+          <view class="amount-input-row">
+            <image class="amount-bg" src="/static/images/Rectangle1090.png" mode="widthFix" />
+            <view class="amount-input-content">
+              <input
+                class="txt"
+                type="number"
+                v-model="form.value"
+                :placeholder="$t('产品金额')"
+              />
+            </view>
+          </view>
+
+          <view class="row">
+            <text class="cl">{{$t('量化周期')}}</text>
+            <text class="cr">{{$t(releaseCycle || '天, 周, 月, 季, 年')}}</text>
+          </view>
+          <view class="row">
+            <text class="cl">{{$t('周期产出比例')}}</text>
+            <text class="cr">{{formatMoney(expectedRevenue,2)}} %</text>
+          </view>
+          <view class="row">
+            <text class="cl">{{$t('周期总产出')}}</text>
+            <text class="cr">{{formatMoney(expectedTotalRevenue*form.value,2)}} USDT</text>
+          </view>
+
+          <view class="ctl" >
+                <button class="sbtn" @click="submit($event)">{{ $t('开启量化') }}</button>
+          </view>
         </view>
-        <view class="row">
-          <text class="cl">{{$t('已配量化')}}</text>
-          <text class="cr clr1">{{formatMoney(purchedAmount,2)}}$</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('未配量化')}}</text>
-          <text class="cr clr1">{{formatMoney(maxInvestment-purchedAmount,2)}}$</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('量化周期')}}</text>
-          <text class="cr">{{$t(releaseCycle||'暂无')}}</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('项目总长')}}</text>
-          <text class="cr">{{projectDuration}}</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('配置区间')}}</text>
-          <text class="cr">{{formatMoney(minInvestment,2)}}-{{formatMoney(maxInvestment,2)}}</text>
-        </view>
-         <view class="row">
-          <text class="cl">{{$t('总结算比例')}}</text>
-          <text class="cr">{{formatMoney(expectedTotalRevenue,2)}}%</text>
-        </view>
-        <view class="row" v-if="false">
-          <text class="cl">{{$t('周期产出比例')}}</text>
-          <text class="cr">{{formatMoney(expectedRevenue,2)}}%</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('量化金额')}}</text>
-          <text class="cr input"><input class="txt" :placeholder="$t('请输入量化金额')" type="number" v-model="form.value" />$</text>
-        </view>
-        <view class="row">
-          <text class="cl">{{$t('量化总产出')}}</text>
-          <text class="cr">{{formatMoney(expectedTotalRevenue*form.value,2)}}$</text>
-        </view>
-        <view class="ctl" >
-              <button class="sbtn" @click="submit($event)">{{ $t('开启量化') }}</button>
-        </view>
-        <view class="bdlg"></view>
       </view>
 
-      
+       <view  style="height:1.5rem;"></view>
       <view class="split-row">
         <view class="cl"></view>
         <view class="cc">
@@ -111,18 +117,29 @@
       </view>
 
       <view class="safebox">
-        <button class="btn" @click="changePopuper({})">{{ $t('量化保护仓') }}</button>
-      </view>
-      <view class="detail panel">
-        <view class="row" v-for="(item, i) in statistics.groups[1]" :key="i">
-          <text class="cl">{{ $t(item.title||'未知') }}</text>
-          <text class="cr">{{ get(item.field)||get('statistics.data.'+item.field)||'暂无' }}</text>
+        <view class="safebox-btn" @click="changePopuper({})">
+          <image class="safebox-btn-bg" src="/static/images/Rectangle1104.png" mode="widthFix" />
+          <view class="safebox-btn-text">
+            {{ $t('量化保护仓') }}
+          </view>
         </view>
-        <view class="ctl">
-              <view class="btn panel" @click="gotoPage('product/detail?id='+id)">
+      </view>
+       <view  style="height:.8rem;"></view>
+      <view class="detail panel" style="border:none;border-radius:0;">
+        <image class="detail-bg" src="/static/images/Rectangle1103.png" mode="widthFix" />
+        <view class="detail-content detail-stat-content">
+          <view class="row" v-for="(item, i) in statistics.groups[1]" :key="i">
+            <text class="cl">{{ $t(item.title||'未知') }}</text>
+            <text class="cr">{{ get(item.field)||get('statistics.data.'+item.field)||'暂无' }}</text>
+          </view>
+          <view class="ctl">
+            <view class="view-all-btn" @click="gotoPage('product/detail?id='+id)">
+              <image class="view-all-bg" src="/static/images/Rectangle3534.png" mode="widthFix" />
+              <view class="view-all-text">
                 {{ $t('查看全部') }}
-                <view class="bdlg"></view>
               </view>
+            </view>
+          </view>
         </view>
       </view>
 
@@ -134,19 +151,27 @@
   <u-popup class="popuper" v-model="popuper.isShow" mode="center" >
     <u-icon class="close" name="close" @click="changePopuper(null,'close')"></u-icon>
     <view class="safeBox">
-      <view class="r1">{{$t('量化保护仓')}}</view> 
-      <view class="r2 panel">
-        <text class="cl">{{$t('保护仓金额')}}</text>
-        <text class="cr">{{form.value}}$</text>
-        <view class="bdlg"></view>
-      </view>
-      <view class="r3"><u-icon name="bell"></u-icon>{{$t('保护本金')}}</view>
-      <view class="r4">
-        <input v-model="popuper.safeBox.isCheck" class="check" type="checkbox" placeholder="" />
-        {{$t('查看合约并勾选确认')}}
-      </view>
-      <view class="ctl">
-        <button class="sbtn">{{ $t('确认开启') }}</button>
+      <image class="safeBox-bg" src="/static/images/Rectangle1105.png"  />
+      <view class="safeBox-content">
+        <view class="r1">{{$t('量化保护仓')}}</view> 
+        <view class="r2">
+          <image class="amount-bg" src="/static/images/Rectangle421.png" mode="widthFix" />
+          <view class="amount-content">
+            <text class="cl">{{$t('保护仓金额')}}</text>
+            <text class="cr">{{form.value}}$</text>
+          </view>
+        </view>
+        <view class="r3">
+          <image class="info-icon" src="/static/images/fi-ss-comment-info.png" mode="widthFix" />
+          <text>{{$t('保护本金')}}</text>
+        </view>
+        <view class="r4">
+          <input v-model="popuper.safeBox.isCheck" class="check" type="checkbox" placeholder="" />
+          {{$t('查看合约并勾选确认')}}
+        </view>
+        <view class="ctl">
+          <button class="sbtn">{{ $t('确认开启') }}</button>
+        </view>
       </view>
     </view>
   </u-popup>
@@ -280,24 +305,35 @@ export default {
 
       ::v-deep .u-mode-center-box{
         width:85% !important;
-        border-radius:10px;
-        border:0px solid #000;
-        background:url(/static/images/popuper-bg1.png) center center no-repeat !important;
-        background-size:100% auto;
+        border-radius:0;
+        border:0;
+        background:transparent !important;
       }
       .close{
         color:#fff;
       }
       .safeBox{
+        position:relative;
         width:100%;
         margin:0 auto;
-        padding:2rem;
-        display:flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-content: center;
-        flex-wrap: wrap;
+        padding:0;
         color:#fff;
+        .safeBox-bg{
+          width:100%;
+          height:18rem;
+          object-fit:cover;
+        }
+        .safeBox-content{
+          position:absolute;
+          top:0;
+          left:0;
+          right:0;
+          bottom:0;
+          padding:2.2rem 2rem 3rem;
+          display:flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
         .check{
           display: inline-block;
           vertical-align: middle;
@@ -305,46 +341,62 @@ export default {
         }
         .r1{
           color:#0EFFB0;
-          text-align: center;
-          font-size:1rem;
-          line-height:3rem;
-
+          text-align: left;
+          font-size:1.2rem;
+          line-height:2rem;
         }
         .r2{
-          height:2rem;
-          line-height:0;
-          padding:1rem;
-          display:flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          align-content: space-around;
-          
+          position:relative;
+          margin-top:1.2rem;
+          .amount-bg{
+            width:100%;
+          }
+          .amount-content{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            padding:1.2rem 2rem;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            font-size:0.95rem;
+          }
         }
         .r3{
-          line-height:2rem;
-          
+          margin-top:1rem;
+          display:flex;
+          align-items:center;
+          font-size:0.85rem;
+          .info-icon{
+            width:.8rem;
+            height:.8rem;
+            margin-right:0.4rem;
+          }
         }
         .r4{
           text-align: center;
           line-height:3rem;
+          font-size:0.8rem;
         }
         .ctl{padding:0rem;}
       }
     }
     .sbtn {
       width: 7.5rem;
-      height: 1.55rem;
-      line-height: 1.55rem;
+      height: 2rem;
+      line-height: 2rem;
       font-size: 0.75rem;
-      background-color: #0EFFB0;
-      border-radius: 0.65rem;
+      background: linear-gradient(90deg, #08E07F 40%, #1AFFAA 100%);
+      border-radius: 999px;
       left:calc(50% - 3.25rem);
        position: absolute;z-index:9;
     }
     .split-row {
       .cc {
-        font-size: 0.8rem;
+        font-size: 1.38rem;
+        margin-bottom:1rem;
       }
     }
     .split-row,.statistics,.progress,.board,.detail,.safebox{
@@ -355,48 +407,78 @@ export default {
         height:5rem;
         display:flex;
         flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-content: flex-start;
-        text-align: center;
+        justify-content: center;
+        align-items:flex-start;
         font-size:0.6rem;
         background:url(/static/images/products/p1.png) right center no-repeat;
-        background-size:auto 70%;
-        .r01,.r02{width:50%;}
-        .r02{height:2rem;line-height:2rem;}
+        background-size:auto 120%;
+        .r01{
+          width:50%;
+          text-align:center;
+          font-size:1.1rem;
+          margin-bottom:0.6rem;
+        }
+        .r02{
+          width:50%;
+          position:relative;
+          .total-bg{
+            width:100%;
+          }
+          .total-content{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:0.9rem;
+          }
+        }
     }
     .progress{
-      $_height:1.5rem;
-      height:$_height;
       position:relative;
-      display:flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-content: flex-end;
-      box-shadow: 2px 1px 24.1px 3px #8C8784 inset,4px 4px 5.2px 29px #0EFFB01A inset;
-      background: #000000;
-      border-radius: 0.7rem;
+      margin-top:2rem;
+      .progress-bg{
+        width:100%;
+      }
+      .progress-content{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        display:flex;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 1.5rem;
+      }
       .line{
-        $_heightL:0.25rem;
-        width:95%;
-        margin: 0  auto 0.2rem auto;
-        border-radius: 0.65rem;
+        $_heightL:0.3rem;
+        width:60%;
+        margin:0;
         height: $_heightL;
+        border-radius:999px;
         background-color: #726B6B;
         .active{
           width: 35%;
-          border-radius: 0.65rem;
           height: $_heightL;
+          border-radius:999px;
           background-color: #0EFFB0;
         }
       }
       .value{
-        width:100%;
-        position:absolute;
-        top:-0.3rem;right:0.5rem;left:0;text-align:center;
-        line-height:$_height;
-        width:auto;
-        z-index:1;
+        font-size:0.53rem;
+        color:#FFFFFF;
+        .current{
+          color:#0EFFB0;
+          margin-right:0.1rem;
+        }
+        .total{
+          color:#FFFFFF;
+        }
       }
     }
     .board{
@@ -404,68 +486,127 @@ export default {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
+      margin-top:2rem;
       .item{
-        width:45%;
-        height:3rem;
-        display:flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-content: space-around;
-        text-align: center;
+        position:relative;
+        width:47%;
       }
-
+      .board-card-bg{
+        width:100%;
+      }
+      .board-card-content{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        .title{
+          font-size:0.85rem;
+          margin-bottom:0.5rem;
+        }
+        .value{
+          font-size:1rem;
+        }
+      }
     }
     .detail{
-      display:flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
-      padding:0.7rem;
+      position:relative;
+      padding:0;
+      background:transparent;
+      .detail-bg{
+        width:100%;
+      }
+      .detail-content{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        padding:1.6rem 1.8rem 2.4rem;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+      }
       .row{
         display:flex;
         flex-direction: row;
-        flex-wrap: wrap;
         justify-content: space-between;
-        align-content: space-around;
-        height:1.5rem;
+        align-items:center;
+        height:1.8rem;
         .cl{
-          width:6rem;
           text-align:left;
+          font-size:0.85rem;
         }
         .cr{
-          width:calc(100% - 6rem);
           text-align:right;
+          font-size:0.85rem;
           &.clr1{
             color:#9C9C9C;
           }
-          &.input{
-            position:relative;
-            height:2rem;
-            .txt{
-              border:1px solid rgba(62, 190, 202, 0.6) ;
-              position: absolute;
-              font-size:0.6rem;
-              width:40%;
-              top:0; 
-              right:0.5rem; 
-              text-align: center;
-              z-index:9;
-              border-radius:5px;
-            }
-          }
+        }
+      }
+      .balance-row{
+        margin-bottom:1rem;
+      }
+      .amount-input-row{
+        position:relative;
+        margin-bottom:1.2rem;
+        .amount-bg{
+          width:100%;
+        }
+        .amount-input-content{
+          position:absolute;
+          top:0;
+          left:0;
+          right:0;
+          bottom:0;
+          display:flex;
+          align-items:center;
+          padding:0 1.5rem;
+        }
+        .txt{
+          width:100%;
+          background:transparent;
+          border:none;
+          outline:none;
+          color:#fff;
+          font-size:0.9rem;
         }
       }
       .ctl{
-        height:1.5rem;
+        margin-top:1.2rem;
         display:flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-content: center;
-        .btn{width:30%;text-align: center;line-height:1.4rem;}
+        justify-content:center;
+        align-items:center;
       }
+    }
+    .detail-stat-content{
+      padding:1.4rem 1.8rem 2.2rem;
+    }
+    .view-all-btn{
+      position:relative;
+      width:7.5rem;
+      height:2.2rem;
+    }
+    .view-all-bg{
+      width:100%;
+      height:100%;
+    }
+    .view-all-text{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.8rem;
+      color:#FFFFFF;
     }
     .safebox{
       height:6rem;
@@ -477,14 +618,30 @@ export default {
       background:url(/static/images/products/p2.png) left center no-repeat;
       background-size:auto 100%;
       
-      .btn{
-        width:7rem;
-        height:2rem;
-        border:1px solid #0EFFB0;
-        border-radius:5px;
+      .safebox-btn{
+        position:relative;
+        width:8.5rem;
+        height:3rem;
+      }
+      .safebox-btn-bg{
+        width:6.5rem;
+        position:absolute;
+        top:.3rem;
+        left:.84rem;
+        object-fit:cover;
+      }
+      .safebox-btn-text{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:0.78rem;
+        font-weight:600;
         color:#fff;
-        font-size:0.7rem;
-        background: radial-gradient(100% 100% at 0% 0%, rgba(250, 250, 250, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
       }
     }
     .wrapper {

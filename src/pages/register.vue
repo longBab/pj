@@ -1,75 +1,87 @@
 <template>
 <view class="register body">
-    <view class=" wrapper">
-        <view class="panel">
-            <view class="logo">
-                <view class="image"></view>
+    <view class="wrapper">
+        <view class="header">
+            <image class="logo-icon" src="/static/images/Group48095820.png" mode="widthFix" />
+            <view class="close-btn" @click="goBack">
+                <u-icon name="close" color="#08E07F" size="20"></u-icon>
             </view>
-            <view class="title">{{$t(way.textMaps[way.current]+'注册')}}</view>
-            <u-tabs class="tabs"
-                    :list="way.items"    
-                    :current="way.current"
-                    :is-scroll="false"
-                    :lineWidth="100"
-                    :lineHeight="16"
-                    active-color="#0EFFB0" 
-                    inactive-color="#FFFFFFB2" 
-                    @change="change" 
-             />
+        </view>
+        <view class="panel" style="padding:1rem;margin-top:-1rem; height:40rem; ">
+            <view class="title" style="color:#08E07F;">{{$t(way.textMaps[way.current]+'注册')}}</view>
+            <view class="register-tabs">
+                <view 
+                    class="tab-item" 
+                    :class="{ active: way.current === 0 }"
+                    @click="change(0)"
+                >
+                    <text>{{ $t('手机') }}</text>
+                    <view v-if="way.current === 0" class="tab-underline"></view>
+                </view>
+                <view 
+                    class="tab-item" 
+                    :class="{ active: way.current === 1 }"
+                    @click="change(1)"
+                >
+                    <text>{{ $t('邮箱') }}</text>
+                    <view v-if="way.current === 1" class="tab-underline"></view>
+                </view>
+            </view>
             <scroll-view scroll-y="true" scroll-x="false">
             <u-form class="form" ref="uForm" :model="form">
-                <view class="label"  v-if="way.current==0">{{$t('手机号码')}}</view>
+                <view class="label" v-if="way.current==0">{{$t('手机号码')}}</view>
                 <u-form-item :border-bottom="false" v-if="way.current==0">
-                    <picker  :range="areaCode.items" @change="change($event,'areaCode')">
+                    <picker :range="areaCode.items" @change="change($event,'areaCode')">
                         <view class="area-code">
                             <text class="value">{{areaCode.items[areaCode.current]}}</text>
-                            <!--<text class="arrow">▼</text>-->
                         </view>
 					</picker>
-                    <u-input v-model="form.phone" :placeholder="$t('请输入手机号码')" />
+                    <u-input type="number" v-model="form.phone" :placeholder="$t('请输入手机号码')" />
                 </u-form-item>
 
-                <view class="label"  v-if="way.current==1">{{$t('邮箱地址')}}</view>
+                <view class="label" v-if="way.current==1">{{$t('邮箱地址')}}</view>
                 <u-form-item :border-bottom="false" v-if="way.current==1">
                     <u-input v-model="form.mail" :placeholder="$t('请输入邮箱地址')" />
                 </u-form-item>
 
-                <view >{{$t('验证码')}}</view>
+                <view class="label">{{$t('验证码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input v-model="form.code" :placeholder="$t('验证码')" />
-                    <view class="right-btn" @click="sendVerify($event)">{{senderCode}}</view>
+                    <u-input type="number" v-model="form.code" :placeholder="$t('请输入验证码')" />
+                    <view class="code-btn" @click="sendVerify($event)">{{senderCode}}</view>
                 </u-form-item>
 
                 <view class="label">{{$t('设置密码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input type="password" v-model="form.password" :placeholder="$t('设置密码')" />
+                    <u-input type="password" v-model="form.password" :placeholder="$t('请输入密码')" />
                 </u-form-item>
                 <view class="label">{{$t('确认密码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input type="password" v-model="form.rePassword" :placeholder="$t('确认密码')" />
+                    <u-input type="password" v-model="form.rePassword" :placeholder="$t('请再次输入密码')" />
                 </u-form-item>
 
                 <view class="label">{{$t('设置支付密码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input type="password" v-model="form.passwordX" @input="onInput($event,'form.passwordX')"  :placeholder="$t('设置支付密码')" />
+                    <u-input type="password" v-model="form.passwordX" @input="onInput($event,'form.passwordX')" :placeholder="$t('请输入6位数字支付密码')" />
                 </u-form-item>
                 <view class="label">{{$t('确认支付密码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input type="password" v-model="form.rePasswordX" @input="onInput($event,'form.passwordX')" :placeholder="$t('确认设置支付密码')" />
+                    <u-input type="password" v-model="form.rePasswordX" @input="onInput($event,'form.passwordX')" :placeholder="$t('请再次输入支付密码')" />
                 </u-form-item>
 
                 <view class="label">{{$t('邀请码')}}</view>
                 <u-form-item :border-bottom="false">
-                    <u-input v-model="form.inviteCode" :placeholder="$t('邀请码')" />
+                    <u-input v-model="form.inviteCode" :placeholder="$t('请输入邀请码')" />
                 </u-form-item>
+                
+                <view class="ctl">
+                    <button class="btn-login" @click="onSubmit($event)">{{$t('立即注册')}}</button>
+                </view>
+                <view class="ctl login-link">
+                    <text>{{$t('已有账号')}}？</text>
+                    <text class="login-text" @click="gotoPage('login')">{{$t('立即登陆')}}</text>
+                </view>
             </u-form>
             </scroll-view>
-            <view class="ctl">
-                <button class="btn bdr05 bggr01" @click="onSubmit($event)">{{$t('立即注册')}}</button>
-            </view>
-            <view class="ctl info" >
-                <text @click="gotoPage('login')">返回登录</text> <text @click="gotoPage('forget')">忘记密码</text>
-            </view>
         </view> 
     </view>
 </view>
@@ -119,9 +131,16 @@ export default {
     },
     onLoad(sender) {
         let that=this;
-        that.extend({form:{inviteCode:sender.code},senderCode:that._senderCode});
+        // 从路由参数中读取推荐码，优先 ref，其次兼容原来的 code 字段
+        let _sender = sender || {};
+        let invite = _sender.ref || _sender.code || "";
+        that.extend({form:{inviteCode:invite},senderCode:that._senderCode});
     },
     methods: {
+        goBack(){
+            var that=this;
+            that.navigateBack();
+        },
         sendVerify(event) {
             var that = this,url,data={},
             current=that.get("way.current"),way=that.get("way.nameMaps")[current],
@@ -238,20 +257,133 @@ export default {
 </script>
      
 <style lang="scss" scoped>
-
-.register{
+.register {
+    position:relative;
+    min-height:100vh;
+    background:#1f1f1f;
     .wrapper{
-        justify-content: flex-start;
-        padding: 3.5rem 0 0 0;
-        color:#fff;
+        position:relative;
+        z-index:1;
+        padding:2rem 1.2rem;
+        min-height:calc(100vh - 4rem);
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-start;
+    }
+    .header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        width:100%;
+        background:#000;
+        height:5.5rem !important;
+        border-radius:10px;
+        padding:0 1rem;
+    }
+    .logo-icon{
+        width:10rem;
+        margin-right:0.5rem;
+    }
+    .close-btn{
+        width:2rem;
+        height:2rem;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
     .panel{
-        height:97%;
+        width:100%;
+        height:calc(100vh - 8rem);
+        display:flex;
+        flex-direction:column;
     }
-    
+    .title{
+        font-size:1rem;
+        font-weight:700;
+        color:#08E07F !important;
+        margin-bottom:1.3rem;
+        text-align:center;
+        line-height:1.5rem;
+    }
+    .register-tabs{
+        display:flex;
+        margin-bottom:2rem;
+    }
+    .tab-item{
+        flex:1;
+        text-align:center;
+        padding-bottom:0.5rem;
+        position:relative;
+        text{
+            font-size:1rem;
+            color:#FFFFFFB2;
+        }
+        &.active text{
+            color:#08E07F;
+        }
+    }
+    .tab-underline{
+        position:absolute;
+        bottom:0;
+        left:50%;
+        transform:translateX(-50%);
+        width:2rem;
+        height:2px;
+        background:#08E07F;
+    }
+    .form,.ctl{
+        width: 100%;
+        margin: 0 auto;
+    }
+    .label{
+        color:#FFFFFF;
+        font-size:0.9rem;
+        margin-bottom:0.5rem;
+        margin-top:1rem;
+    }
+    .label:first-child{
+        margin-top:0;
+    }
+    .code-btn{
+        padding:0rem 0.8rem;
+        background:#08E07F;
+        color:#FFFFFF;
+        border-radius:4px;
+        font-size:0.8rem;
+        white-space:nowrap;
+    }
+    .btn-login{
+        width:100%;
+        height:2.8rem;
+        background:#08E07F;
+        color:#FFFFFF;
+        border-radius:8px;
+        font-size:1rem;
+        font-weight:600;
+        border:none;
+        margin-top:2rem;
+    }
+    .login-link{
+        text-align:center;
+        margin-top:1.5rem;
+        font-size:0.9rem;
+        color:#FFFFFF;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        text{
+            color:#FFFFFF;
+        }
+        .login-text{
+            color:#08E07F;
+            text-decoration:underline;
+        }
+    }
+    .ctl{
+        color:#fff;
+    }
     uni-scroll-view {
-        height:calc(100% - 14.8rem);
+        max-height:calc(100vh - 20rem);
     }
-    
 }
 </style>

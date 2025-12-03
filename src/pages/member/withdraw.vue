@@ -3,64 +3,73 @@
     <navBar :title="title" :back="back"></navBar>
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
-        <view class="split-row mt5">
-          <view class="cl"></view>
-          <view class="cdl"></view>
-          <view class="cc">
-            <text>{{ $t('转出地址') }}</text>
+        <!-- 提现地址 -->
+        <view class="section-header wc93">
+          <view class="section-title">
+            {{ $t('提现地址') }}
           </view>
-          <view class="cdr"></view>
-          <view class="cr"></view>
+          <view class="section-tip">
+            <image class="section-tip-icon" src="/static/images/fi-ss-comment-info.png" mode="widthFix" />
+            <text class="section-tip-text">{{ $t('长按可粘贴提现地址') }}</text>
+          </view>
         </view>
-        <view class="mt5 wc93 address-panel">
-          <view class="dp input-row">
-            <view class="f1">
-              <input class="input" v-model="form.address"  placeholder="请输入或粘贴提现地址" />
+        <view class="wc93 withdraw-card withdraw-address-card">
+          <image class="withdraw-card-bg" src="/static/images/Rectangle22.png" mode="widthFix" />
+          <view class="withdraw-card-content">
+            <input
+              class="withdraw-input"
+              v-model="form.address"
+              :placeholder="$t('请输入或粘贴提现地址')"
+            />
+          </view>
+        </view>
+
+        <!-- 提现数额 -->
+        <view class="section-header wc93 mt5">
+          <view class="section-title">
+            {{ $t('提现数额') }}
+            <text class="section-unit">(USDT)</text>
+          </view>
+        </view>
+        <view class="wc93 withdraw-card withdraw-amount-card">
+          <image class="withdraw-card-bg" src="/static/images/Rectangle23.png" mode="widthFix" />
+          <view class="withdraw-card-content">
+            <view class="withdraw-amount-input-row">
+              <input
+                class="withdraw-input"
+                v-model="form.value"
+                :placeholder="$t('请输入提现金额')"
+                type="number"
+                max="20"
+              />
+              <view class="token-tag">
+                <image class="token-icon" src="/static/images/UT.png" mode="widthFix" />
+                <text class="token-text">USDT</text>
+              </view>
+            </view>
+            <view class="withdraw-amount-footer">
+              <view class="amount-available">
+                {{ $t('可用余额') }} {{formatMoney(user.rechargeAmount,2)}} USDT
+              </view>
+              <view class="btn-all" @click="form.value=user.rechargeAmount">
+                {{ $t('全部') }}
+              </view>
             </view>
           </view>
         </view>
-        <view class="wc93 info">
-          <u-icon name="info-circle-fill" size="16"></u-icon>
-          {{ $t('长按可粘贴提现地址') }}
-        </view>
-        <view class="split-row mt5">
-          <view class="cl"></view>
-          <view class="cdl"></view>
-          <view class="cc">
-            <text>{{ $t('转出数额') }}</text>
-          </view>
-          <view class="cdr"></view>
-          <view class="cr"></view>
-        </view>
-        <view class="tab-label" v-if="false">
-          (USDT)
-        </view>
-        <view class="mt5 wc93 momey-panel">
-          <view class="dp input-row">
-            <view class="f1">
-              <input class="input" v-model="form.value" placeholder="请输入转账金额" type="number" max="20" />
-            </view>
-            <view class="icon-box">
-              <view class="icon" v-if="false"></view>
-            </view>
-            <view>
-              $
-            </view>
-          </view>
-          <view class="dp pay-row">
-            <view class="f1">
-              可用余额 {{formatMoney(user.rechargeAmount,2)}} $
-            </view>
-            <view class="btn active" @click="form.value=user.rechargeAmount">全部</view>
-          </view>
-        </view>
+
+        <!-- 底部按钮和提示 -->
         <view class="mt5">
           <view class="sell-btn" @click="submit($event)">
-            确认转出
+            {{ $t('确认提现') }}
           </view>
         </view>
-        <view class="mt10 nodata">转出手续费:{{formatMoney(withdraw_rate,2)}}</view>
-        <view class="mt5 nodata">最小转出金额: {{formatMoney(min_withdraw_amount,2)}} USDT</view>
+        <view class="mt10 nodata">
+          {{ $t('提现手续费') }}: {{formatMoney(withdraw_rate,2)}} USDT
+        </view>
+        <view class="mt5 nodata">
+          {{ $t('最小提现金额') }}: {{formatMoney(min_withdraw_amount,2)}} USDT
+        </view>
 
       </scroll-view>
     </view>
@@ -169,124 +178,129 @@ export default {
     padding: 6vh 0 8vh 0;
     color: #fff;
 
-    .address-panel {
-      backdrop-filter: blur(10px);
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      background-image: linear-gradient(to bottom, #000000 0%, #121a2488 100%), linear-gradient(180deg, #3BD3D344, transparent);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-
-      .input-row {
-        justify-content: center;
-        align-items: center;
-
-        .input {
-          background: transparent;
-          border: none;
-          outline: none;
-          color: #fff;
-          line-height: normal;
-          height: 1.3rem;
-          line-height: 1.3rem;
-          font-size: 0.7rem;
-        }
-      }
-    }
-
     .tab-label {
       text-align: center;
       color: #FFFFFFB2;
     }
 
-    .momey-panel {
-      height: 5rem;
-      backdrop-filter: blur(10px);
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      background-image: linear-gradient(to bottom, #000000 0%, #121a2488 100%), linear-gradient(180deg, #3BD3D344, transparent);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-
-
-      .input-row {
-        justify-content: center;
-        align-items: center;
-        border-bottom: 0.5px dashed #fbd4363d;
-        padding-bottom: 0.5rem;
-
-        .input {
-          background: transparent;
-          border: none;
-          outline: none;
-          color: #fff;
-          line-height: normal;
-          height: 1.3rem;
-          line-height: 1.3rem;
-          font-size: 0.7rem;
-        }
-
-        .icon-box {
-          margin: 0 0.2rem;
-
-          .icon {
-            height: 0.8rem;
-            width: 0.8rem;
-            background: url(/static/images/member/m10.png) center center no-repeat;
-            background-size: 100% 100%;
-          }
-        }
-      }
-
-      .pay-row {
-        justify-content: center;
-        align-items: center;
-        padding: 0.5rem 0rem;
-
-        .btn {
-          margin: 0 0.5rem;
-          border: 1px solid #417B68;
-          background: #0EFFB01A;
-          width: 3rem;
-          height: 1.3rem;
-          text-align: center;
-          line-height: 1.3rem;
-          border-radius: 10px;
-          border-width: 1px;
-        }
-
-        .active {
-          color: #000000;
-          border: 1px solid #417B68;
-          background: var(--Color-4, #0EFFB0);
-        }
-      }
-    }
-
-    .info {
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-    }
-
     .sell-btn {
-      background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-      border-radius: 5px;
+      background: linear-gradient(90deg, #08E07F 100%, #1AFFAA 100%);
+      border-radius: 999px;
       color: #000000;
-      width: 6rem;
-      height: 1.8rem;
-      line-height: 1.8rem;
+      width: 70%;
+      height: 2.5rem;
+      line-height: 2.5rem;
       text-align: center;
       font-weight: 600;
-      font-size: 0.7rem;
-      margin: 0 auto;
+      font-size: 0.9rem;
+      margin: 2.5rem auto 0;
     }
   }
 
   uni-scroll-view {
     height: calc(100vh - 14vh - 0.3rem);
   }
+}
+
+/* 新样式：提现页面 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.section-unit {
+  margin-left: 0.2rem;
+  font-size: 0.7rem;
+  color: #FFFFFFB2;
+}
+.section-tip {
+  display: flex;
+  align-items: center;
+  font-size: 0.65rem;
+  color: #FFFFFFB2;
+}
+.section-tip-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: 0.25rem;
+}
+.section-tip-text {
+  white-space: nowrap;
+}
+
+.withdraw-card {
+  position: relative;
+  margin-top: 0.8rem;
+}
+.withdraw-card-bg {
+  width: 100%;
+}
+.withdraw-card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.withdraw-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.withdraw-amount-card .withdraw-card-content {
+  justify-content: space-between;
+}
+.withdraw-amount-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.5px dashed rgba(248, 248, 248, 0.2);
+}
+.token-tag {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+}
+.token-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-right: 0.2rem;
+}
+.token-text {
+  font-size: 0.75rem;
+}
+.withdraw-amount-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #FFFFFFB2;
+}
+.btn-all {
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #417B68;
+  background: #0EFFB01A;
+  font-size: 0.7rem;
+}
+.btn-all:active {
+  background: var(--Color-4, #0EFFB0);
+  color: #000;
 }
 </style>

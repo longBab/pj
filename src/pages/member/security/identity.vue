@@ -2,7 +2,7 @@
     <view class="identity body" :class="$store.state.setting.theme">
         <navBar :back="back" :title="title">
         </navBar>
-        <view class="wrapper">
+        <view class="wrapper" style="padding-top: 5rem;">
 
             <view class="message panel" v-if="form.realNameStatus==1||form.realNameStatus==2">
                  
@@ -12,49 +12,52 @@
             </view>
 
           <view class="form s01" v-if="form.realNameStatus==0">
-            <view class="info"><u-icon name="info-circle-fill" size="16"></u-icon>{{$t('请您使用有效身份信息认证')}}</view>
+            <view class="info">
+              <image class="info-icon" src="/static/images/Vector.png" mode="widthFix" />
+              <text>{{$t('请您使用有效身份信息认证')}}</text>
+            </view>
             
-            <view class="row">
-                <view class="cl">姓名</view>
-                <view class="cr">
-                    <input class="input" v-model="form.name" :placeholder="$t('请输入姓名')" />
-                </view>
+            <view class="input-row">
+                <input class="input-field" v-model="form.name" :placeholder="$t('姓名')" />
             </view>
 
-            <view class="row">
-                <view class="cl">证件号码</view>
-                <view class="cr">
-                    <input class="input" v-model="form.documentNumber" :placeholder="$t('请输入证件号码')" />
-                </view>
+            <view class="input-row">
+                <input class="input-field" v-model="form.documentNumber" :placeholder="$t('证件号码')" />
             </view>
 
             <view class="split">{{$t('上传身份证正反面')}}</view>
             <view class="box-col">
 
-                <view class="item panel" @click="upload(event,'frontImage')">
-                    <view class="image">
-                        <text class="image" v-if="!form.frontImage">正面</text>
+                <view class="item panel" style='margin:0;border:none;' @click="upload(event,'frontImage')">
+                    <view class="upload-box">
                         <image 
+                            v-if="form.frontImage"
                             :src="formatUrl(form.frontImage)"
-                            mode="scaleToFill" v-if="form.frontImage"
+                            mode="aspectFill"
+                            class="uploaded-image"
                         />
+                        <view v-else class="upload-placeholder">
+                            <image class="upload-icon" src="/static/images/chat.png" mode="widthFix" />
+                        </view>
                     </view>
-                    <view class="bdlg"></view>
                 </view>
 
-                <view class="item panel" @click="upload(event,'backImage')">
-                     <view class="image" >
-                        <text class="image" v-if="!form.backImage">反面</text>
+                <view class="item panel" style='margin:0;border:none;' @click="upload(event,'backImage')">
+                    <view class="upload-box">
                         <image 
+                            v-if="form.backImage"
                             :src="formatUrl(form.backImage)"
-                            mode="scaleToFill" v-if="form.backImage"
+                            mode="aspectFill"
+                            class="uploaded-image"
                         />
+                        <view v-else class="upload-placeholder">
+                            <image class="upload-icon" src="/static/images/chat.png" mode="widthFix" />
+                        </view>
                     </view>
-                    <view class="bdlg"></view>
                 </view>
             </view>
             <view class="ctl">
-                    <button class="btn" @click="submit($event)">确认提交</button>
+                    <button class="btn" @click="submit($event)" >{{$t('确认提交')}}</button>
             </view>
           </view>
         </view>       
@@ -189,40 +192,114 @@ export default {
         .wait{color:orange}
     }
     .form{
-        width:90%;
-        margin: 0 auto;
-        .split,.box-col{width:100%;}
-        .split{line-height:2rem;}
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .info{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0 auto 1.5rem;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            text-align: center;
+            .info-icon{
+                width: 0.8rem;
+                height: 0.8rem;
+            }
+        }
+        .input-row{
+            width: 100%;
+            margin-bottom: 1rem;
+            .input-field{
+                width: 100%;
+                height: 2.8rem;
+                padding: 0 1rem;
+                background: url(/static/images/Rectangle52.png) center center no-repeat;
+                background-size: 100% 100%;
+                color: #FFFFFF;
+                font-size: 0.9rem;
+                    box-sizing: border-box;
+            }
+            .input-field::placeholder{
+                color: #999999;
+            }
+        }
+        .split{
+            width:100%;
+            line-height:2rem;
+            margin: 1.5rem 0 1rem;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            text-align: left;
+        }
         .box-col{
             display: flex;
             flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-            height: 6rem;
+            justify-content: flex-start;
+            gap: 1rem;
+            width:100%;
+            margin-bottom: 2rem;
             .item{
-                width:48%;
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;  
-                justify-content: space-around;
-                align-content: space-around;
-                .image{
-                    width:100%;height:100%;
+                width:6rem;
+                .upload-box{
+                    width: 100%;
+                    aspect-ratio: 1;
+                    border: 1px solid #08E07F;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: transparent;
+                    .upload-placeholder{
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        .upload-icon{
+                            width: 1.5rem;
+                            height: auto;
+                        }
+                    }
+                    .uploaded-image{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
                 }
-                uni-image{width:100%;height:100%;
-                border-radius:10px;
-                }
+            }
+        }
+        .ctl{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            .btn{
+                width: 10rem;
+                height: 2.3rem;
+                line-height: 2.3rem;
+                background: linear-gradient(90deg, #08E07F, #1AFFAA);
+                border: none;
+                border-radius: 15px;
+                color: #000;
+                font-size: 0.8rem;
+                font-weight: 600;
             }
         }
     }
 
     .wrapper {
- 
         height: calc(100% - 14vh);
-        padding: 6vh 0 8vh 0;
+        padding: 1rem;
         color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
- 
-
 }
 </style>

@@ -1,18 +1,24 @@
 <template>
-  <view class="home body" :class="$store.state.setting.theme">
+  <view class="home body" :class="$store.state.setting.theme"  style="padding-bottom:3rem;">
     <navBar :logo="logo">
       <template #quicker="{ }">
         <navLanguage :source="this" />
       </template>
     </navBar>
+    
     <view class="wrapper">
       <scroll-view scroll-y="true" scroll-x="false">
 
-        <view class="notices panel" @click="gotoPage('/pages/notices')">
+        <view class="notices " @click="gotoPage('/pages/notices')">
           <view class="container">
-            <view class="lefter bdr05 bggr01 ">
-              <u-icon name="bell"></u-icon>
-              <text>{{ $t('公告') }}</text>
+            <view class="lefter">
+              <view class="notice-pill">
+                <view class="notice-icon-wrap">
+                  <image class="notice-icon" src="/static/images/home/ic_message.png" mode="widthFix" />
+                  <view class="notice-dot"></view>
+                </view>
+                <text class="notice-text">{{ $t('公告') }}</text>
+              </view>
             </view>
 
             <u-notice-bar
@@ -26,11 +32,89 @@
           </view>
           <view class="bdlg"></view>
         </view>
-        <view class="banners panel">
-          <u-swiper style="background-color:inherit" :list="_banners"></u-swiper>
-          <view class="bdlg"></view>
+ 
+        <!-- 轮播图 -->
+        <view class="banners">
+          <view class="banner-inner">
+            <u-swiper
+              class="banner-swiper"
+              :list="_banners"
+              :autoplay="true"
+              :circular="true"
+              :indicator="false"
+              bg-color="transparent"
+              @change="onBannerChange"
+            ></u-swiper>
+            <view class="banner-dots" v-if="_banners && _banners.length">
+              <view
+                v-for="(item, index) in _banners"
+                :key="index"
+                class="dot"
+                :class="{ active: index === bannerCurrent }"
+              ></view>
+            </view>
+          </view>
         </view>
-      
+
+        <!-- 欢迎探索模块 -->
+        <view class="welcome-card">
+          <view class="welcome-left">
+            <view class="welcome-title-main">{{ $t('欢迎探索') }}</view>
+            <view class="welcome-title-sub">
+              <text class="green">{{ $t('量化交易的世界') }}</text>
+              <text class="green">！</text>
+            </view>
+            <view class="welcome-divider"></view>
+            <view class="welcome-desc">
+              <text style="font-size:.7rem; ">
+                {{ $t('GEF（Game Ecosystem Fund）是 OGA 生态的资金调度核心，承载着回购、能量补给、彩蛋激励与价格稳定的四重职能。') }}
+              </text>
+            </view>
+          </view>
+          <view class="welcome-right"  >
+            <image class="welcome-icon" style=" position: absolute;right:0;"  src="/static/images/home/image240.png" mode="widthFix" />
+          </view>
+        </view>
+
+        <!-- WIN生态看板 -->
+        <view class="ecosystem-section">
+          <view class="eco-title-row">
+            <view class="eco-line"></view>
+            <text class="eco-title">{{ $t('WIN生态看板') }}</text>
+            <view class="eco-line"></view>
+          </view>
+          <view class="eco-list">
+            <view class="eco-item" @click="gotoPage('content/fee')">
+              <image class="eco-bg" src="/static/images/home/Rectangle3532.png" mode="widthFix" />
+              <view class="eco-inner">
+                <image class="eco-icon" src="/static/images/home/image117.png" mode="widthFix" />
+                <text class="eco-text">{{ $t('平台手续费') }}</text>
+              </view>
+            </view>
+            <view class="eco-item" @click="gotoPage('informations')">
+              <image class="eco-bg" src="/static/images/home/Rectangle3532.png" mode="widthFix" />
+              <view class="eco-inner">
+                <image class="eco-icon" src="/static/images/home/image119.png" mode="widthFix" />
+                <text class="eco-text">{{ $t('国际资讯') }}</text>
+              </view>
+            </view>
+            <view class="eco-item" @click="gotoPage('content/ecology')">
+              <image class="eco-bg" src="/static/images/home/Rectangle3532.png" mode="widthFix" />
+              <view class="eco-inner">
+                <image class="eco-icon" src="/static/images/home/fi-ss-location-alt.png" mode="widthFix" />
+                <text class="eco-text">{{ $t('团队生态布局') }}</text>
+              </view>
+            </view>
+            <view class="eco-item" @click="gotoPage('content/qualified')">
+              <image class="eco-bg" src="/static/images/home/Rectangle3532.png" mode="widthFix" />
+              <view class="eco-inner">
+                <image class="eco-icon" src="/static/images/home/fi-ss-comment-user.png" mode="widthFix" />
+                <text class="eco-text">{{ $t('国际资质') }}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
         <!--
         <view class="introduced panel">
           <view class="container">
@@ -59,7 +143,7 @@
           </view>
         </view>
         -->
-        <view class="split-row">
+        <!-- <view class="split-row">
           <view class="cl"></view>
           <view class="cc">
             <text>{{$t('主流行情')}}</text>
@@ -83,20 +167,54 @@
             <view class="c03"><text class="chat" :class="item.p<0?'down':''">{{ item.p }}%</text></view>
           </view>
           <view class="bdlg"></view>
-        </view>
+        </view> -->
 
-        <view class="split-row">
-          <view class="cl"></view>
-          <view class="cc">
-            <text>{{ $t('合作夥伴') }}</text>
+        <!-- 合作夥伴 -->
+        <view class="partner-section">
+          <view class="eco-title-row partner-title-row">
+            <view class="eco-line"></view>
+            <text class="eco-title">{{ $t('合作夥伴') }}</text>
+            <view class="eco-line"></view>
           </view>
-          <view class="cr"></view>
-        </view>
-
-        <view class="partner">
-          <view class="cell" v-for="(item, i) in partners" :key="i" @click="changePopuper(item,'dialog')">
-                <image class="img" :src="formatUrl(item.icon,'local')" mode="scaleToFill"/>
-                <view class="name">{{ item.name }}</view>
+          <view class="partner-card">
+            <image class="partner-bg" src="/static/images/home/Rectangle1078.png" mode="widthFix" />
+            <view class="partner-grid">
+              <view class="partner-row">
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-sm" src="/static/images/home/image86.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-sm" src="/static/images/home/image85.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-sm" style="width:2rem;" src="/static/images/home/image87.png" mode="widthFix" />
+                </view>
+              </view>
+              <image class="partner-divider" src="/static/images/home/Vector11.png" mode="widthFix" />
+              <view class="partner-row">
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-lg" src="/static/images/home/image88.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-lg" src="/static/images/home/image89.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-lg" src="/static/images/home/image234.png" mode="widthFix" />
+                </view>
+              </view>
+              <image class="partner-divider" src="/static/images/home/Vector11.png" mode="widthFix" />
+              <view class="partner-row">
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-sm" style="width:3.7rem"  src="/static/images/home/image107.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-lg" src="/static/images/home/image92.png" mode="widthFix" />
+                </view>
+                <view class="partner-item">
+                  <image class="partner-logo partner-logo-sm" style="width:4rem"  src="/static/images/home/image106.png" mode="widthFix" />
+                </view>
+              </view>
+            </view>
           </view>
         </view>
         
@@ -134,6 +252,7 @@ export default {
       logo: "../static/images/logo-02.png",
       _notices:[],
       _banners:[],
+      bannerCurrent: 0,
       introduced:{},
       navigations:[],
       quotes:[],
@@ -166,7 +285,7 @@ export default {
         data = data.data || data;
         data={
           notices:[{title:"公告1"},{title:"公告2"},{title:"公告3"}],
-          banners:"static/images/home/s1.png",
+          banners:"static/images/home/s1.png,static/images/home/f1.png,static/images/home/f2.png,static/images/home/f3.png",
           introduced:{title:"全球推广",description:"GEF(Game Ecosystem Fund)是 OGA 生态的资金调度核心,承载着回购、能量补给、彩蛋激励与价格稳定的四重职能."},
           navigations:[
             {url:"content/fee",title:"平台手续费",icon:"static/images/home/h2.png"},
@@ -203,6 +322,14 @@ export default {
         data._banners=that.format(data.banners,'banners');delete(data.banners);
         that.extend(data);
       });
+    },
+    onBannerChange(e) {
+      // u-swiper 在不同版本里，change 事件可能直接返回索引(number)，也可能是对象({ current: index })
+      if (typeof e === 'number') {
+        this.bannerCurrent = e;
+      } else {
+        this.bannerCurrent = (e && (e.current || e.detail && e.detail.current)) || 0;
+      }
     },
     format(value,type){
 			var that=this,result,i,k,v,items=[],_items=[];
@@ -251,20 +378,59 @@ export default {
     margin:0.5rem auto;
   }
   .notices {
-    $_height:2rem;
-    height: $_height;
+    $_height:2.5rem;
+    height: 2.5rem; 
+    background:url(/static/images/home/Rectangle12.png) center center no-repeat;
+    background-size:100% 100%;
+    padding:2px;
+    box-sizing: border-box;
     .container{position: relative;}
     .lefter{ 
-      width:3rem;
+      width:6.5rem;
       margin:1px 0 0 1px;
-      height:calc($_height - 0.2rem - 4px); 
-      padding:0.2rem 0 0.2rem 0.3rem;
-      line-height:1.2rem;
+      height:2.1rem;
       z-index:1;
+      display:flex;
+      align-items:center;
+    }
+    .notice-pill{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      width:75%;
+      height:100%;
+      padding:0 0.9rem 0 0.8rem;
+      border-radius:10px;
+      background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);
+    }
+    .notice-icon-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-right:0.4rem;
+    }
+    .notice-icon{
+      width:1rem;
+      height:1rem;
+    }
+    .notice-dot{
+      position:absolute;
+      top:-0.12rem;
+      right:-0.1rem;
+      width:0.36rem;
+      height:0.36rem;
+      background:#FF7A21;
+      border-radius:50%;
+    }
+    .notice-text{
+      font-size:0.8rem;
+      color:#000;
+      font-weight:bold;
     }
     .righter{
       position: absolute;
-      top:-4px;left:4rem;
+      top:0;left:4rem;
       width:calc(100% - 4rem);
       height:$_height;
       line-height:1rem;
@@ -276,12 +442,195 @@ export default {
     }
   }
   .banners{
- 
-    border-image-source: linear-gradient(109deg, #00FFFF -29.08%, #000000 46.11%, #00FFBD 117.09%);
-    border-image-slice: 1;
-    border-image-repeat: round;
-    clip-path: inset(0 round 10px);
+    margin-top:0.8rem;
+    display:flex;
+    justify-content:center;
+  }
+  .banner-inner{
+    width:100%;
+    border-radius:16px;
+    overflow:hidden;
+    padding:0.6rem 0.3rem 0;
+  }
+  .banner-swiper{
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .banner-inner ::v-deep .u-swiper__indicator{
+    display:none;
+  }
+  .banner-dots{
+    margin-top:0.55rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:0.4rem;
+  }
+  .banner-dots .dot{
+    width:0.22rem;
+    height:0.22rem;
+    border-radius:50%;
+    background:#D9D9D9;
+  }
+  .banner-dots .dot.active{
+    background:#08E07F;
+  }
 
+  .welcome-card{
+    margin:0 auto 0.3rem;
+    width:93%;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.2rem 1.1rem 1.3rem;
+    border-radius:16px;
+  }
+  .welcome-left{
+    flex:1.4;
+    color:#fff;
+  }
+  .welcome-title-main{
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:0.25rem;
+  }
+  .welcome-title-sub{
+    font-size:0.95rem;
+    font-weight:600;
+    margin-bottom:0.45rem;
+    .green{
+      color:#08E07F;
+    }
+  }
+  .welcome-divider{
+    width:3.2rem;
+    height:2px;
+    background:#08E07F;
+    border-radius:999px;
+    margin-bottom:0.55rem;
+  }
+  .welcome-desc{
+    font-size:0.75rem;
+    line-height:1rem;
+    color:#D9E2ED;
+    max-width:14rem;
+  }
+  .welcome-right{
+    flex:1;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    margin-left:0.6rem;
+  }
+  .welcome-icon{
+    width:12.5rem;
+    
+  }
+
+  .ecosystem-section{
+    margin:1.5rem auto 0.5rem;
+    width:100%;
+  }
+  .eco-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:1rem;
+  }
+  .eco-title{
+    font-size:1rem;
+    font-weight:700;
+    color:#FFFFFF;
+    margin:0 0.8rem;
+  }
+  .eco-line{
+    width:2.3rem;
+    height:3px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(0,0,0,0) 0%,#09F0A0 50%,rgba(0,0,0,0) 100%);
+  }
+  .eco-list{
+    padding:0 1rem 0.3rem;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:nowrap;
+  }
+  .eco-item{
+    position:relative;
+    width:22%;
+  }
+  .eco-bg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .eco-inner{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding-bottom:0.4rem;
+  }
+  .eco-icon{
+    width:1.9rem;
+    margin-bottom:0.5rem;
+  }
+  .eco-text{
+    font-size:0.7rem;
+    color:#FFFFFF;
+  }
+
+  .partner-section{
+    margin:1.6rem auto 1rem;
+    width:100%;
+  }
+  .partner-title-row{
+    margin-bottom:1.1rem;
+  }
+  .partner-card{
+    position:relative;
+    width:93%;
+    margin:0 auto;
+  }
+  .partner-bg{
+    width:100%;
+    display:block;
+    border-radius:18px;
+  }
+  .partner-grid{
+    position:absolute;
+    inset:0;
+    padding: .8rem .8rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .partner-divider{
+    width:100%;
+    margin:0.5rem 0;
+  }
+  .partner-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .partner-item{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .partner-logo{
+    width:3rem;
+  }
+  .partner-logo-sm{
+    width:3rem;
+  }
+  .partner-logo-lg{
+    width:5rem;
   }
 
   .introduced {

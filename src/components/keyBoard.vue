@@ -1,16 +1,21 @@
 <template>
 <view class="keyBoard" v-if="isOpen">
     <view class="mask"></view>
-    <view class="shower">
-        <u-icon class="close" name="close" @click="isOpen=0"></u-icon>
+        <view class="shower">
+        <u-icon class="close" name="close" @click="handleCancel"></u-icon>
        
-        <view class="title">{{$t(title||"支付密码")}}</view>
+        <view class="title">{{$t(title||"输入支付密码")}}</view>
         <view class="words">
-            <view class="key" v-for="(c,i) in keys" key="i">
+            <view class="key" v-for="(c,i) in keys" :key="i">
                 <text class="password" v-if="c!=''"></text>
                 <text class="cursor" v-if="current==i&&c==''"></text>
             </view>
           
+        </view>
+        <view class="tip-text">{{$t('请确认周边安全并输入您的支付密码')}}</view>
+        <view class="action-btns">
+            <view class="btn ghost" @click="handleCancel">{{$t('在想想')}}</view>
+            <view class="btn primary" @click="handleConfirm">{{$t('确认')}}</view>
         </view>
     </view>
     <view class="board">
@@ -66,6 +71,19 @@ export default {
         that.set(1,"isOpen");
        
     },
+    handleCancel(){
+        this.set(0,"isOpen");
+        this.keys=new Array(this.length).fill("");
+        this.current=0;
+    },
+    handleConfirm(){
+        var value=(this.keys||[]).join("").replace(/,/g,"");
+        if(value.length!==this.length){
+            return;
+        }
+        this.set(0,"isOpen");
+        this.$emit('submit',value);
+    },
     chose(event,type,index){
         var that=this,current=this.current,char=event;
       
@@ -80,8 +98,7 @@ export default {
         that.current=current+1;
        
         if(char=="o"||that.current==that.keys.length){
-            this.set(0,"isOpen");
-            this.$emit('submit', (that.keys+"").replace(/,/g,""));
+            this.handleConfirm();
             return false;
         }
       
@@ -107,42 +124,47 @@ export default {
         display: flex;
 	    position: fixed;
         background:#000;
-        border-radius:10px;
-        width:80%;
+        border-radius:18px;
+        width:86%;
         margin:0 auto;
-        left: 10%;
-        top: calc(50% - $_heightS);
-        height: $_heightS;
+        left: 7%;
+        top: 18%;
+        padding:1.5rem 1.2rem 1rem;
+        min-height: $_heightS + 4rem;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-evenly;
         .close{
-            width:1rem;
-            height:1rem;
+            width:1.4rem;
+            height:1.4rem;
             position:absolute;
-            right:-0.2rem;
-            top:0.2rem;
+            right:0.6rem;
+            top:0.6rem;
         }
         .title{
             text-align:center;
             color:#fff;
-            font-size:1rem;
+            font-size:1.3rem;
             font-weight:600;
+            margin-bottom:1rem;
         }
         .words{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: space-evenly;
+            margin:0 auto;
+            width:100%;
+            max-width:18rem;
             .key{
                 position:relative;
-                width:38px;
-                height:34px;
-                line-height:34px;
-                font-size:16px;
+                width:46px;
+                height:46px;
+                line-height:46px;
+                font-size:18px;
                 white-space:nowrap;
-                border:1px solid #484f5a;
-                border-radius:3px;
+                border:1px solid #08E07F;
+                border-radius:14px;
                 text-align:center;
                 @keyframes cursorAni{
                     0%,50%{opacity:1}
@@ -157,7 +179,7 @@ export default {
                     height:18px;
                     width:18px;
                     border-radius:50%;   
-                    background:#484f5a;
+                    background:#08E07F;
                 }
                 .cursor{
                     position:relative;
@@ -165,15 +187,46 @@ export default {
                     -moz-border-radius:1px;
                     -webkit-border-radius:1px;
                     border-radius:1px;
-                    height:35px;
-                    color:#484f5a;
-                    background-color:#484f5a;
+                    height:40px;
+                    color:#08E07F;
+                    background-color:#08E07F;
                     -webkit-animation:cursorAni 1s infinite linear;
                     animation:cursorAni 1s infinite linear;
                     z-index:10;
                     vertical-align:top
                 }
                 
+            }
+        }
+        .tip-text{
+            margin-top:1rem;
+            text-align:center;
+            font-size:0.85rem;
+            color:#08E07F;
+        }
+        .action-btns{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-top:1.5rem;
+            gap:0.8rem;
+            .btn{
+                flex:1;
+                height:3rem;
+                border-radius:999px;
+                text-align:center;
+                line-height:3rem;
+                font-size:1rem;
+                font-weight:600;
+            }
+            .ghost{
+                border:1px solid #08E07F;
+                color:#FFFFFF;
+                background:rgba(8,224,127,0.04);
+            }
+            .primary{
+                color:#000;
+                background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);
             }
         }
        

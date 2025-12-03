@@ -28,7 +28,7 @@ export default defineConfig({
 		allowedHosts: ["*"],
 		proxy: {
 			'/api': {
-				target: 'http://wintermute.app:8180/', 
+				target: 'https://wintermute-app.dradish.xyz/api/', 
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ''),
 				configure: (proxy) => {

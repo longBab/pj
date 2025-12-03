@@ -3,36 +3,47 @@
   <navBar :back="back" :title="title">
   </navBar>
   <view class="wrapper">
-    <view class="chat"></view>
+    <view class="chat">
+      <image src="/static/images/image261.png" mode="widthFix" class="chat-image" />
+    </view>
     <view class="statistics">
-      <view class="item" :class="{active:showType==1}" @click="chose($event,'showType',1)">
+      <view class="item item-top" :class="{active:showType==1}" @click="chose($event,'showType',1)">
+        <view class="item-icon">
+          <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
+          <image src="/static/images/fi-ss-chart-tree.png" mode="widthFix" class="icon-inner" />
+        </view>
+        <view class="item-content">
         <view class="r01">{{$t('团队数据')}}</view>
-        <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}$</view>
-        <view class="bdlg"></view>
+          <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}U</view>
+        </view>
       </view> 
       
-      <view class="item" :class="{active:showType==12}" @click="chose($event,'showType',12)">
+      <view class="item item-top" :class="{active:showType==12}" @click="chose($event,'showType',12)">
+        <view class="item-icon">
+          <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
+          <image src="/static/images/fi-ss-credit-card.png" mode="widthFix" class="icon-inner" />
+        </view>
+        <view class="item-content">
         <view class="r01">{{$t('团队量化')}}</view>
-        <view class="r02">+{{formatMoney(statistics.s12,2)}}$</view>
-        <view class="bdlg"></view>
+          <view class="r02">+{{formatMoney(statistics.s12,2)}}U</view>
+        </view>
       </view> 
 
-      <view class="item" :class="{active:showType==9}" @click="chose($event,'showType',9)">
+    </view>
+    <view class="bottom-container">
+      <view class="item item-bottom" :class="{active:showType==9}" @click="chose($event,'showType',9)">
         <view class="r01">{{$t('深度数据')}}</view>
-        <view class="r02">+{{formatMoney(statistics.s9,2)}}$</view>
-        <view class="bdlg"></view>
+        <view class="r02">+{{formatMoney(statistics.s9,2)}}U</view>
       </view> 
 
-      <view class="item" :class="{active:showType==3}" @click="chose($event,'showType',3)">
+      <view class="item item-bottom" :class="{active:showType==3}" @click="chose($event,'showType',3)">
         <view class="r01">{{$t('量化数值')}}</view>
         <view class="r02">+{{formatMoney(statistics.s3,2)}}U</view>
-        <view class="bdlg"></view>
       </view> 
       
-      <view class="item" :class="{active:showType==10}" @click="chose($event,'showType',10)"  v-if="false">
+      <view class="item item-bottom" :class="{active:showType==10}" @click="chose($event,'showType',10)">
         <view class="r01">{{$t('代数数据')}}</view>
-        <view class="r02">+{{formatMoney(0,2)}}U</view>
-        <view class="bdlg"></view>
+        <view class="r02">+{{formatMoney(statistics.s10,2)}}U</view>
       </view> 
     </view>
     <view class="split-row" >
@@ -78,7 +89,7 @@ export default {
       spreadId:0,
       preSpreadId:0,
       user:{statisticInvestsTeams:0,statisticIncomes:0,statisticIncomesTeams:0},
-      statistics:{s3:0,s7:0,s9:0,s10:0,s11:0,s12:0},
+      statistics:{s3:0,s7:0,s9:0,s10:700,s11:0,s12:0},
       rows:[]
     };
   },
@@ -123,46 +134,116 @@ export default {
       
 <style lang="scss" scoped>
 .team {
-  .chat,.statistics,.split-row{width:93%;margin:0 auto;}
+  .chat,.statistics,.split-row,.bottom-container{width:93%;margin:0 auto;}
   .split-row .cc{font-size:0.68rem;}
   .chat{
-    height:7rem;
-    background:url(../../static/images/DCenter-chat.png) center center no-repeat;
-    background-size:10rem auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    .chat-image{
+      width: 100%;
+      max-width: 100%;
+      padding:0 1rem;
+    }
   }
   .statistics{
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 0.8rem;
     .item{
       position:relative;
       display:flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      width:48%;height:3.5rem;
-      margin:0.5rem auto 0 auto;
-      text-align: center;
-      border-image-source:linear-gradient(180deg, rgba(59, 211, 211, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-      border-image-slice: 1;
-      border-image-repeat: round;
-      clip-path: inset(0 round 10px);
-      background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
-      .r02{color:#0EFFB0;}
-      .bdlg{
-        position: absolute;
-        top: 1px;
-        bottom: -1px;
-        right: 1px;
-        left: 1px;
-        z-index:1;
-        border: 1px solid rgba(59, 211, 211, 0.2);
-        border-radius: 10px;
+      border-radius: 10px;
+      .r01{
+        font-size: 0.85rem;
+        color: #FFFFFF;
+        margin-bottom: 0.3rem;
       }
-      &.active{
-          background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
-          border-radius:10px; 
-         .r02 {color:#000;} 
-          
+      .r02{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0EFFB0;
+      }
+      &.item-top{
+        flex-direction: row;
+        align-items: center;
+        width: 48%;
+        height: 4rem;
+        padding: 1rem;
+        background: url(/static/images/Rectangle74.png) center center no-repeat;
+        background-size: 100% 100%;
+        .item-icon{
+          position: relative;
+          width: 2.5rem;
+          height: 2.5rem;
+          margin-right: 0.8rem;
+          .icon-bg{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          .icon-inner{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            width: 1.2rem;
+            height: 1.2rem;
+          }
+        }
+        .item-content{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        
+      }
+      &.item-bottom{
+        flex: 1;
+        height: 3.5rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        text-align: right;
+        padding: 0.5rem 1rem;
+      }
+    }
+  }
+  .bottom-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: url(/static/images/Rectangle69.png) center center no-repeat;
+    background-size: 100% 100%;
+    .item{
+      flex: 1;
+      height: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      text-align: right;
+      padding: 0.5rem 1rem;
+      .r01{
+        font-size: 0.75rem;
+        color: #FFFFFF;
+        margin-bottom: 0.3rem;
+      }
+      .r02{
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #0EFFB0;
       }
     }
   }

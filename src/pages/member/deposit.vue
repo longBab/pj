@@ -1,8 +1,7 @@
 <template>
   <view class="deposit body" :class="$store.state.setting.theme">
     <navBar :title="title" :back="back"></navBar>
-    <!-- <image src="../static/image/homebg.png" class="bg_img1"></image> -->
-    <view class="wrapper">
+    <view class="wrapper" style="padding-top:5rem;">
 
       <view class="page">
         <view class="title">{{$t('BSC链')}}</view>
@@ -10,13 +9,9 @@
           <view class="img"></view>
         </view>
         <view class="split-row mt5">
-          <view class="cl"></view>
-          <view class="cdl"></view>
           <view class="cc">
             <text>{{ $t('您的专属充值地址') }}</text>
           </view>
-          <view class="cdr"></view>
-          <view class="cr"></view>
         </view>
         <view class="mt5 wc93 dp address">
           <view class="f1 text">
@@ -26,8 +21,8 @@
             <u-icon name="copy" style="color:inherit" size="28" />
           </view>
         </view>
-        <view class="wc93 info">
-          <u-icon name="info-circle-fill" size="16"></u-icon>
+        <view class="wc93 info" style="font-size:.5rem">
+          <image src="/static/images/Vector.png" mode="widthFix" class="info-icon" />
           {{ $t('每个用户具备独立地址，该地址入账均算入用户充值。') }}
         </view>
         <button class="btn">
@@ -85,15 +80,19 @@ export default {
 .deposit {
   .split-row .cc{font-size:0.8rem;}
   .page {
+    position: relative;
     width: 80%;
-    background: linear-gradient(180deg, rgba(33, 34, 33, 0.3) 0%, rgba(41, 45, 43, 0.3) 100%);
-    border: 1px solid #134D3A;
-    padding: 0 0 2rem 0;
+    background: url(/static/images/Subtract.png) center center no-repeat;
+    background-size: cover;
+        padding:  2rem;
+        height:30rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: space-around;
+    /* flex-wrap: nowrap; */
+    /* justify-content: center; */
+    background-size: 100% 100%;
 
     .title,
     .qrcode,
@@ -108,7 +107,7 @@ export default {
       font-weight: 600;
       color: #0EFFB0;
       line-height: 2.5rem;
-
+      margin-top: 1rem;
     }
 
     .qrcode {
@@ -156,17 +155,19 @@ export default {
       .cc {
         font-weight: 600;
         color: #0EFFB0;
+        font-size: 0.8rem;
       }
     }
   }
 
   .address {
-    border: 1px solid #417B68;
-    background: #0EFFB01A;
+    position: relative;
     border-radius: 5px;
     height: 2rem;
     line-height: 2rem;
     padding: 0 0.7rem;
+    background: url(/static/images/Rectangle11.png) center center no-repeat;
+    background-size: 100% 100%;
 
     .text {
       overflow: hidden;
@@ -178,16 +179,30 @@ export default {
     height: 2rem;
     line-height: 2rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    .info-icon {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
   }
 
   .btn {
-    height: 1.5rem;
-    line-height: 1.5rem;
+    height: 2.3rem;
+    width:10rem;
+    line-height: 2.3rem;
     font-size: 0.7rem;
-    background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+    background: linear-gradient(90deg, #08E07F , #1AFFAA 100%);
+    border-radius:15px;
+    font-weight:600;
+    font-size:.8rem;
   }
 
   .wrapper {
+    position: relative;
+    z-index: 1;
     //justify-content: flex-start;
     margin: 0.5rem auto;
     color: #ffffff;

@@ -4,49 +4,58 @@
   </navBar>
   <view class="wrapper">
     <view class="tabs">
-        <text class="item buy" :class="{active:type==0}" @click="chose($event,'type',0)">购买</text>
-        <text class="item sell" :class="{active:type==1}" @click="chose($event,'type',1)">出售</text>
+      <view class="tabs-container">
+        <view class="tabs-slider" :style="{transform: `translateX(${type === 0 ? 0 : 100}%)`}"></view>
+        <text class="item buy" :class="{active:type==0}" @click="chose($event,'type',0)">{{$t('购买')}}</text>
+        <text class="item sell" :class="{active:type==1}" @click="chose($event,'type',1)">{{$t('出售')}}</text>
       </view>
+    </view>
 
-      <view class="statistics">
-        <view class="item">
-          <u-icon  name="order" style="color:inherit" size="28" />
-          0.00 USD
-        </view>
-        <view class="item">
-          金额
-          <u-icon  name="arrow-thin-up" style="color:inherit" size="28" />
-        </view>
-        <view class="item">
-          支付
-          <u-icon  name="arrow-thin-up" style="color:inherit" size="28" />
-        </view>
-        <view class="item">
-          {{$t('神盾')}}
-          <u-icon  name="order" style="color:inherit" size="28" />
+    <view class="statistics">
+      <view class="stat-item input-item">
+        <image class="usdt-icon" src="/static/images/USDT.png" mode="widthFix" />
+        <text>0.00 USD</text>
+      </view>
+      <view class="stat-item dropdown-item">
+        <text>{{$t('金额')}}</text>
+        <image class="dropdown-icon" src="/static/images/fi-rr-angle-left.png" mode="widthFix" />
+      </view>
+      <view class="stat-item dropdown-item">
+        <text>{{$t('支付')}}</text>
+        <image class="dropdown-icon" src="/static/images/fi-rr-angle-left.png" mode="widthFix" />
+      </view>
+      <view class="stat-item shield-item" :class="{active: shieldActive}" @click="shieldActive = !shieldActive">
+        <text>{{$t('神盾')}}</text>
+       
+        <view class="shield-icon-bg">
+          <image v-if="shieldActive" class="shield-check" src="/static/images/Vector18.png" mode="widthFix" />
         </view>
       </view>
+    </view>
     
     <scroll-view scroll-y="true" scroll-x="false">
 
       <view class="record" v-for="(row,i) in rows" :key="i" >
+        <view class="record-badge" v-if="i === 0">
+          <u-icon name="clock" size="12" color="#fff" />
+          <text>{{$t('限时')}}</text>
+        </view>
         <view class="row r01">{{$t(row.name)}}</view>
-        <view class="row r02">30日成单{{row.orderPlacementNum}}({{row.conversionRate}}%)</view>
-        <view class="row r03 dp">
-          <view class="f1">¥{{row.usdtPrice}} / <text class="currency">$</text></view>
-          <view>
+        <view class="row r02">30日成單 {{row.orderPlacementNum}} ({{row.conversionRate}}%)</view>
+        <view class="row r03">
+          <view class="price-section">
+            <text class="price">¥{{row.usdtPrice}}</text>
+            <text class="price-unit"> /USDT</text>
+          </view>
+          <view class="btn-wrapper">
             <view class="btn" :class="{sell:type===1,buy:type===0}" @click="chose(row,'goto')">{{$t(type===0?'购买':'出售')}}</view>
           </view>
         </view>
         
         <view class="row r04">
           <view class="c01">限額 {{formatMoney(row.minQuota,2)}} - {{formatMoney(row.maxQuota,2)}} CNY</view>
-          <view class="c02">可用余额 {{formatMoney(row.balance,2)}} $</view>
+          <view class="c02">可用余额 {{formatMoney(row.balance,2)}} USDT</view>
         </view>
-        <view class="bdlg tl"></view>
-        <view class="bdlg tr"></view>
-        <view class="bdlg bl"></view>
-        <view class="bdlg br"></view>
       </view>
 
      
@@ -67,7 +76,8 @@ export default {
       title:"一键兑换",
       type:0,
       rows:[],
-      currentTab:'buy'
+      currentTab:'buy',
+      shieldActive: true
     };
   },
   onReady() {
@@ -121,152 +131,199 @@ export default {
       
 <style lang="scss" scoped>
 .exchange {
-  $_marginT:0.5rem;//面板下移
-  $_heightT:1.5rem;//tab,statistics高
   .tabs{
-    $_height:$_heightT;
     width:70%;
-    margin:$_marginT auto;
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-evenly;
-    border-radius:10px;
-    border: 1px solid #417B68;
-    .item{
-      width:50%;height:100%;
-      text-align: center;
-      line-height:$_height;
-      color:#fff;
-      &.buy.active{
+    margin: 0.5rem auto;
+      .tabs-container{
+        position: relative;
+        display:flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
         border-radius:10px;
-        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-        color:#000;
+        padding: 0;
+        overflow: hidden;
+        background: url(/static/images/Rectangle75.png) center center no-repeat;
+        background-size: 100% 100%;
+        .tabs-slider{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(90deg, #0EFFB1, #31B9D4);
+          border-radius: 10px;
+          transition: transform 0.3s ease;
+          z-index: 1;
+        }
+      .item{
+        position: relative;
+        flex: 1;
+        height: 2.4rem;
+        text-align: center;
+        line-height: 2.4rem;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        z-index: 2;
+        transition: color 0.3s ease;
+        &.active{
+          color: #000;
+          font-weight: 600;
+        }
       }
-      &.sell.active{
-        border-radius:10px;
-        background-color: #F74660;
-        color:#fff;
-      }
-
     }
   }
   .statistics{
-    $_height:$_heightT;
     width:91%;
-    margin:$_marginT auto;
+    margin: 0.5rem auto;
     display:flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: center;
-    .item{
-      height:100%;
-      margin:0 0 0 0.5rem;
-      text-align: center;
-      line-height:$_height;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    .stat-item{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.4rem 0.6rem;
       border: 1px solid #417B68;
-      opacity: 0.5;
-      border-radius: 5px;
-      border-width: 1px;
-      padding:0 0.25rem 0 0.25rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      color: #FFFFFF;
+      &.input-item{
+        flex: 1.5;
+        .usdt-icon{
+          width: 1rem;
+          height: 1rem;
+        }
+      }
+      &.dropdown-item{
+        flex: 1;
+        background: transparent;
+        .dropdown-icon{
+          width: 0.6rem;
+          height: 0.6rem;
+        }
+      }
+      &.shield-item{
+        flex: 0.8;
+        background: transparent;
+        .shield-icon-bg{
+          width: 1rem;
+          height: 1rem;
+          position: relative;
+          background: url(/static/images/Ellipse.png) center center no-repeat;
+          background-size: contain;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .shield-check{
+            width: 0.6rem;
+            height: 0.6rem;
+          }
+        }
+        &.active{
+        }
+      }
     }
   }
   .record{
-    $_radius:10px;
-    $_height:auto;
     position: relative;
-    width: 93%;height:$_height;
-    margin:0.4rem auto;
-    padding:0.4rem 0 0.1rem 0;
-    display:flex;
-    flex-direction: column;
-    align-content: space-around;
-    flex-wrap: wrap;
-    border: 1px solid ;
-    background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
-    border-image-source: linear-gradient(180deg, rgba(59, 211, 211, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-    border-image-slice: 1;
-    border-image-repeat: round;
-    clip-path: inset(0 round $_radius);
+    width: 93%;
+    margin: 0.6rem auto;
+    padding: 1rem 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(8, 224, 127, 0.3);
+    border-radius: 12px;
+    .record-badge{
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      padding: 0.2rem 0.5rem;
+      background: #F74660;
+      border-radius: 12px;
+      font-size: 0.65rem;
+      color: #FFFFFF;
+      z-index: 1;
+    }
     .row{
-      width:90%;height:1.1rem;line-height:1.1rem;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      &:last-child{
+        margin-bottom: 0;
+      }
     }
     .r01{
-      font-size:0.7rem;color:#fff;font-weight:500;
-      height:1.3rem;line-height:1.3rem;
+      font-size: 0.85rem;
+      color: #FFFFFF;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
     }
     .r02{
-      background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 0.6rem;
     }
     .r03{
-      font-size:0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      .price-section{
+        display: flex;
+        align-items: baseline;
+        .price{
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #FFFFFF;
+        }
+        .price-unit{
+          font-size: 0.8rem;
+          color: rgba(255, 255, 255, 0.7);
+          margin-left: 0.2rem;
+        }
+      }
+      .btn-wrapper{
+        display: flex;
+        align-items: center;
+      }
     }
     .r04{
-      border-top: 0.5px dashed #0EFFB0;
-      color:#929292;
-      display:flex;
-      text-align:center;
-      justify-content: space-around;
-      font-size:0.5rem;
-      
-    }
-    .currency{
-
-    }
-  
-    .bdlg{
-        position: absolute;
-        width:$_radius;height:$_radius;
-        z-index:1;
-        &.tl{
-          top:-1px;left:-1px;
-          border-top-left-radius:$_radius;
-          border-top: 1px solid rgba(59, 211, 211, 0.2);
-          border-left: 1px solid rgba(59, 211, 211, 0.1);
-        }
-        &.tr{
-          top:-1px;right:-1px;
-          border-top-right-radius:$_radius;
-          border-top: 1px solid rgba(59, 211, 211, 0.5);
-          border-right: 1px solid rgba(59, 211, 211, 0.5);
-        }
-        &.bl{
-          bottom:-1px;left:-1px;
-          border-bottom-left-radius:$_radius;
-          border-bottom: 1px solid rgba(59, 211, 211, 0.08);
-          border-left: 1px solid rgba(59, 211, 211, 0.08);
-        }
-        &.br{
-          bottom:-1px;right:-1px;
-          border-bottom-right-radius:$_radius;
-          border-bottom: 1px solid rgba(59, 211, 211, 0.04);
-          border-right: 1px solid rgba(59, 211, 211, 0.04);
-        }
-
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.6rem;
+      border-top: 1px dashed rgba(8, 224, 127, 0.3);
+      font-size: 0.7rem;
+      color: #929292;
+      .c01, .c02{
+        flex: 1;
       }
-
+      .c02{
+        text-align: right;
+      }
+    }
   }
   .btn {
-      border-radius: 5px;
-      width: 2.3rem;
-      height: 1rem;
-      line-height: 1rem;
+      border-radius: 8px;
+      width: 3rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
       text-align: center;
-      font-size: 0.5rem;
-      margin: 0 auto;
+      font-size: 0.75rem;
+      font-weight: 600;
       &.buy{
-        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+        background: linear-gradient(90deg, #08E07F, #1AFFAA);
         color: #000000;
       }
       &.sell{
         background-color: #F74660;
         color: #fff;
-        
       }
-      
     }
    
   .wrapper{

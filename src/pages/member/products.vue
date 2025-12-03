@@ -1,18 +1,54 @@
 <template>
 <view class="products body">
     <navBar :title="title" :back="back"></navBar>
-    <view class="wrapper">
+    <view class="wrapper" style="padding-top:0rem;">
         <view class="statistics">
-            <view class="col">
-               <text class="title"> {{$t('今日累计收益')}} </text>
-               <text class="value">{{formatMoney(user.statisticIncome3sDays,2)}} $</text>
+            <view class="card-content">
+                <text class="title">{{$t('当前累计收益')}}</text>
+                <text class="value">${{formatMoney(user.statisticIncome3s,2)}}</text>
+                <view class="total-chip">
+                    <text class="label">{{$t('个人总收益')}}</text>
+                    <text class="amount">≈ 2.36%</text>
+                </view>
             </view>
-            <view class="total" v-if="false">
-                {{$t('量化总产出')}}~0
+            <view class="hero-wrapper">
+                <image class="card-hero" src="/static/images/image260.png" mode="widthFix" />
             </view>
         </view>
-        
-        <view class="statBar">
+
+        <view class="quantization-section">
+        <view class="split-row">
+            <view class="cl" style="margin-top:.8rem;"></view>
+            <view class="cc">
+                <text class="section-title">{{$t('请选择量化周期')}}</text>
+
+            </view>
+        <view class="cr" style="margin-top:.8rem;"></view>
+      </view>
+            <view class="plan-grid">
+                <view
+                  class="plan-card"
+                  v-for="(plan, index) in quantizationPlans"
+                  :key="'plan-' + index"
+                >
+                    <text class="plan-name">{{ plan.name }}</text>
+                    <text class="plan-desc">{{ plan.desc }}</text>
+                    <view class="plan-row">
+                        <text class="label">{{$t('收益区间')}}：</text>
+                        <text class="value">{{ plan.incomeRange }}</text>
+                    </view>
+                    <view class="plan-row">
+                        <text class="label">{{$t('适用策略')}}：</text>
+                        <text class="value">{{ plan.strategy }}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="view-assets-btn">
+                <text>{{$t('查看我的量化资产')}}</text>
+            </view>
+        </view>
+
+        <!-- <view class="statBar">
             <view class="item">
                <text class="title"> {{$t('量化总参与')}} </text>
                <text class="value">{{formatMoney(user.statisticInvestsTotals,2)}} $</text>
@@ -27,16 +63,56 @@
                <text class="title"> {{$t('量化总产出')}} </text>
                <text class="value"> {{formatMoney(user.statisticIncome3s,2)}} $</text>
             </view>
+        </view> -->
+        
+        <!-- <view class="summary-cards">
+            <view class="summary-card">
+                <view class="summary-icon-box">
+                    <image class="summary-icon" src="/static/images/image253.png" mode="widthFix" />
+                </view>
+                <view class="summary-divider"></view>
+                <view class="summary-text">
+                    <text class="label">我的投资额</text>
+                    <text class="value">{{formatMoney(user.statisticInvestsTotals,2)}}U</text>
+                </view>
+            </view>
+            <view class="summary-card">
+                <view class="summary-icon-box">
+                    <image class="summary-icon" src="/static/images/image254.png" mode="widthFix" />
+                </view>
+                <view class="summary-divider"></view>
+                <view class="summary-text">
+                    <text class="label">最终回报</text>
+                    <text class="value">{{formatMoney(user.statisticInvestsTotals + user.statisticIncome3s,2)}}U</text>
+                </view>
+            </view>
+            <view class="summary-card">
+                <view class="summary-icon-box">
+                    <image class="summary-icon" src="/static/images/image255.png" mode="widthFix" />
+                </view>
+                <view class="summary-divider"></view>
+                <view class="summary-text">
+                    <text class="label">最终受益</text>
+                    <text class="value">+{{formatMoney(user.statisticIncome3s,2)}}U</text>
+                </view>
+            </view>
         </view>
+         <view class="supported-assets">
+            <text class="label">支持币种</text>
+            <text class="value">BTC、ETH、FIL、SOL</text>
+        </view> -->
 
-        <view class="split-row s01">
+        
+       
+
+        <!-- <view class="split-row s01">
           <view class="cl"></view>
           <view class="cc">
             
             <picker :range="types" @change="chose($event,'type')"><text>{{ $t('灵犀·量化仓选择') }}</text></picker>
           </view>
           <view class="cr"></view>
-        </view>
+        </view> -->
         <scroll-view scroll-y="true" scroll-x="false">
             <view class="records">
                 <view @click="gotoPage('product?id='+item.id)" class="item panel" v-for="(item,i) in rows" :key="i">
@@ -54,8 +130,7 @@
                 </view>
 
             </view>
-            
-        </scroll-view>
+        </scroll-view> 
     </view>
 </view>
 </template>
@@ -72,7 +147,45 @@ export default {
         types:["灵犀·闪电策略","灵犀·灵动策略","灵犀·趋势策略","灵犀·矩阵策略"],
         typesMap:[0,1,2,3],
         productType:-1,
-        rows:[]
+        rows:[],
+        quantizationPlans: [
+            {
+                name: "7天量化资源包",
+                desc: "短周期·适合体验与滚动复投",
+                incomeRange: "0.45%~0.60% / 日",
+                strategy: "K-Lite α·高频网格",
+            },
+            {
+                name: "15天加速量化",
+                desc: "折中周期·兼顾流动性和收益",
+                incomeRange: "0.60%~0.75% / 日",
+                strategy: "K-Lite β·趋势跟随",
+            },
+            {
+                name: "30天稳健量化",
+                desc: "主推方案·适合普通用户",
+                incomeRange: "0.70%~0.90% / 日",
+                strategy: "3X 合约·现货对冲",
+            },
+            {
+                name: "60天量化资源包",
+                desc: "中长期·适合体验与滚动复投",
+                incomeRange: "0.85%~1.05% / 日",
+                strategy: "多因子择时 + 套利",
+            },
+            {
+                name: "90天稳健量化",
+                desc: "多策略组合·收益更平滑",
+                incomeRange: "0.95%~1.15% / 日",
+                strategy: "K-Alpha 90·全市场",
+            },
+            {
+                name: "7天量化资源包",
+                desc: "短周期·适合体验与滚动复投",
+                incomeRange: "0.45%~0.60% / 日",
+                strategy: "现货 + 合约 + 套利联动",
+            },
+        ]
         };
     },
     onLoad(sender) {
@@ -113,61 +226,205 @@ export default {
 
 <style lang="scss" scoped>
 .products {
-    .statistics,.statBar,.split-row,.records{width:96%;margin:0.5rem auto;}
+    .statistics,.summary-cards,.supported-assets,.statBar,.split-row,.records{width:96%;margin:0.5rem auto;}
     .statistics{
-        background: url(../../static/images/member/products_bg01.png) center center no-repeat;
-        background-size:60% 90%;
-        height:8rem;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-content: center;
-        position: relative;
-        margin-bottom:2.8rem;
-        .total{
-            position:absolute; 
-            bottom:-2.3rem;
-            background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
-            border: 1px solid #0EFFB0;
-            border-radius:10px;
-            padding:0.2rem 0.4rem 0.2rem 0.4rem;
-
-        }
-         .col{
-            width:80%;
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            justify-content: space-around;
-            height:3rem;
-            //border:1px solid #fff;   
-            .value{
-                color:#0EFFB0;
+        width:96%;
+        margin:0.8rem auto 1.6rem auto;
+        min-height:10.5rem;
+        padding:1.8rem 1.6rem;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        background-size:100% 100%;
+        color:#fff;
+        .card-content{
+            display:flex;
+            flex-direction:column;
+            gap:0.8rem;
+            .title{
                 font-size:1rem;
+                opacity:0.9;
+            }
+            .value{
+                font-size:2rem;
+                font-weight:700;
+                color:#0EFFB0;
             }
         }
-        
+        .total-chip{
+            width:10.2rem;
+            margin-top:0.9rem;
+            padding:0.45rem 1rem;
+            background:url(/static/images/Rectangle1121.png) center center no-repeat;
+            background-size:100% 100%;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            font-size:0.8rem;
+            .amount{
+                color:#0EFFB0;
+                font-weight:600;
+                margin-left:0.3rem;
+            }
+        }
+        .hero-wrapper{
+            position:relative;
+            top:0;
+        }
+        .card-hero{
+            width:14rem;
+            bottom:1rem;
+            left:-1.5rem;
+            height:auto;
+        }
+    }
+    .summary-cards{
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom:1.2rem;
+        .summary-card{
+            flex:1;
+            margin:0 0.3rem;
+            padding:.6rem 0.6rem;
+            background:url(/static/images/Rectangle1120.png) center center no-repeat;
+            background-size:100% 100%;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            color:#fff;
+            &:first-child{margin-left:0;}
+            &:last-child{margin-right:0;}
+        }
+        .summary-icon-box{
+            width:5.3rem;
+            height:5.3rem;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:0.9rem;
+            .summary-icon{
+                width:80%;
+            }
+        }
+        .summary-divider{
+            width:80%;
+            height:1px;
+            margin:0.1rem 0 0.9rem 0;
+            border-bottom:2px dotted rgba(8,224,127,0.65);
+        }
+        .summary-text{
+            text-align:center;
+            .label{
+                font-size:0.9rem;
+                margin-bottom:0.4rem;
+            }
+            .value{
+                font-size:1.5rem;
+                font-weight:700;
+                color:#0EFFB0;
+            }
+        }
+    }
+    .supported-assets{
+        width:96%;
+        margin:0rem auto 1.2rem;
+        padding:0.3rem 1.5rem;
+        background:url(/static/images/Rectangle650.png) center center no-repeat;
+        background-size:100% 100%;
+        display:flex;
+        flex-direction: row;
+        align-items:center;
+        justify-content: space-between;
+        font-size:0.95rem;
+        color:#fff;
+        .label{
+            color:#0EFFB0;
+            font-weight:600;
+        }
+        .value{
+            color:rgba(255,255,255,0.9);
+            letter-spacing:0.15rem;
+            font-size:0.7rem;
+        }
     }
     .statBar{
-        border: 1px solid #1BA27A;
-        border-radius:10px;
-        display: flex;
+        margin:0.8rem auto 1.4rem auto;
+        padding:.3rem 1.8rem;
+        background:url(/static/images/Rectangle356.png) center center no-repeat;
+        background-size:100% 100%;
+        display:flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        padding:0.3rem;
+        justify-content: space-between;
+        align-items: center;
+        color:#fff;
         .item{
-         display: flex;
-         flex-direction: column;
-         text-align: center;
-         .value{font-weight:600;}
-
-            
+            flex:1;
+            text-align:center;
+            .title{
+                font-size:0.85rem;
+                margin-bottom:0.4rem;
+                opacity:0.9;
+            }
+            .value{
+                font-size:.95rem;
+                font-weight:700;
+                letter-spacing:0.05rem;
+            }
+        }
+    }
+    .quantization-section{
+        width:96%;
+        margin:0.2rem auto 0;
+        color:#fff;
+        .section-title{
+            width:100%;
+            text-align:center;
+            font-size:1.1rem;
+            font-weight:600;
+            letter-spacing:0.08rem;
+            margin:0.4rem 0 0.8rem;
+        }
+    }
+    .plan-grid{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:space-between;
+    }
+    .plan-card{
+        width:48.5%;
+        min-height:6.5rem;
+        padding:0.9rem 0.9rem 0.8rem;
+        background:url(/static/images/Rectangle374.png) center center no-repeat;
+        background-size:100% 90%;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-start;
+        color:#fff;
+        .plan-name{
+            font-size:0.95rem;
+            font-weight:600;
+            margin-bottom:0.15rem;
+        }
+        .plan-desc{
+            font-size:0.55rem;
+            opacity:0.85;
+            margin-bottom:0.5rem;
+        }
+        .plan-row{
+            display:flex;
+            font-size:0.55rem;
+            margin-top:0.1rem;
+            .label{
+                color:#0EFFB0;
+            }
+            .value{
+                margin-left:0.1rem;
+                color:#0EFFB0;
+            }
         }
     }
     .records{
-       
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -178,7 +435,8 @@ export default {
             flex-direction: column;  
             margin:0.2rem auto;
             width:calc(50% - 0.4rem);
-            background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
+            background:url(/static/images/Rectangle744.png) center center no-repeat;
+            background-size:100% 100%;
             /*font-size:0.5rem;*/
             .col{
                 display: flex;
@@ -193,8 +451,19 @@ export default {
                     overflow: hidden;
                 }
             }
-
         }
+    }
+    .view-assets-btn{
+        width:80%;
+        margin:1.5rem auto 2rem;
+        height:2.8rem;
+        background:url(/static/images/Rectangle3570.png) center center no-repeat;
+        background-size:100% 100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#0EFFB0;
+        font-size:0.95rem;
     }
     .wrapper{
         justify-content: flex-start;

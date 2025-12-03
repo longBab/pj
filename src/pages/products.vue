@@ -1,28 +1,35 @@
 <template>
-<view class="products body" :class="$store.state.setting.theme">
+<view class="products body" :class="$store.state.setting.theme" style="padding-bottom:3rem;">
     <navBar :back="back" :title="title">
     </navBar>
-    <view class="wrapper">
+    
+    <view class="wrapper" style="padding-top:5rem;">
         <view class="statistics">
-            <view class="r01">{{$t('组合年量化收益率(预估)')}}</view>
-            <view class="r02">{{formatMoney(statistics.value01,2)}}%</view>
-            <view class="r03"></view>
-            <view class="r04">{{$t('数据由链上真实成交与AI回测综合计算,仅作策略表现参考.')}}</view>
+            <view class="statistics-top">
+                <view class="icon-left">
+                    <image src="/static/images/image255.png" mode="widthFix" class="icon-image" />
+                </view>
+                <view class="content-right">
+                    <view class="r01">{{$t('组合年量化收益率(预估)')}}</view>
+                    <view class="r02">{{formatMoney(statistics.value01,2)}}%</view>
+                </view>
+            </view>
             <view class="rbb">
                 <view class="tab">
                     <text class="title">{{$t('当前托管本金')}}</text>
-                    <text class="value">{{formatMoney(user.statisticInvests,2)}}$</text>
-                    <view class="bdlg"></view>
+                    <text class="value">{{formatMoney(user.statisticInvests,2)}} U</text>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('今日已实现收益')}}</text>
-                    <text class="value">{{formatMoney(user.statisticIncome3sDays,2)}}$</text>
+                    <text class="value">+{{formatMoney(user.statisticIncome3sDays,2)}} U</text>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('策略运行胜率')}}</text>
                     <text class="value">{{formatMoney(statistics.value02,2)}}%</text>
                 </view>
             </view>
+            <view class="r04">{{$t('数据由链上真实成交与AI回测综合计算,仅作策略表现参考.')}}</view>
+
         </view>
 
         <view class="guider">
@@ -44,18 +51,19 @@
                         {{item.name}}
                     </view>
                     <view class="row r2">
-                        <text class="cl">{{$t('量化产出值')}}</text>
+                        <text class="cl" style="color:#999;">{{$t('量化产出值')}}</text>
                         <text class="cr">{{formatMoney(item.expectedRevenue*1+item.expectedRevenue01*1,2)}} %</text>
                     </view>
                     <view class="row rb">
-                        <text class="cl">{{$t('结算方式')}}</text>
+                        <text class="cl" style="color:#999;">{{$t('结算方式')}}</text>
                         <text class="cr">{{$t(releaseCycleMap[item.releaseCycle]||item.releaseCycle||'未知')}}</text> 
                     </view>
                     <view class="bdlg"></view>
                 </view>
             </view>  
+
         </scroll-view>
-        <view class="shower panel">
+        <view class="shower ">
             <view class="cl">
                 <view class="r1">{{$t('您当前选择的收益方案')}}</view>
                 <view class="r2">{{$t(row.name||"暂无")}}</view>
@@ -67,13 +75,12 @@
                     <text>{{$t('进入产品')}}</text>
                 </view>
             </view>
-            <view class="bdlg"></view>
         </view>
 
         <view class="tips" v-if="false">
             {{$t(tips)}}
         </view>
- 
+    
     </view>
     <mrFooter page="products" />
 </view>
@@ -183,48 +190,83 @@ export default {
 .products {
     .statistics,.guider,.list,.shower,.tips{width:93%;margin:0.5rem auto;}
     .statistics{
-        //height:10rem;
+        position: relative;
         display:flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        justify-content: space-around;
-        text-align: center;
-        /*font-size:0.6rem;*/
-        background: radial-gradient(141.52% 176.06% at -23.26% 15.47%, #1a6b5167 0%, #0b213139 47.64%, #16669f3b 100%),
-                linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #00000000 100%);
-        border: 1px solid #2abdbd2d;
-        border-width: 1px;
+        padding: 1.5rem 1rem;
         border-radius: 10px;
-        backdrop-filter: blur(2px);
-        padding: 0.2rem 0.3rem;
-        .r01{color:#fff;}
-        .r02{color:#fff;font-weight:800;font-size:1.3rem;}
-        .r03{height:0.1rem;}
-        .r03{/*font-size:0.6rem;*/}
+        background: url(/static/images/Rectangle3579.png) center center no-repeat;
+        background-size: 100% 100%;
+        .statistics-top{
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            .icon-left{
+                width: 40%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                .icon-image{
+                    position: absolute;
+                    width: 10rem;
+                }
+            }
+            .content-right{
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right;
+                .r01{
+                    color: #fff;
+                    font-size: 0.7rem;
+                    margin-bottom: 0.5rem;
+                }
+                .r02{
+                    color: #0EFFB0;
+                    font-weight: 800;
+                    font-size: 2rem;
+                    line-height: 1.2;
+                }
+            }
+        }
+        .r04{
+            color: #fff;
+            font-size: 0.6rem;
+            text-align: center;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
         .rbb{
             width:100%;
             display:flex;
             flex-direction: row;
-            justify-content: space-around;
-            margin:0.5rem auto;
-            /*font-size:0.62rem;*/
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
             .tab{
-                width:32%;
-                height:2.2rem;
+                flex: 1;
+                height: 3.5rem;
                 display:flex;
                 flex-direction: column;
-                justify-content: space-around;
-                border-radius:8px;
-                border: 1px solid;
-                border-image-source: linear-gradient(180deg, rgba(59, 211, 211, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-                border-image-slice: 1;
-                border-image-repeat: round;
-                clip-path: inset(0 round 8px);
-                background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-
-                //background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(18, 26, 36, 0.5333333333) 100%), linear-gradient(180deg, rgba(59, 211, 211, 0.2666666667), transparent);
-                //background-origin: border-box;
-                //background-clip: padding-box, border-box;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+                background: url(/static/images/Rectangle3565.png) center center no-repeat;
+                background-size: 100% 100%;
+                .title{
+                    color: #fff;
+                    font-size: 0.6rem;
+                    margin-bottom: 0.3rem;
+                }
+                .value{
+                    color: #0EFFB0;
+                    font-size: 1rem;
+                    font-weight: 700;
+                }
             }  
         }
     }
@@ -236,45 +278,47 @@ export default {
             display:flex;
             flex-direction: row;
             justify-content: space-between;
-            .cl.cr{width:50%;}
+            align-items: center;
+            margin-bottom: 0.4rem;
+            .cl{
+                font-size: 0.8rem;
+                font-weight: 600;
+                color:#FFFFFF;
+            }
             .cr{
-                padding:0 0.3rem 0 0.3rem;
+                padding:0 0.3rem;
+                border-radius: 999px;
                 border: 1px solid rgba(0, 255, 255, 0.44);
-                border-radius: 5px;
                 background: linear-gradient(90.79deg, rgba(146, 146, 146, 0.3) -5.06%, rgba(102, 102, 102, 0.3) 99.32%);
-                border-image-source: linear-gradient(109deg, #00FFFF -29.08%, #000000 46.11%, #00FFBD 117.09%),
-                linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
-                border-image-slice: 1;
-                border-image-repeat: round;     
             }
         }
         .tabs{
             $_height:1.8rem;
-            $_radius:20px;
-            width:100%;height:$_height;
-            margin:0.2rem auto;
+            $_radius:999px;
+            width:100%;
+            min-height:$_height;
+            padding:0.1rem;
+            margin:0.4rem auto 0;
             display:flex;
             flex-direction: row;
             justify-content: space-between;
-            align-content: center;
-            flex-wrap: wrap;
-            border: 1px solid rgba(0, 255, 255, 0.44);
-            border-radius: $_radius;
-            background: linear-gradient(90.79deg, rgba(146, 146, 146, 0.3) -5.06%, rgba(102, 102, 102, 0.3) 99.32%);
-            border-image-source: linear-gradient(109deg, #00FFFF -29.08%, #000000 46.11%, #00FFBD 117.09%),
-            linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
-            border-image-slice: 1;
-            border-image-repeat: round;    
-            /*font-size: 0.7rem;*/
-            line-height:$_height;
+            align-items: center;
+            background: url(/static/images/Rectangle3566.png) center center no-repeat;
+            background-size: 100% 100%;
+            border:none;
             .item{
-                padding:0 0.5rem 0 0.5rem;
+                flex: 1;
+                text-align: center;
+                height:$_height;
+                line-height:$_height;
+                font-size: 0.75rem;
                 font-weight:700;
+                color:#FFFFFF;
+                border-radius: $_radius;
+                transition: all 0.2s ease-out;
                 &.active{
-                    background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
-                    border-radius:$_radius;  
-                    height:$_height;
-                    color:#000;
+                    background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
+                    color:#000000;
                 }
             }
         }
@@ -286,17 +330,16 @@ export default {
         justify-content: space-around;
         align-content: space-between;
         flex-wrap: wrap;
-       
         .item{
             display:flex;
             flex-direction: column;
             width: calc(50% - 0.4rem);
             margin:0.4rem 0 0 0;
-            
-           
-                padding: 0.2rem;
-                background: linear-gradient(90.79deg, rgba(146, 146, 146, 0.2) -5.06%, rgba(102, 102, 102, 0.2) 99.32%);
-            
+            padding: 0.8rem;
+            background: url(/static/images/Rectangle3573.png) center center no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            border-radius: 0;
             .row{
                 display:flex;
                 flex-direction: row;
@@ -306,51 +349,73 @@ export default {
             .cl{width:4rem;}
             .cr{width:calc(100% - 4rem);color:#0EFFB0;text-align:right;}
             &.active{
-             border:1px solid transparent;
-             border-radius:10px;
-             box-shadow: 0px 0px 5px 5px #0effb0;
+                box-shadow: none;
+            }
+            .bdlg{
+                display:none;
             }
         }
     }
     .shower{
         $_widthR:5rem;
+        position: relative;
         display:flex;
-        padding:0.3rem;
-        /*font-size:0.5rem;*/
+        flex-direction: row;
+        padding: 1rem;
+        border-radius: 10px;
+        background: url(/static/images/Rectangle3580.png) center center no-repeat;
+        background-size: 100% 100%;
         .cl,.cr{height:100%;}
         .cl{
+            flex: 1;
             display:flex;
             flex-direction: column;
-            align-content: flex-start;
-            width:calc(100% - $_widthR);
-            padding:0 0.5rem 0 0;
-            .r1{color:#fff;}
-            .r2{color:#0EFFB0;}
-            .r3{color:#929292;}
+            align-items: flex-start;
+            justify-content: center;
+            padding-right: 1rem;
+            .r1{
+                color:#fff;
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            .r2{
+                color:#08E07F;
+                font-size: 1rem;
+                font-weight: 700;
+                margin-bottom: 0.3rem;
+            }
+            .r3{
+                color:#929292;
+                font-size: 0.65rem;
+                line-height: 1.4;
+            }
         }
         .cr{
             $_width:$_widthR;
             display:flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: center;
+            align-items: center;
             position: relative;
             
             .btn {
-                position:absolute;
-                z-index:3;
-                background: linear-gradient(270deg, #0EFFB1 0%, #31B9D4 100%);
-                border-radius: 20px;
-                margin-top: 1px;
-                color: #000000;
-                height: 2.5rem;
-                width: $_width;
-                font-size: 0.7rem;
-                text-align: center;
-                justify-content: center;
-                align-items: center;
+                width: 6rem;
+                height: auto;
+                background: linear-gradient(to right, #08E07F 100%, #1AFFAA 100%);
+                border-radius: 9990px;
+                color: #000;
+                font-size: 0.75rem;
                 font-weight: bold;
+                text-align: center;
                 display:flex;
                 flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0.3rem 0.5rem;
+                text{
+                    line-height: 1.3;
+                }
            }
         }
     }

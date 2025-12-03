@@ -2,23 +2,17 @@
   <view class="quantization body" :class="$store.state.setting.theme">
     <navBar :back="back" :title="title">
     </navBar>
-    <view class="wrapper">
-
-      <view class="navigations">
-        <view class="row panel" @click="gotoPage('incomes')">
-          <view class="cl">{{$t('产品收益')}}</view>
-          <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-          <view class="bdlg"></view>
+    <view class="wrapper" style="justify-content: flex-start;">
+      <view class="entry-list">
+        <view class="entry-card" @click="gotoPage('/pages/member/products')">
+          <text class="label">{{$t('产品收益')}}</text>
+          <image class="arrow-icon" src="/static/images/fi-rr-angle-left2.png" mode="widthFix" />
         </view>
-
-        <view class="row panel" @click="gotoPage('products')">
-          <view class="cl">{{$t('我的产品')}}</view>
-          <view class="cr"><u-icon  name="arrow-right" style="color:inherit;" size="24" /></view>
-          <view class="bdlg"></view>
+        <view class="entry-card">
+          <text class="label">{{$t('详情展示')}}</text>
+          <image class="arrow-icon" src="/static/images/fi-rr-angle-left2.png" mode="widthFix" />
         </view>
-     </view>
-       
-   
+      </view>
     </view>
   </view>
 </template>
@@ -65,12 +59,32 @@ export default {
       
 <style lang="scss" scoped>
 .quantization {
-   
-
   .wrapper {
-    padding: 2.4rem 0 0 0;
+    padding: 4rem 0 0 0;
     color: #fff;
   }
- 
-
+  .entry-list{
+    width:93%;
+    margin:0 auto;
+    display:flex;
+    flex-direction: column;
+    gap:1rem;
+  }
+  .entry-card{
+    width:100%;
+    min-height:3.4rem;
+    padding:0 1.2rem;
+    border-radius:18px;
+    background:url(/static/images/Rectangle02.png) center center no-repeat;
+    background-size:100% 100%;
+    border:1px solid rgba(8,224,127,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:0.95rem;
+    letter-spacing:0.04rem;
+    .arrow-icon{
+      width:0.65rem;
+    }
+  }
 }</style>

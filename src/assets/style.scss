@@ -29,7 +29,9 @@ uni-button,uni-view{font-family: "PingFangSC";}
 .wc93{width:93% !important;margin:0 auto;}
 .bdr05{border-radius:5px;}
 .bdr10{border-radius:10px;}
-.bggr01{background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);}
+.bggr01{
+    background: linear-gradient(90deg, #08E07F 100%, #1AFFAA 100%);
+}
 .dp{
     display:flex;
     .f1{
@@ -60,10 +62,16 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
     /*background: linear-gradient( 180deg, hsl(0deg 0% 5% / 95%), hsl(0deg 0% 43% / 60%) ), linear-gradient(0deg, hsl(0deg 0% 2% / 95%), hsl(0deg 4% 59% / 60%)) !important;*/
 }
 .body{
-	width:100%;height: 100%;
-	background:url("../static/images/body-bg.png") top center no-repeat;
-    background-size: 100% auto;
+	width:100%;
+    height: 100%;
+    padding-top:1.5rem;          // 预留顶部 3rem 用于导航栏
+    box-sizing:border-box;
     background-color:#010101;
+    /* 左上角装饰图 */
+    background-image: url(/static/images/Ellipse3.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: auto;
     font-size:0.65rem;
     overflow: hidden;
     uni-scroll-view {
@@ -374,7 +382,7 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
     }
 }
 .login,.register,.forget{
-    &.body{background:#181c18;}
+    &.body{background:#1F1F1F;}
     
 	::v-deep .u-form-item{padding:0.6rem 0 0.6rem 0;width:100%;}
     ::v-deep .u-form-item--left__content__icon {
@@ -384,7 +392,7 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
     ::v-deep .u-form-item__body {
         display: flex;
         background: transparent;
-        border: 1px solid #417B68;
+        border: 1px solid #08E07F;
         padding: 0.1rem 0.3rem;
         border-radius: .4rem;
     }
@@ -399,7 +407,7 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
         padding:0.22rem 0.5rem 0.5rem 0.5rem;
     }
     .panel{
-        background: url("../static/images/login-bg.png") no-repeat center / 100% 100%;
+        background: url("../static/images/Maskgroup.png") no-repeat center / 100% 100%;
         width:90%;
         border:1px solid #000;
         background-color:#000;
@@ -408,7 +416,7 @@ uni-view.bold,uni-text.bold{font-family: "PingFangSC-Bold";}
         .title{
             font-size:1.3rem;
             text-align: center;
-            background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+            background: linear-gradient(90deg, #08E07F 0%, #08E07F 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
