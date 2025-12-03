@@ -62,7 +62,7 @@
       </view>
     </view>
     <scroll-view scroll-y="true" scroll-x="false">
-      <view class="record panel" style="border-radius: 0; border: none ; border-bottom: 1px dashed rgba(8, 224, 127, 0.5);" v-for="(row,i) in rows" :key="i">
+      <view class="record panel" :style="'border-radius: 0; border: none;' + (i > 0 ? 'border-top: 1px dashed rgba(8, 224, 127, 0.5);' : '') + (i < rows.length - 1 ? 'border-bottom: 1px dashed rgba(8, 224, 127, 0.5);' : '')" v-for="(row,i) in rows" :key="i">
         <view class="c01">
           <text class="name">{{$t(row.title)}}</text>
           <text class="time">{{formatDate(row.createdTime,'yyyy/MM/dd HH:mm')}}</text>
@@ -70,6 +70,9 @@
         <view class="c02">
           <text class="status" v-if="row.busType==1" :class="'c'+row.status">{{$t(statusMap[row.status])}}</text>
           <text class="value">{{row.pm==0?"-":"+"}}{{ formatMoney(row.amount,2) }} $</text>
+        </view>
+        <view v-if="i > 0" style="width:100%; height:.05rem; background:#2B8481;position:absolute;top:-4px;left:0;z-index:0;">
+
         </view>
         <view class="bdlg"></view>
       </view>
