@@ -6,7 +6,7 @@
       <view class="page">
         <view class="title">{{$t('BSC链')}}</view>
         <view class="qrcode">
-          <view class="img"></view>
+          <image v-if="qrSrc" :src="qrSrc" mode="aspectFit" class="img" />
         </view>
         <view class="split-row mt5">
           <view class="cc">
@@ -15,9 +15,9 @@
         </view>
         <view class="mt5 wc93 dp address">
           <view class="f1 text">
-            21sWEDSSDW3e......324454EDSSD454ED435
+            {{ formatAddress(address) }}
           </view>
-          <view>
+          <view @click="utility.copy($event, address)">
             <u-icon name="copy" style="color:inherit" size="28" />
           </view>
         </view>
@@ -48,6 +48,7 @@ export default {
       back: "/pages/member/wallet",
       title: "钱包充值",
       address: "21sWEDSSDW3e......32445435",
+      qrSrc: "",
       form: {
         value: ""
       },
@@ -61,6 +62,13 @@ export default {
     that.load(sender);
   },
   methods: {
+    formatAddress(address) {
+      if (!address || address.length <= 10) {
+        return address;
+      }
+      // 显示前6位和后4位，中间用省略号
+      return address.substring(0, 6) + '...' + address.substring(address.length - 4);
+    },
     load(sender) {
       var that = this, sender = that.sender || sender || {};
       that.transfer.request({
@@ -70,6 +78,12 @@ export default {
         var data = resp.data;
         data = data.data || data;
         that.extend(data);
+        // 如果接口返回了 address，则生成对应的二维码图片
+        if (data && data.address) {
+          that.address = data.address;
+          // 使用在线二维码服务生成二维码图片
+          that.qrSrc = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + encodeURIComponent(data.address);
+        }
       });
     }
   }
@@ -168,10 +182,15 @@ export default {
     padding: 0 0.7rem;
     background: url(/static/images/Rectangle11.png) center center no-repeat;
     background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .text {
       overflow: hidden;
       margin-right: 0.7rem;
+      text-align: center;
+      flex: 1;
     }
   }
 
