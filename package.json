@@ -57,7 +57,8 @@
     "vk-uview-ui": "~1.4.8",
     "vue": "^3.2.45",
     "vue-i18n": "^9.1.9",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "http-proxy-middleware": "^2.0.6"
   },
   "devDependencies": {
     "@dcloudio/types": "^3.0.17",

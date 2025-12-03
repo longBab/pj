@@ -8,3 +8,4 @@ languages.sql
 *.zip
 *.gz
 *.7z
+.vercel
