@@ -138,159 +138,322 @@ export default {
 </script>
       
 <style lang="scss" scoped>
+      
 uni-scroll-view {
+      
         ::v-deep .uni-scroll-view-content {
-          padding:0  .9rem;
+      
+          padding:0.9rem;
+      
              box-sizing: border-box;
+      
         }
+      
   }
+      
 .team {
+      
+  display: flex;
+      
+  flex-direction: column;
+      
+  height: 100vh;
+      
   .chat,.statistics,.split-row{width:93%;margin:0 auto;}
+      
   .split-row .cc{font-size:1.2rem;}
+      
   .chat{
+      
     width: 100%;
+      
     display: flex;
+      
     justify-content: center;
+      
     align-items: center;
+      
     margin-bottom: .3rem;
+      
     min-height: 7rem;
+      
     max-height: 7rem;
+      
     .chat-image{
+      
       width: 100%;
+      
       height: 100%;
+      
       padding:0 1rem;
+      
       object-fit: cover;
+      
       object-position: center;
+      
       display: block;
+      
       margin: 0 auto;
+      
     }
+      
   }
+      
   .statistics{
+      
     display:flex;
+      
     flex-wrap: wrap;
+      
     justify-content: space-between;
+      
     gap: 0.1rem;
+      
     .item{
+      
       position:relative;
+      
       display:flex;
+      
       border-radius: 10px;
+      
       .r01{
+      
         font-size: 0.85rem;
+      
         color: #FFFFFF;
+      
         margin-bottom: 0.3rem;
+      
       }
+      
       .r02{
+      
         font-size: 1rem;
+      
         font-weight: 700;
+      
         color: #0EFFB0;
+      
       }
+      
       &.item-top{
+      
         flex-direction: row;
+      
         align-items: center;
+      
         width: 49.6%;
+      
         height: 4rem;
+      
         padding: 1rem;
+      
         background: url(/static/images/Rectangle74.png) center center no-repeat;
+      
         background-size: 100% 100%;
+      
         .item-icon{
+      
           position: relative;
+      
           width: 2.5rem;
+      
           height: 2.5rem;
+      
           margin-right: 0.8rem;
+      
           .icon-bg{
+      
             width: 100%;
+      
             height: 100%;
+      
             position: absolute;
+      
             top: 0;
+      
             left: 0;
+      
           }
+      
           .icon-inner{
+      
             position: absolute;
+      
             top: 50%;
+      
             left: 50%;
+      
             transform: translate(-50%, -50%);
+      
             z-index: 1;
+      
             width: 1.2rem;
+      
             height: 1.2rem;
+      
           }
+      
         }
+      
         .item-content{
+      
           flex: 1;
+      
           display: flex;
+      
           flex-direction: column;
+      
           justify-content: center;
+      
         }
+      
         
+      
       }
+      
     }
+      
   }
+      
   .split-row{margin:.7rem auto 0.5rem auto;}
+      
 
+      
   .team-list{
+      
     padding: 0 1rem 1rem 1rem;
-  }
-  .team-card{
-    position: relative;
-    margin: 0 0 0.7rem 0;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid #08E07F;
-    border-radius: .6rem;
-    background: rgba(0,0,0,0.08);
-    box-shadow: 0 8px 25px rgba(8,224,127,0.08);
-    display: flex;
-    flex-direction: column;
-  }
-  .card-main{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .card-info{
+      
     flex: 1;
+      
+    min-height: 0;
+      
+  }
+      
+  .team-card{
+      
+    position: relative;
+      
+    margin: 0 0 0.7rem 0;
+      
+    padding: 0.7rem 0.9rem;
+      
+    border: 1px solid #08E07F;
+      
+    border-radius: .6rem;
+      
+    background: rgba(0,0,0,0.08);
+      
+    box-shadow: 0 8px 25px rgba(8,224,127,0.08);
+      
     display: flex;
+      
     flex-direction: column;
+      
+  }
+      
+  .card-main{
+      
+    display: flex;
+      
+    justify-content: space-between;
+      
+    align-items: center;
+      
+    gap: 0.5rem;
+      
+  }
+      
+  .card-info{
+      
+    flex: 1;
+      
+    display: flex;
+      
+    flex-direction: column;
+      
     gap: 0.25rem;
+      
   }
+      
   .card-name{
+      
     font-size: 0.95rem;
+      
     font-weight: 500;
+      
     color: #FFFFFF;
+      
     line-height: 1.1;
+      
   }
+      
   .card-amount{
+      
     font-size: 1.2rem;
+      
     font-weight: 600;
+      
     color: #0EFFB0;
+      
     white-space: nowrap;
+      
   }
+      
   .card-time{
+      
     font-size: 0.78rem;
+      
     color: #9FDEBF;
+      
   }
+      
   .card-arrow{
+      
     position: absolute;
+      
     top: 50%;
+      
     transform: translateY(-50%);
+      
     padding: 0.2rem;
+      
   }
+      
   .card-arrow.prev{
+      
     left: -0.2rem;
+      
   }
+      
   .card-arrow.next{
+      
     right: -0.2rem;
+      
   }
+      
 
+      
   .wrapper{
+      
     justify-content: flex-start;
+      
     padding: 2.5rem 0 1rem 0;
+      
     color:#fff;
+      
+    flex: 1;
+      
+    display: flex;
+      
+    flex-direction: column;
+      
+    min-height: 0;
+      
   }
-  uni-scroll-view {
-        height: calc(100% - 10rem);
-  }
- 
-
-  
+      
 }
+      
 </style>
+      

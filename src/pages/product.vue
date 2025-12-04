@@ -35,7 +35,7 @@
           </view>
           <view class="progress-amount" >
             <text class="current">{{formatMoney(saleAmount,2)}}</text>
-            <text class="total">/{{formatMoney(totalAmount,2)}} USDT</text>
+            <text class="total">/{{formatMoney(totalAmount,2)}} $</text>
           </view>
         </view>
       </view>
@@ -75,11 +75,11 @@
         <view class="detail-content">
           <view class="row balance-row">
             <text class="cl">{{$t('余额')}}</text>
-            <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} USDT</text>
+            <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} $</text>
           </view>
            <view class="amount-input-meta" v-if="investmentStats.max">
-                <text class="meta-range">{{formatMoney(investmentStats.purched,2)}}/{{formatMoney(investmentStats.max,2)}} USDT</text>
-                <text class="meta-remaining">剩余可配置 {{formatMoney(investmentStats.remaining,2)}} USDT</text>
+                <text class="meta-range">{{formatMoney(investmentStats.purched,2)}}/{{formatMoney(investmentStats.max,2)}} $</text>
+                <text class="meta-remaining">剩余可配置 {{formatMoney(investmentStats.remaining,2)}} $</text>
               </view>
           <view class="amount-input-row">
             <image class="amount-bg" src="/static/images/Rectangle1090.png" mode="widthFix" />
@@ -105,11 +105,11 @@
           </view>
           <view class="row" v-if="investmentStats.max">
             <text class="cl">{{$t('配置区间')}}</text>
-            <text class="cr">{{formatMoney(investmentStats.min,2)}}~{{formatMoney(investmentStats.max,2)}} USDT</text>
+            <text class="cr">{{formatMoney(investmentStats.min,2)}}~{{formatMoney(investmentStats.max,2)}} $</text>
           </view>
           <view class="row">
             <text class="cl">{{$t('周期总产出')}}</text>
-            <text class="cr">{{formatMoney(expectedTotalRevenue*form.value,2)}} USDT</text>
+            <text class="cr">{{formatMoney(totalRevenueRate * Number(form.value) / 100, 2)}} $</text>
           </view>
 
           <view class="ctl" >

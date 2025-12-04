@@ -32,7 +32,7 @@
         </view>
       </view>
 
-      <view class="promotion panel" style="padding:5.5rem 0;">
+      <view class="promotion panel" style="padding:1rem 0;">
         <view class="container"  >
           <view class="col icon"></view>
           <view class="col des">
@@ -44,14 +44,14 @@
               @click="gotoPage('/pages/member/node-preview')"
             >{{$t('一键开启')}}</text>
           </view>
-          <view class="row">
+          <!-- <view class="row">
             <text class="link">{{$t('邀请链接')}}：{{user.invitationCode || 'https://oga...3618'}}</text>
             <text
               class="copy bdr05 bggr01"
               style="color:#000;font-weight:bold; text-align:center;background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);"
               @click="copyInviteLink($event)"
             >{{$t('复制')}}</text>
-          </view>
+          </view> -->
         </view>
         <view class="bdlg"></view>
       </view>
@@ -87,10 +87,10 @@
         </view>
         <view class="cr"></view>
       </view>
-      <view class="member-rule">
+      <!-- <view class="member-rule">
         <view class="member-rule__icon"></view>
         <text class="member-rule__text">大小區貢獻計算規則</text>
-      </view>
+      </view> -->
       <view class="statistics  s01 sda"   >
         <view class="container" >
           <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),item.precision)}} {{item.unit}}</view></view>
@@ -277,7 +277,7 @@ export default {
       margin-top:2rem;
       width:100%;
       .img{
-        width:8rem;height:8rem;margin:0 auto; 
+        width:6rem;height:6rem;margin:0 auto; 
         background:url(/static/images/member/image243.png) center bottom no-repeat;
         background-size:100% auto;
       }
@@ -333,7 +333,7 @@ export default {
   }
  
   .promotion{
-    height:9.2rem;
+    height:7.2rem;
     margin:0.8rem auto 1.2rem auto;
     background:url(/static/images/member/Rectangle1119.png) center center no-repeat;
     background-size:100% 100%;
@@ -343,7 +343,7 @@ export default {
     }
     .container{
       flex-wrap: wrap;
-      padding:1.1rem 1.1rem 1.2rem 1.1rem;
+      padding:0.1rem 1.1rem 0.1rem 1.1rem;
       align-items: center;
     }
    
