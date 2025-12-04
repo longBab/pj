@@ -87,10 +87,10 @@
         </view>
         <view class="cr"></view>
       </view>
-      <view class="member-rule">
+      <!-- <view class="member-rule">
         <view class="member-rule__icon"></view>
         <text class="member-rule__text">大小區貢獻計算規則</text>
-      </view>
+      </view> -->
       <view class="statistics  s01 sda"   >
         <view class="container" >
           <view class="row" v-for="(item,i) in statistics.groups[1]" :key="i"><view class="c0">{{$t(item.title)}}</view><view class="c1">{{formatMoney(format(item.field,'statistic'),item.precision)}} {{item.unit}}</view></view>
