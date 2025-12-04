@@ -4,48 +4,35 @@
   </navBar>
   <view class="wrapper">
     <view class="chat">
-      <image src="/static/images/image261.png" mode="widthFix" class="chat-image" />
+      <image src="/static/images/image2623.png"  class="chat-image" />
     </view>
     <view class="statistics">
       <view class="item item-top" :class="{active:showType==1}" @click="chose($event,'showType',1)">
-        <!-- <view class="item-icon">
-          <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
-          <image src="/static/images/fi-ss-chart-tree.png" mode="widthFix" class="icon-inner" />
-        </view> -->
         <view class="item-content">
         <view class="r01">{{$t('团队数据')}}</view>
           <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}U</view>
         </view>
       </view> 
-      
       <view class="item item-top" :class="{active:showType==12}" @click="chose($event,'showType',12)">
-        <!-- <view class="item-icon">
-          <image src="/static/images/Ellipse1630.png" mode="aspectFill" class="icon-bg" />
-          <image src="/static/images/fi-ss-credit-card.png" mode="widthFix" class="icon-inner" />
-        </view> -->
         <view class="item-content">
         <view class="r01">{{$t('团队量化')}}</view>
           <view class="r02">+{{formatMoney(statistics.s12,2)}}U</view>
         </view>
       </view> 
-
-    </view>
-    <view class="bottom-container">
-      <view class="item item-bottom" :class="{active:showType==9}" @click="chose($event,'showType',9)">
-        <view class="r01">{{$t('深度数据')}}</view>
-        <view class="r02">+{{formatMoney(statistics.s9,2)}}U</view>
+      <view class="item item-top" :class="{active:showType==9}" @click="chose($event,'showType',9)">
+        <view class="item-content">
+          <view class="r01">{{$t('深度数据')}}</view>
+          <view class="r02">+{{formatMoney(statistics.s9,2)}}U</view>
+        </view>
       </view> 
-
-      <view class="item item-bottom" :class="{active:showType==3}" @click="chose($event,'showType',3)">
-        <view class="r01">{{$t('量化数值')}}</view>
-        <view class="r02">+{{formatMoney(statistics.s3,2)}}U</view>
-      </view> 
-      
-      <view class="item item-bottom" :class="{active:showType==10}" @click="chose($event,'showType',10)">
-        <view class="r01">{{$t('代数数据')}}</view>
-        <view class="r02">+{{formatMoney(statistics.s10,2)}}U</view>
+      <view class="item item-top" :class="{active:showType==3}" @click="chose($event,'showType',3)">
+        <view class="item-content">
+          <view class="r01">{{$t('量化数值')}}</view>
+          <view class="r02">+{{formatMoney(statistics.s3,2)}}U</view>
+        </view>
       </view> 
     </view>
+    
     <view class="split-row" >
         <view class="cl"></view>
         <view class="cc">
@@ -53,24 +40,42 @@
         </view>
         <view class="cr"></view>
     </view>
-    <scroll-view scroll-y="true" scroll-x="false">
- 
-      <view class="record panel " :class="{team:showType==1}" v-for="(item,i) in rows" :key="i">
-        <view class="c01" >
-          <text class="name" v-if="showType==1">{{utility.formatDisplay(item.userName,1,1,3)||"未实名"}}({{utility.formatDisplay(item.phone,3,3,11)||utility.formatDisplay(item.email,3,3,10)}})</text>
-          <text class="name" v-if="showType!=1">{{item.title}}</text>
-          <text class="time">{{$t(showType==1?'推广时间':'创建时间')}}:{{formatDate(item.createdTime,'yyyy/MM/dd HH:mm:ss')}}</text>
+    <scroll-view scroll-y="true" scroll-x="false" class="team-list">
+      <view
+        class="team-card"
+        v-for="(item,i) in rows"
+        :key="i"
+      >
+        <view class="card-main">
+          <view class="card-info">
+            <text class="card-name" v-if="showType==1">
+              {{utility.formatDisplay(item.userName,1,1,3)||"未实名"}}({{utility.formatDisplay(item.phone,3,3,11)||utility.formatDisplay(item.email,3,3,10)}})
+            </text>
+            <text class="card-name" v-else>{{item.title}}</text>
+            <text class="card-time">
+              {{$t(showType==1?'推广时间':'创建时间')}} {{formatDate(item.createdTime,'yyyy-MM-dd HH:mm:ss')}}
+            </text>
+          </view>
+          <text class="card-amount">
+            <template v-if="showType==1">{{formatMoney(item.statisticInvests,2)}} U</template>
+            <template v-else>{{formatMoney(item.amount,2)}} U</template>
+          </text>
         </view>
-        <view class="c02">
-          <text class="value" v-if="showType==1">{{formatMoney(item.statisticInvests,2)}}$</text>
-          <text class="value" v-if="showType!=1">{{formatMoney(item.amount,2)}}$</text>
+        <view
+          class="card-arrow prev"
+          v-if="showType==1&&i==-1&&spreadId!=0"
+          @click="chose($event,'spreadId',preSpreadId)"
+        >
+          <u-icon name="arrow-left" color="#08E07F" size="35" />
         </view>
-        <view class="pre" v-if="showType==1&&i==-1&&spreadId!=0" @click="chose($event,'spreadId',preSpreadId)"><u-icon  name="arrow-left" style="color:inherit;" size="35" /></view>
-        <view class="next" v-if="showType==1&&item.statisticFans" @click="chose($event,'spreadId',item.id)"><u-icon  name="arrow-right" style="color:inherit;" size="35" /></view>
-        
-        <view class="bdlg"></view>
+        <view
+          class="card-arrow next"
+          v-if="showType==1&&item.statisticFans"
+          @click="chose($event,'spreadId',item.id)"
+        >
+          <u-icon name="arrow-right" color="#08E07F" size="35" />
+        </view>
       </view>
-      
     </scroll-view>
   </view>
 </view>
@@ -133,26 +138,38 @@ export default {
 </script>
       
 <style lang="scss" scoped>
+uni-scroll-view {
+        ::v-deep .uni-scroll-view-content {
+          padding:0  .9rem;
+             box-sizing: border-box;
+        }
+  }
 .team {
-  .chat,.statistics,.split-row,.bottom-container{width:93%;margin:0 auto;}
-  .split-row .cc{font-size:0.68rem;}
+  .chat,.statistics,.split-row{width:93%;margin:0 auto;}
+  .split-row .cc{font-size:1.2rem;}
   .chat{
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: .3rem;
+    min-height: 7rem;
+    max-height: 7rem;
     .chat-image{
       width: 100%;
-      max-width: 100%;
+      height: 100%;
       padding:0 1rem;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      margin: 0 auto;
     }
   }
   .statistics{
     display:flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0.8rem;
+    gap: 0.1rem;
     .item{
       position:relative;
       display:flex;
@@ -170,7 +187,7 @@ export default {
       &.item-top{
         flex-direction: row;
         align-items: center;
-        width: 48%;
+        width: 49.6%;
         height: 4rem;
         padding: 1rem;
         background: url(/static/images/Rectangle74.png) center center no-repeat;
@@ -205,109 +222,63 @@ export default {
         }
         
       }
-      &.item-bottom{
-        flex: 1;
-        height: 3.5rem;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        text-align: right;
-        padding: 0.5rem 1rem;
-      }
     }
   }
-  .bottom-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-top: 0.8rem;
-    padding: 1rem;
-    border-radius: 10px;
-    background: url(/static/images/Rectangle69.png) center center no-repeat;
-    background-size: 100% 100%;
-    .item{
-      flex: 1;
-      height: 3.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-end;
-      text-align: right;
-      padding: 0.5rem 1rem;
-      .r01{
-        font-size: 0.75rem;
-        color: #FFFFFF;
-        margin-bottom: 0.3rem;
-      }
-      .r02{
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #0EFFB0;
-      }
-    }
-  }
-  .split-row{margin:1rem auto 0.5rem auto;}
+  .split-row{margin:.7rem auto 0.5rem auto;}
 
-  .record{
-    margin:0.3rem auto;
-    display:flex;
-    height:3rem;
-    flex-direction: row;
-    justify-content: space-evenly;
-    flex-wrap: nowrap;
-    padding:0.5rem;
+  .team-list{
+    padding: 0 1rem 1rem 1rem;
+  }
+  .team-card{
     position: relative;
-    .c01{
-      width:13rem;
-      display:flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      .name{
-        font-weight:400;
-      }
-      .time{/*font-size:0.3rem;*/}
-    }
-    .c02{
-      width:calc(100% - 13rem);
-      text-align:right;
-      .value{
-        line-height:2rem;
-        /*font-size:0.4rem;*/
-        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    }
-    &.team{
-       padding:0 1.5rem 0 1rem;
-       .c02 .value{line-height:500%;}
-    }
-    .pre,.next{
-      position: absolute;
-      top: 0;
-      bottom: 0;
-       line-height: 500%;
-  
-      z-index: 2;
-      ::v-deep .u-iconfont{ 
-        background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent; 
-      }
-    }
-    .pre{
-      left:0;
-    }
-    .next{
-      padding: 0 0.4rem 0 0;
-      right: 0;
-      width: 20%;
-      text-align: right;
-     
-    }
+    margin: 0 0 0.7rem 0;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #08E07F;
+    border-radius: .6rem;
+    background: rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(8,224,127,0.08);
+    display: flex;
+    flex-direction: column;
+  }
+  .card-main{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .card-name{
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1.1;
+  }
+  .card-amount{
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0EFFB0;
+    white-space: nowrap;
+  }
+  .card-time{
+    font-size: 0.78rem;
+    color: #9FDEBF;
+  }
+  .card-arrow{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.2rem;
+  }
+  .card-arrow.prev{
+    left: -0.2rem;
+  }
+  .card-arrow.next{
+    right: -0.2rem;
   }
 
   .wrapper{

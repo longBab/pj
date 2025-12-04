@@ -1,5 +1,5 @@
 <template>
-<view class="exchange body" :class="$store.state.setting.theme">
+<view class="exchange bodys2" :class="$store.state.setting.theme" >
   <navBar :back="back" :title="title">
   </navBar>
   <view class="wrapper">
@@ -58,7 +58,7 @@
         </view>
       </view>
 
-     
+      <view style="height:10rem;"></view>
       
     </scroll-view>
   </view>
@@ -130,6 +130,24 @@ export default {
 </script>
       
 <style lang="scss" scoped>
+.bodys2{
+  width:100%;
+    height: 105%;
+    padding-top:1.5rem;          // 预留顶部 3rem 用于导航栏
+    box-sizing:border-box;
+    background-color:#010101;
+    /* 左上角装饰图 */
+    background-image: url(/static/images/Ellipse3.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: auto;
+    font-size:0.65rem;
+    overflow: hidden;
+    uni-scroll-view {
+        height:100%;
+    }
+
+}
 .exchange {
   .tabs{
     width:70%;
