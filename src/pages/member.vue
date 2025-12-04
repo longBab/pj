@@ -131,7 +131,7 @@ export default {
         {name:"/pages/member/security",icon:"security",title:"安全认证"},
         {name:"/pages/service",icon:"support",title:"在线支持"},
         {name:"/pages/member/exchange",icon:"exchange",title:"一键兑换"},
-        {name:"/pages/member/quantization",icon:"quantization",title:"量化视图"},
+        {name:"/pages/member/products",icon:"quantization",title:"量化视图"},
         {name:"/pages/member/team",icon:"team",title:"数据中心"}
       ],
       statistics:{

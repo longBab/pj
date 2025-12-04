@@ -180,37 +180,37 @@
             <image class="partner-bg" src="/static/images/home/Rectangle1078.png" mode="widthFix" />
             <view class="partner-grid">
               <view class="partner-row">
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(0)">
                   <image class="partner-logo partner-logo-sm" src="/static/images/home/image86.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(1)">
                   <image class="partner-logo partner-logo-sm" src="/static/images/home/image85.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(2)">
                   <image class="partner-logo partner-logo-sm" style="width:2rem;" src="/static/images/home/image87.png" mode="widthFix" />
                 </view>
               </view>
               <image class="partner-divider" src="/static/images/home/Vector11.png" mode="widthFix" />
               <view class="partner-row">
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(3)">
                   <image class="partner-logo partner-logo-lg" src="/static/images/home/image88.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(4)">
                   <image class="partner-logo partner-logo-lg" src="/static/images/home/image89.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(5)">
                   <image class="partner-logo partner-logo-lg" src="/static/images/home/image234.png" mode="widthFix" />
                 </view>
               </view>
               <image class="partner-divider" src="/static/images/home/Vector11.png" mode="widthFix" />
               <view class="partner-row">
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(6)">
                   <image class="partner-logo partner-logo-sm" style="width:3.7rem"  src="/static/images/home/image107.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(7)">
                   <image class="partner-logo partner-logo-lg" src="/static/images/home/image92.png" mode="widthFix" />
                 </view>
-                <view class="partner-item">
+                <view class="partner-item" @click="onPartnerClick(8)">
                   <image class="partner-logo partner-logo-sm" style="width:4rem"  src="/static/images/home/image106.png" mode="widthFix" />
                 </view>
               </view>
@@ -275,6 +275,12 @@ export default {
     }, 50);
   },
   methods: {
+    onPartnerClick(index) {
+      var that = this;
+      if (that.partners && that.partners[index]) {
+        that.changePopuper(that.partners[index]);
+      }
+    },
     changePopuper(sender,type){
       var that=this,item=sender||{};
       if(type=='close'){that.extend(that.popuper,{isShow:false});return false;}

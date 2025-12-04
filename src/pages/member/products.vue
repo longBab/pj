@@ -6,10 +6,10 @@
         <view class="statistics">
             <view class="card-content">
                 <text class="title">{{$t('当前累计收益')}}</text>
-                <text class="value">{{formatMoney(user.statisticIncome3s,2)}}$</text>
+                <text class="value">{{formatMoney(user.statisticIncome3sDays,2)}}$</text>
                 <view class="total-chip">
                     <text class="label">{{$t('今日量化产出')}}</text>
-                    <text class="amount">≈ 2.36%</text>
+                    <text class="amount">≈ {{formatMoney(user.statisticIncome3s,2)}}$</text>
                 </view>
             </view>
             <view class="hero-wrapper">
@@ -288,7 +288,7 @@ export default {
             }
         }
         .total-chip{
-            width:12.2rem;
+            width:12.5rem;
             margin-top:0.9rem;
             padding:0.45rem 1rem;
             background:url(/static/images/Rectangle1121.png) center center no-repeat;
@@ -310,7 +310,7 @@ export default {
         .card-hero{
             width:14rem;
             bottom:1rem;
-            left:-1.5rem;
+            left:-3.5rem;
             height:auto;
         }
     }

@@ -107,7 +107,7 @@
 					</view>
 
 					<view class="row">
-						<text class="cl">最终分配收益日期</text>
+						<text class="cl">结束日期</text>
 						<text class="cr">{{ productData ? (productData.finalDistributionEarningsDate || '--') : '--' }}</text>
 					</view>
 

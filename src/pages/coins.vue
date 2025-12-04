@@ -5,9 +5,26 @@
 			<scroll-view scroll-y="true" scroll-x="false">
                 
                 <view class="chart">
-                    <view class="chart-content">
-                        <image src="/static/images/Group48095818.png" mode="widthFix" class="chart-image" />
+                    <view class="chart-content panel" style="border:1px solid #00FFFF70;">
+                        <view class="chart-title">
+                            <text class="title">{{$t('代币K线图')}}</text>
+                        </view>
+                        <qiun-data-charts
+                            type="tarea"
+                            :chartData="lineChartData"
+                            :opts="lineOpts"
+                            :inScrollView="true"
+                        ></qiun-data-charts> 
+                        <view class="chart-mark">
+                            <view class="cm-hline cm-hline-top"></view>
+                            <view class="cm-hline cm-hline-mid"></view>
+                            <view class="cm-hline cm-hline-bottom"></view>
+                            <view class="cm-hline cm-hline-top2"></view>
+                            <view class="cm-hline cm-hline-bottom2"></view>
+                        </view>
+                        <view class="bdlg"></view>
                     </view>
+                    <!-- <image src="/static/images/Group48095818.png" mode="widthFix" class="chart-image" /> -->
                 </view>
 
                 <view class="statistics">
@@ -162,12 +179,51 @@
 
 <script>
 import navBar from "@/components/navBar.vue";
+import qiunDataCharts from "@/uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts.vue";
 export default {
-  components: {navBar},
+  components: {navBar, qiunDataCharts},
 		data() {
 			return {
 				back:"/pages/home",
-				title:"保险池"
+				title:"保险池",
+				// 折线图：uCharts 面积折线配置（不需要底部刻度标签，categories 设为空）
+				lineChartData: {
+					categories: ['10.12','10.13','10.14','10.15','10.16','10.17'],
+					series: [{
+						name: '成交额',
+						data: [6,30, 7, 50, 60, 10],
+						color: '#0EFFB1',
+						linearColor: ['#0EFFB0','#0EFFB0'],
+						areaStyle: true
+					}]
+				},
+				lineOpts: {
+					dataLabel: false,
+					dataPointShape: false,
+					xAxis: {
+						disabled: true,
+						disableGrid: true,
+						axisLineColor: 'transparent'
+					},
+					yAxis: {
+						// 完全隐藏左侧数值，由自定义水平虚线来做参考线
+						disabled: true,
+						disableGrid: true
+					},
+					legend: {
+						show: false
+					},
+					extra: {
+						area: {
+							type: 'curve',
+							opacity: 0.85,
+							addLine: true,
+							// 开启渐变填充，颜色从折线色到透明
+							gradient: true,
+							width: 2
+						},
+					}
+				}
 			};
 		},
 	onLoad(sender) {
@@ -204,18 +260,59 @@ export default {
         border-radius: 10px;
         background: url(/static/images/Rectangle3591.png) center center no-repeat;
         background-size: 100% 100%;
-        .chart-title{
-            text-align: center;
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
         .chart-content{
+            height: 10rem;
             width: 100%;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.15) 0%, rgba(247, 247, 247, 0) 100%);
+            &.panel{
+                margin-top: 0.5rem;
+            }
+            .chart-title{
+                position: absolute;
+                top: 0.5rem;
+                left: 0.8rem;
+                z-index: 10;
+                .title{
+                    color: #fff;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                }
+            }
+            .chart-mark{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                pointer-events: none;
+                .cm-hline{
+                    position: absolute;
+                    left: 0.8rem;
+                    right: 0.8rem;
+                    border-top: 1px dashed rgba(146, 146, 146, 0.9);
+                }
+                .cm-hline-top{
+                    top: 1.8rem;
+                }
+                .cm-hline-top2{
+                    top: 3.6rem;
+                }
+                .cm-hline-mid{
+                    top: 5.4rem;
+                }
+                .cm-hline-bottom{
+                    top: 7.2rem;
+                }
+                .cm-hline-bottom2{
+                    top: 9rem;
+                }
+            }
+            .bdlg{
+                background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
+            }
             .chart-image{
                 width: 100%;
                 max-width: 100%;
