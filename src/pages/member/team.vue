@@ -10,25 +10,25 @@
       <view class="item item-top" :class="{active:showType==1}" @click="chose($event,'showType',1)">
         <view class="item-content">
         <view class="r01">{{$t('团队数据')}}</view>
-          <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}U</view>
+          <view class="r02">+{{formatMoney(user.statisticInvestsTeams,2)}}$</view>
         </view>
       </view> 
       <view class="item item-top" :class="{active:showType==12}" @click="chose($event,'showType',12)">
         <view class="item-content">
         <view class="r01">{{$t('团队量化')}}</view>
-          <view class="r02">+{{formatMoney(statistics.s12,2)}}U</view>
+          <view class="r02">+{{formatMoney(statistics.s12,2)}}$</view>
         </view>
       </view> 
       <view class="item item-top" :class="{active:showType==9}" @click="chose($event,'showType',9)">
         <view class="item-content">
           <view class="r01">{{$t('深度数据')}}</view>
-          <view class="r02">+{{formatMoney(statistics.s9,2)}}U</view>
+          <view class="r02">+{{formatMoney(statistics.s9,2)}}$</view>
         </view>
       </view> 
       <view class="item item-top" :class="{active:showType==3}" @click="chose($event,'showType',3)">
         <view class="item-content">
           <view class="r01">{{$t('量化数值')}}</view>
-          <view class="r02">+{{formatMoney(statistics.s3,2)}}U</view>
+          <view class="r02">+{{formatMoney(statistics.s3,2)}}$</view>
         </view>
       </view> 
     </view>
@@ -57,8 +57,8 @@
             </text>
           </view>
           <text class="card-amount">
-            <template v-if="showType==1">{{formatMoney(item.statisticInvests,2)}} U</template>
-            <template v-else>{{formatMoney(item.amount,2)}} U</template>
+            <template v-if="showType==1">{{formatMoney(item.statisticInvests,2)}} $</template>
+            <template v-else>{{formatMoney(item.amount,2)}} $</template>
           </text>
         </view>
         <view
