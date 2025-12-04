@@ -80,12 +80,12 @@
 				<view class="rt" >
 					<view class="item panel" style="margin:0;">
 						<text class="r1">今日量化产出</text>
-						<text class="r2">177</text>
+						<text class="r2">{{ productData ? (productData.expectedRevenue || '--') : '--' }}</text>
 						<view class="bdlg"></view>
 					</view>
 					<view class="item panel" style="margin:0;">
 						<text class="r1">总计量化产出</text>
-						<text class="r2">177</text>
+						<text class="r2">{{ productData ? (productData.expectedTotalRevenue || '--') : '--' }}</text>
 						<view class="bdlg"></view>
 					</view>
 				</view>
@@ -93,39 +93,48 @@
 
 					<view class="row">
 						<text class="cl">购买时间</text>
-						<text class="cr">177,034</text>
+						<text class="cr">{{ productData ? (productData.purchaseTime || '--') : '--' }}</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">总成交额</text>
-						<text class="cr">386,767013USD</text>
+						<text class="cl">投资金额</text>
+						<text class="cr">{{ productData ? (productData.purchaseAmount || '--') + ' U' : '--' }}</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">成交率</text>
-						<text class="cr">99.75%</text>
+						<text class="cl">收益率</text>
+						<text class="cr">{{ productData ? (productData.expectedRevenue || '--') + '%' : '--' }}</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">结束时间</text>
-						<text class="cr">2.8 bp</text>
+						<text class="cl">最终分配收益日期</text>
+						<text class="cr">{{ productData ? (productData.finalDistributionEarningsDate || '--') : '--' }}</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">系统可用性</text>
-						<text class="cr">99.90%</text>
+						<text class="cl">项目周期</text>
+						<text class="cr">{{ productData ? (productData.projectDuration || '--') + ' 天' : '--' }}</text>
 					</view>
 					<view class="dash-line"></view>
 	
-					<view class="row ">
-						<text class="cl">交易所与市场覆盖</text>
-						<view class="cr">
-							<text class="s01">覆盖交易所 12 家</text>
-						</view>
+					<view class="row">
+						<text class="cl">订单号</text>
+						<text class="cr">{{ productData ? (productData.orderNo || '--') : '--' }}</text>
 					</view>
-					<view class="row cc">
-						<text>Binance OKX Bybit Coinbase Kraken Bitget Gate</text>
-						<text>Huobi(HTX) Deribit KuCoin MEXc Gemini</text>
+
+					<view class="row">
+						<text class="cl">产品名称</text>
+						<text class="cr product-name">{{ productData ? (productData.name || '--') : '--' }}</text>
+					</view>
+
+					<view class="row">
+						<text class="cl">剩余分配周期</text>
+						<text class="cr">{{ productData ? (productData.residualDistributionCycle || '--') + ' 天' : '--' }}</text>
+					</view>
+
+					<view class="row">
+						<text class="cl">当前金额</text>
+						<text class="cr">{{ productData ? (productData.amount || '--') + ' U' : '--' }}</text>
 					</view>
 
 					<view class="bdlg"></view>
@@ -145,6 +154,7 @@ import qiunDataCharts from "@/uni_modules/qiun-data-charts/components/qiun-data-
 			return {
 				back:"/pages/member/products",
 				title:"个人产品",
+				productData: null, // 存储传递过来的产品数据
 				// 主图：uCharts 面积折线配置（不需要底部刻度标签，categories 设为空）
 				lineChartData: {
 					categories: ['10.12','10.13','10.14','10.15','10.16','10.17'],
@@ -267,11 +277,21 @@ import qiunDataCharts from "@/uni_modules/qiun-data-charts/components/qiun-data-
 	onLoad(sender) {
 		var that = this;
 		that.sender=sender;
+		// 解析传递过来的数据
+		if (sender.data) {
+			try {
+				that.productData = JSON.parse(decodeURIComponent(sender.data));
+			} catch (e) {
+				console.error('解析产品数据失败:', e);
+			}
+		}
 		that.load(sender);
   	},
 	methods: {
 		load(sender){
       		var that=this,sender=that.sender||sender||{},id=sender.id;
+			// 如果已有 productData，可以直接使用
+			// 否则可以根据 id 重新加载数据
     	}
 	},
 };
@@ -482,6 +502,13 @@ import qiunDataCharts from "@/uni_modules/qiun-data-charts/components/qiun-data-
 					text-align:right;
 					font-size:.9rem;
 					font-weight:200px !important;
+					&.product-name{
+						max-width: 60%;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						display: inline-block;
+					}
 					.s01{
 						border-radius:15px;
 						background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);

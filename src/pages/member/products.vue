@@ -238,7 +238,9 @@ export default {
             if (!plan || !plan.id) {
                 return;
             }
-            this.gotoPage('/pages/member/product?id=' + plan.id);
+            // 将完整的 plan 对象编码后传递
+            const planData = encodeURIComponent(JSON.stringify(plan));
+            this.gotoPage('/pages/member/product?id=' + plan.id + '&data=' + planData);
         }
     }
 };
