@@ -37,67 +37,64 @@
 
 				</view>
 			</view>
+			<view style="height:.5rem;"></view>
 			<view class="split-row">
 				<view class="cl"></view>
-				<view class="cc">
+				<view class="cc" style="font-size:1.4rem;">
 					<text>{{ $t('数据看板') }}</text>
 				</view>
 				<view class="cr"></view>
 			</view>
 			<view class="board">
-				<view class="rt">
-					<view class="item panel">
+				<view class="rt" >
+					<view class="item panel" style="margin:0;">
 						<text class="r1">今日量化产出</text>
 						<text class="r2">177</text>
 						<view class="bdlg"></view>
 					</view>
-					<view class="item panel">
+					<view class="item panel" style="margin:0;">
 						<text class="r1">总计量化产出</text>
 						<text class="r2">177</text>
 						<view class="bdlg"></view>
 					</view>
 				</view>
-				<view class="rc panel">
+				<view class="rc panel" >
 
 					<view class="row">
-						<text class="cl">成交笔数</text>
-						<text class="cr">99999999.00</text>
+						<text class="cl">24h 成交笔数</text>
+						<text class="cr">177,034</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">24h成交额</text>
-						<text class="cr">99999999.00</text>
+						<text class="cl">24h 成交额</text>
+						<text class="cr">386,767013USD</text>
 					</view>
 
 					<view class="row">
 						<text class="cl">成交率(Fill Rate]</text>
-						<text class="cr">99999999.00</text>
+						<text class="cr">99.75%</text>
 					</view>
 
 					<view class="row">
 						<text class="cl">平均滑点</text>
-						<text class="cr">99999999.00</text>
+						<text class="cr">2.8 bp</text>
 					</view>
 
 					<view class="row">
 						<text class="cl">API延迟</text>
-						<text class="cr">99999999.00</text>
-					</view>
-
-					<view class="row">
-						<text class="cl">API延迟</text>
-						<text class="cr">99999999.00</text>
+						<text class="cr">42</text>
 					</view>
 
 					<view class="row">
 						<text class="cl">系统可用性</text>
-						<text class="cr">99999999.00</text>
+						<text class="cr">99.90%</text>
 					</view>
-
-					<view class="row split">
+					<view class="dash-line"></view>
+	
+					<view class="row ">
 						<text class="cl">交易所与市场覆盖</text>
 						<view class="cr">
-							<text class="s01">覆盖交易所12家</text>
+							<text class="s01">覆盖交易所 12 家</text>
 						</view>
 					</view>
 					<view class="row cc">
@@ -205,23 +202,45 @@ export default {
 					
 
 				}
+				
 			}
 		}
 
     }
 	.board{
+		
 		.rt{
 			display:flex;
+			width:100%;
+			justify-content: space-between;
+			margin-bottom:1rem;
 			.item{
 				display:flex;
-				width:35%;
+				width:47%;
 				flex-direction: column;
-				align-content: space-around;
-				justify-content: space-evenly;
-				flex-wrap: wrap;
+				
 				text-align: center;
-				line-height:1.2rem;
-				padding:0.5rem;
+				line-height:2rem;
+				padding:0.5rem 0;
+				&.panel{
+					/* 今日量化产出 / 总计量化产出 使用 Rectangle836 背景，去掉圆角和边框 */
+					background-image: url(/static/images/Rectangle836.png);
+					background-repeat: no-repeat;
+					background-size: 100% 100%;
+					border-radius: 0;
+					border: none;
+					.bdlg{
+						display:none;
+					}
+					.r1{
+						font-size:.8rem;
+					}
+					.r2{
+						font-size:1.4rem;
+						color:#08E07F;
+						font-width:600;
+					}
+				}
 			}
 		}
 		.rc{
@@ -230,34 +249,58 @@ export default {
 			flex-direction: column;
     		justify-content: space-around;
 			
-			padding:0.3rem 0.3rem 1rem 0.3rem;
+			padding:0.8rem 0.8rem 1.2rem 0.8rem;
+			
 			background: radial-gradient(100% 100% at 0% 0%, rgba(62, 190, 202, 0.2) 0%, rgba(247, 247, 247, 0) 100%);
+			&.panel{
+				/* 数据看板主卡片 使用 Rectangle833 背景，去掉圆角和边框 */
+				background: none;
+				background-image: url(/static/images/Rectangle833.png);
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				border-radius: 0;
+				border: none;
+				.bdlg{
+					display:none;
+				}
+				
+			}
 			.row{
 				width:100%;
 				display:flex;
 				flex-direction: row;
 				flex-wrap: wrap;
 				justify-content: space-between;
-				align-content: space-around;
-				height:1.3rem;
+				align-content: center;
+				height:2.5rem;
 				
 				.cl{
 					text-align:left;
+					font-size:.8rem;
+					    font-weight: 200;
 				}
 				.cr{
 					text-align:right;
+					font-size:.9rem;
+					font-weight:200px !important;
 					.s01{
-						border-radius:5px;
-						background: linear-gradient(90deg, #0EFFB1 0%, #31B9D4 100%);
+						border-radius:15px;
+						background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
 						color:#000;
-						padding: 0 0.3rem 0 0.3rem;
+						padding: 0 0.5rem 0 ;
 						line-height:1.3rem;
+						font-size:.9rem;
 					}
 				}
 				&.split{
-					padding:1rem 0 1rem 0;
-					border-top:1px dashed #929292;
+					padding:0.8rem 0 0.8rem 0;
+					border-top:1px solid #21544F;
 				}
+			}
+			.dash-line{
+				width:100%;
+				margin:0.3rem 0 0.8rem 0;
+				border-bottom:1px dashed #929292;
 			}
 			.cc{
 				display:flex;	
