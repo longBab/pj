@@ -20,6 +20,22 @@
             <image class="card-icon" style="width:160%;" src="/static/images/zh.png" mode="widthFix" />
           </view>
         </view>
+
+        <view class="card-item" @click="gotoPage('security/password')">
+          <image class="card-bg" src="/static/images/Rectangle121.png" mode="widthFix" />
+          <view class="card-content">
+            <view class="card-title">{{$t('修改登陆密码')}}</view>
+            <image class="card-icon" src="/static/images/sf.png" mode="widthFix" />
+          </view>
+        </view>
+
+        <view class="card-item" @click="changePayPassword">
+          <image class="card-bg" src="/static/images/Rectangle121.png" mode="widthFix" />
+          <view class="card-content">
+            <view class="card-title">{{$t('修改支付密码')}}</view>
+            <image class="card-icon" src="/static/images/sf.png" mode="widthFix" />
+          </view>
+        </view>
     </view>
   </view>
   <keyBoard ref="keyBoard"  @submit="changePayPassword"  />
@@ -37,7 +53,7 @@ export default {
     return {
       back:"/pages/member",
       title:"安全认证",
-      form:{step:0,passwordX:"",newPasswordX:"",reNewPassword:""},
+      form:{step:0,passwordX:"",newPasswordX:"",reNewPasswordX:""},
       rows:[]
     };
   },
@@ -63,6 +79,14 @@ export default {
     },
     changePayPassword(event,type){
       var that=this,step=that.get("form.step")||0,keyBoard=that.get("$refs.keyBoard"),tips="支付密码";
+      
+      // 如果是点击事件（不是提交事件），重置步骤
+      if(typeof(event)!="string"){
+        that.extend({form:{step:0,passwordX:"",newPasswordX:"",reNewPasswordX:""}});
+        step=0;
+        tips="支付密码";
+      }
+      
       if(typeof(event)=="string"){
           if(step==0){
             tips="新支付密码";
@@ -80,6 +104,7 @@ export default {
               reNewPasswordX:that.get("form.reNewPasswordX")
             }
             that.extend({form:{
+              step:0,
               passwordX:"",
               newPasswordX:"",
               reNewPasswordX:""
@@ -117,13 +142,15 @@ export default {
   .navigations{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
     padding: 0 0.5rem;
   }
   .card-item{
     position: relative;
-    flex: 1;
+    width: calc(50% - 0.5rem);
+    min-height: 8rem;
     border-radius: 12px;
     overflow: hidden;
     .card-bg{

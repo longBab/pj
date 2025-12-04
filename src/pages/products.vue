@@ -382,8 +382,10 @@ export default {
             padding: 0.8rem;
             background: url(/static/images/Rectangle3573.png) center center no-repeat;
             background-size: 100% 100%;
-            border: none;
-            border-radius: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            transition: border-color 0.3s ease-out;
+            position: relative;
             .row{
                 display:flex;
                 flex-direction: row;
@@ -393,6 +395,8 @@ export default {
             .cr{width:calc(100% - 4rem);color:#0EFFB0;text-align:right;}
             &.active{
                 box-shadow: none;
+                border: 2px solid #0EFFB0;
+                animation: pulse-border 1.5s ease-in-out infinite;
             }
             .bdlg{
                 display:none;
@@ -516,6 +520,15 @@ export default {
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse-border {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(14, 255, 176, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 0 4px rgba(14, 255, 176, 0.2);
         }
     }
 

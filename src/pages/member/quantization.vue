@@ -38,7 +38,6 @@ export default {
   onLoad(sender) {
     var that = this, sender = sender || {};
     that.sender = sender;
-    that.load(sender);
   },
   methods: {
     load(sender) {

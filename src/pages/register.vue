@@ -138,8 +138,10 @@ export default {
     },
     methods: {
         goBack(){
-            var that=this;
-            that.navigateBack();
+            // var that=this;
+            // that.navigateBack();
+            window.history.back();
+            // 返回上一页
         },
         sendVerify(event) {
             var that = this,url,data={},

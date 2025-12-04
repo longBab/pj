@@ -1,7 +1,7 @@
 <template>
 	<view class="password body" :class="$store.state.setting.theme">
 		<navBar :title="title" :back="back"></navBar>
-		<view class="wrapper">
+		<view class="wrapper" style="margin-top:5rem;justify-content: flex-start;">
             <u-form class="form s01" ref="uForm" :model="form" >
 
                 <view class="label" >{{$t('登陆密码')}}</view>
@@ -98,7 +98,14 @@ export default {
         font-size: 0.75rem !important;
         font-weight:normal !important;
         }
-        .btn{font-weight:bold;line-height:2rem;font-size:.7rem;}
+        .btn{font-weight:bold;line-height:2rem;font-size:.7rem;width:60%;
+        background: linear-gradient(90deg, #08E07F, #1AFFAA);
+        border: none;
+        border-radius: 15px;
+        color: #000;
+        font-size: 0.8rem;
+        font-weight: 600;
+        }
 
     }
    
