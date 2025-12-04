@@ -1,5 +1,5 @@
 <template>
-<view class="node-preview body" :class="$store.state.setting.theme">
+<view class="node-preview body" :class="$store.state.setting.theme" style="padding-bottom:3rem;">
   <navBar :back="back" :title="title">
     <template #quicker="{}">
       <navLanguage :source="this" />

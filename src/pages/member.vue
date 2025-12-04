@@ -8,7 +8,6 @@
         </view>
     </template>
   </navBar>
-  <view style="height:1rem;"></view>
   <view class="top-decor"></view>
   <view class="top-decor-right"></view>
   <view class="wrapper">
@@ -275,7 +274,7 @@ export default {
     
     .avatar{
       margin:.5rem 0;
-      margin-top:4rem;
+      margin-top:2rem;
       width:100%;
       .img{
         width:8rem;height:8rem;margin:0 auto; 

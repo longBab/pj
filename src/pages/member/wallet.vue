@@ -3,7 +3,7 @@
   <navBar :back="back" :title="title">
  
   </navBar>
-  <view style="height:5rem;"></view>
+  <view style="height:3rem;"></view>
   <view class="wrapper">
     <view class="statistics">
       <image class="statistics-bg" src="/static/images/Rectangle1126.png" mode="widthFix" />
@@ -24,7 +24,6 @@
       </view>
       <text class="item" @click="gotoPage('deposit')">{{$t('充值')}}</text>
       <text class="item" @click="gotoPage('withdraw')">{{$t('提现')}}</text>
-      <text class="item" @click="gotoPage('transfer')">{{$t('转账')}}</text>
     </view>
     <view class="tabs">
       <view class="item" :class="{active:showType==1}" @click="chose($event,'showType',1)">
@@ -42,7 +41,6 @@
            <!--<u-icon name="order" size="16"></u-icon>--> 
           </view>
         </view>
-        <view class="bdlg"></view>
       </view>
       <view class="item" :class="{active:showType==2}" @click="chose($event,'showType',2)">
         <view class="item-bg">
@@ -58,7 +56,6 @@
             <!--<u-icon name="order" size="16"></u-icon>-->
           </view>
         </view>
-        <view class="bdlg"></view>
       </view>
     </view>
     <scroll-view scroll-y="true" scroll-x="false">
@@ -172,15 +169,16 @@ export default {
       justify-content: center;
       text-align:left;
       padding-left:1rem;
+      padding-top:1rem;
       .name{
-        font-size:0.7rem;
+        font-size:1.5rem;
         color:#FFFFFF;
         margin-bottom:0.3rem;
       }
       .value{
         font-family:"PingFangSC-Bold";
         font-weight:600;
-        font-size:1.5rem;
+        font-size:1rem;
         color:#08E07F;
         .u-icon{color:#08E07F;}
       }
@@ -211,7 +209,7 @@ export default {
     justify-content: space-around;
     align-items:center;
     flex-wrap: nowrap;
-        padding: 2.5rem 2rem;
+        padding: 2.5rem 1.5rem 1rem;
     .guider-bg{
       position:absolute;
       top:1.5rem;
@@ -249,9 +247,9 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
-    
+    padding:0 .2rem;
     .item{
-      width:48%;
+      width:47%;
       display:flex;
       flex-wrap: wrap;
       flex-direction: row;
@@ -402,12 +400,12 @@ export default {
   }
   .wrapper{
     justify-content: flex-start;
-    padding: 2.5rm 0 3rem 0;
+    padding: 2.5 0 3rem 0;
     color:#fff;
     overflow:visible;
   }
   uni-scroll-view {
-        height: calc(100% - 28.5rem);
+        height: calc(100% - 24.5rem);
         ::v-deep .uni-scroll-view-content {
           padding: .5rem;
           border-radius: 20px;

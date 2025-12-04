@@ -1,5 +1,5 @@
 <template>
-  <view class="home body" :class="[$store.state.setting.theme, { 'page-loaded': pageLoaded }]"  style="padding-bottom:3rem;">
+  <view class="home body" :class="[$store.state.setting.theme, { 'page-loaded': pageLoaded }]"  style="padding-bottom:2.5rem;">
     <navBar :logo="logo">
       <template #quicker="{ }">
         <navLanguage :source="this" />

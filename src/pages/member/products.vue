@@ -1,13 +1,13 @@
 <template>
-<view class="products body" >
-    <navBar :title="title" :back="back"></navBar>
+<view class="products bodys" >
+    <navBar :title="title" :back="back"  ></navBar>
     <view class="wrapper" >
         <view class="statistics">
             <view class="card-content">
                 <text class="title">{{$t('当前累计收益')}}</text>
                 <text class="value">${{formatMoney(user.statisticIncome3s,2)}}</text>
                 <view class="total-chip">
-                    <text class="label">{{$t('个人总收益')}}</text>
+                    <text class="label">{{$t('今日收益')}}</text>
                     <text class="amount">≈ 2.36%</text>
                 </view>
             </view>
@@ -30,16 +30,31 @@
                   class="plan-card"
                   v-for="(plan, index) in quantizationPlans"
                   :key="'plan-' + index"
+                  @click="handlePlanClick(plan)"
                 >
-                    <text class="plan-name">{{ plan.name }}</text>
-                    <text class="plan-desc">{{ plan.desc }}</text>
+                    <text class="plan-name">{{ plan.name || '--' }}</text>
+                    <text class="plan-desc">
+                        {{$t('下单时间')}}：{{ plan.purchaseTime || '--' }}
+                    </text>
                     <view class="plan-row">
-                        <text class="label">{{$t('收益区间')}}：</text>
-                        <text class="value">{{ plan.incomeRange }}</text>
+                        <text class="label">{{$t('收益率')}}：</text>
+                        <text class="value">
+                            {{ plan.expectedRevenue ? plan.expectedRevenue + '%' : '--' }}
+                        </text>
                     </view>
                     <view class="plan-row">
-                        <text class="label">{{$t('适用策略')}}：</text>
-                        <text class="value">{{ plan.strategy }}</text>
+                        <text class="label">{{$t('周期/剩余')}}：</text>
+                        <text class="value">
+                            {{ plan.projectDuration || 0 }}{{$t('天')}}
+                            /
+                            {{ plan.residualDistributionCycle || 0 }}
+                        </text>
+                    </view>
+                    <view class="plan-row">
+                        <text class="label">{{$t('投资金额')}}：</text>
+                        <text class="value">
+                            {{ plan.purchaseAmount || '--' }} U
+                        </text>
                     </view>
                 </view>
             </view>
@@ -148,44 +163,7 @@ export default {
         typesMap:[0,1,2,3],
         productType:-1,
         rows:[],
-        quantizationPlans: [
-            {
-                name: "7天量化资源包",
-                desc: "短周期·适合体验与滚动复投",
-                incomeRange: "0.45%~0.60% / 日",
-                strategy: "K-Lite α·高频网格",
-            },
-            {
-                name: "15天加速量化",
-                desc: "折中周期·兼顾流动性和收益",
-                incomeRange: "0.60%~0.75% / 日",
-                strategy: "K-Lite β·趋势跟随",
-            },
-            {
-                name: "30天稳健量化",
-                desc: "主推方案·适合普通用户",
-                incomeRange: "0.70%~0.90% / 日",
-                strategy: "3X 合约·现货对冲",
-            },
-            {
-                name: "60天量化资源包",
-                desc: "中长期·适合体验与滚动复投",
-                incomeRange: "0.85%~1.05% / 日",
-                strategy: "多因子择时 + 套利",
-            },
-            {
-                name: "90天稳健量化",
-                desc: "多策略组合·收益更平滑",
-                incomeRange: "0.95%~1.15% / 日",
-                strategy: "K-Alpha 90·全市场",
-            },
-            {
-                name: "7天量化资源包",
-                desc: "短周期·适合体验与滚动复投",
-                incomeRange: "0.45%~0.60% / 日",
-                strategy: "现货 + 合约 + 套利联动",
-            },
-        ]
+        quantizationPlans: []
         };
     },
     onLoad(sender) {
@@ -209,6 +187,7 @@ export default {
             var rows=(data.dataView?data.dataView.rows:null)||data.rows||[];
             data.rows=rows;
             that.extend(data);
+            that.quantizationPlans = rows;
         });
         },
         chose(event,type,index){
@@ -219,19 +198,38 @@ export default {
                 that.productType=that.typesMap[value];
                 that.load();
             }
+        },
+        handlePlanClick(plan) {
+            if (!plan || !plan.id) {
+                return;
+            }
+            this.gotoPage('/pages/member/product?id=' + plan.id);
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
+.bodys{
+	width:100%;
+    box-sizing:border-box;
+    background-color:#010101;
+    /* 左上角装饰图 */
+    background-image: url(/static/images/Ellipse3.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: auto;
+    font-size:0.65rem;
+    overflow: hidden;
+  
+}
 .products {
     .statistics,.summary-cards,.supported-assets,.statBar,.split-row,.records{width:96%;margin:0.5rem auto;}
     .statistics{
         width:96%;
-        margin:0.8rem auto 1.6rem auto;
+        margin:0.8rem auto -2rem ;
         min-height:10.5rem;
-        padding:1.8rem 1.6rem;
+        padding:1.8rem 1.6rem 0;
         display:flex;
         align-items:center;
         justify-content:space-between;
@@ -405,6 +403,10 @@ export default {
             font-size:0.95rem;
             font-weight:600;
             margin-bottom:0.15rem;
+            display:block;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
         }
         .plan-desc{
             font-size:0.55rem;

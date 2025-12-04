@@ -3,7 +3,14 @@
     <navBar :back="back" :title="title">
     </navBar>
     
-    <view class="wrapper" style="padding-top:5rem;">
+    <view class="wrapper" style="padding-top:2.5rem;">
+         <scroll-view
+            scroll-y="true"
+            scroll-x="false"
+            class="scroll-container fade-in-up"
+            :style="{ animationDelay: '0.3s' }"
+        >
+        <view style="height:1rem;"></view>
         <view class="statistics fade-in-up" :style="{ animationDelay: '0.1s' }">
             <view class="statistics-top">
                 <view class="icon-left">
@@ -17,11 +24,11 @@
             <view class="rbb">
                 <view class="tab">
                     <text class="title">{{$t('当前托管本金')}}</text>
-                    <text class="value">{{formatMoney(user.statisticInvests,2)}} U</text>
+                    <text class="value">{{formatMoney(user.statisticInvests,2)}} $</text>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('今日已实现收益')}}</text>
-                    <text class="value">+{{formatMoney(user.statisticIncome3sDays,2)}} U</text>
+                    <text class="value">{{formatMoney(user.statisticIncome3sDays,2)}} $</text>
                 </view>
                 <view class="tab">
                     <text class="title">{{$t('策略运行胜率')}}</text>
@@ -45,12 +52,14 @@
                 <text class="item" @click="chose(item,'typeSetting',i)" :class="{active:i==typeSetting.current}" v-for="(item,i) in typeSetting.items" :key="i">{{item.text}}</text>
             </view>
         </view>
-    
-        
-        
-        <scroll-view scroll-y="true" scroll-x="false" class="scroll-container fade-in-up" :style="{ animationDelay: '0.3s' }">
             <view class="list">
-                <view class="item panel" @click="chose(item,'row',i)" v-for="(item, i) in rows" :key="i" :class="{active:row.index==i}" >
+                <view
+                    class="item panel"
+                    @click="chose(item,'row',i)"
+                    v-for="(item, i) in rows"
+                    :key="i"
+                    :class="{active:row.index==i}"
+                >
                     <view class="row rt">
                         {{item.name}}
                     </view>
@@ -66,26 +75,26 @@
                 </view>
             </view>  
 
-        </scroll-view>
-        <view class="shower fade-in-up" :style="{ animationDelay: '0.4s' }">
-            <view class="cl">
-                <view class="r1">{{$t('您当前选择的收益方案')}}</view>
-                <view class="r2">{{$t(row.name||"暂无")}}</view>
-                <view class="r3">{{ $t(row.remark||"暂无") }}</view>
-            </view>
-            <view class="cr">
-                <view class="btn" @click="chose(row,'product',row.index)">
-                    <text>{{$t('确认并')}}</text>
-                    <text>{{$t('进入产品')}}</text>
+            <view class="shower fade-in-up" :style="{ animationDelay: '0.4s' }">
+                <view class="cl">
+                    <view class="r1">{{$t('您当前选择的收益方案')}}</view>
+                    <view class="r2">{{$t(row.name||"暂无")}}</view>
+                    <view class="r3">{{ $t(row.remark||"暂无") }}</view>
+                </view>
+                <view class="cr">
+                    <view class="btn" @click="chose(row,'product',row.index)">
+                        <text>{{$t('确认并')}}</text>
+                        <text>{{$t('进入产品')}}</text>
+                    </view>
                 </view>
             </view>
-        </view>
 
-        <view class="tips" v-if="false">
-            {{$t(tips)}}
-        </view>
-    
+            <view class="tips" v-if="false">
+                {{$t(tips)}}
+            </view>
+        </scroll-view>
     </view>
+    
     <mrFooter page="products" />
 </view>
 </template>
@@ -156,10 +165,10 @@ export default {
                 if(!data.typeSetting){
                     data.typeSetting={
                         items:[
-                            {value:0,text:"灵犀·闪电策略"},
-                            {value:1,text:"灵犀·灵动策略"},
-                            {value:2,text:"灵犀·趋势策略"},
-                            {value:3,text:"灵犀·矩阵策略"}
+                            {value:0,text:"闪电策略"},
+                            {value:1,text:"灵动策略"},
+                            {value:2,text:"趋势策略"},
+                            {value:3,text:"矩阵策略"}
                         ]
                     }
                 }
@@ -197,13 +206,13 @@ export default {
       
 <style lang="scss" scoped>
 .products {
-    .statistics,.guider,.list,.shower,.tips{width:93%;margin:0.5rem auto;}
+    .statistics,.guider,.list,.shower,.tips{width:93%;margin:0.4rem auto;}
     .statistics{
         position: relative;
         display:flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        padding: 1.5rem 1rem;
+        padding: 1.1rem 0.9rem 0;
         border-radius: 10px;
         background: url(/static/images/Rectangle3579.png) center center no-repeat;
         background-size: 100% 100%;
@@ -211,7 +220,7 @@ export default {
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 0.6rem;
             .icon-left{
                 width: 40%;
                 display: flex;
@@ -219,7 +228,8 @@ export default {
                 justify-content: flex-start;
                 .icon-image{
                     position: absolute;
-                    width: 10rem;
+                    width: 9rem;
+                    top:-2rem
                 }
             }
             .content-right{
@@ -246,7 +256,8 @@ export default {
             font-size: 0.6rem;
             text-align: center;
             opacity: 0.8;
-            margin-top: 1rem;
+            margin-top: .4rem;
+            margin-bottom: .3rem;
         }
         .rbb{
             width:100%;
@@ -254,15 +265,15 @@ export default {
             flex-direction: row;
             justify-content: space-between;
             gap: 0.5rem;
-            margin-top: 0.5rem;
+            margin-top: 0.3rem;
             .tab{
                 flex: 1;
-                height: 3.5rem;
+                height: 3.1rem;
                 display:flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: flex-start;
-                padding: 0.8rem 0.6rem;
+                padding: 0.6rem 0.5rem;
                 border-radius: 8px;
                 background: url(/static/images/Rectangle3565.png) center center no-repeat;
                 background-size: 100% 100%;
@@ -282,15 +293,16 @@ export default {
     .guider{
         display:flex;
         flex-direction: column;
+        margin-bottom:0.2rem;
         .rt{
             width:100%;
             display:flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.3rem;
             .cl{
-                font-size: 0.8rem;
+                font-size: 0.78rem;
                 font-weight: 600;
                 color:#FFFFFF;
             }
@@ -307,7 +319,7 @@ export default {
             width:100%;
             min-height:$_height;
             padding:0.2rem;
-            margin:0.4rem auto 0;
+            margin:0.2rem auto 0;
             display:flex;
             flex-direction: row;
             justify-content: space-between;
@@ -388,7 +400,7 @@ export default {
         }
     }
     .shower{
-        $_widthR:5rem;
+        $_widthR:4.2rem;
         position: relative;
         display:flex;
         flex-direction: row;
@@ -432,19 +444,19 @@ export default {
             position: relative;
             
             .btn {
-                width: 5.5rem;
+                width: 4.6rem;
                 height: auto;
                 background: linear-gradient(to right, #08E07F 100%, #1AFFAA 100%);
                 border-radius: 9990px;
                 color: #000;
-                font-size: 0.7rem;
+                font-size: 0.65rem;
                 font-weight: bold;
                 text-align: center;
                 display:flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 0.25rem 0.4rem;
+                padding: 0.2rem 0.35rem;
                 text{
                     line-height: 1.2;
                 }
@@ -458,8 +470,8 @@ export default {
     }
     .wrapper {
         justify-content: flex-start;
-        height: calc(100% - 3.2rem);
-        padding: 2.5rem 0rem 0 0rem;
+        height: calc(100% - 3rem);
+        padding: 2rem 0rem 0 0rem;
         color: #fff;
         display: flex;
         flex-direction: column;

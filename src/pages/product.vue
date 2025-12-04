@@ -7,7 +7,7 @@
   </template>
   -->
   </navBar>
-  <view class="wrapper">
+  <view class="wrapper" >
     <scroll-view scroll-y="true" scroll-x="false">
       <view class="split-row">
         <view class="cl"></view>
@@ -26,12 +26,14 @@
         </view>
       </view>
       <view class="progress">
-        <image class="progress-bg" src="/static/images/Rectangle3533.png" mode="widthFix" />
-        <view class="progress-content">
-          <view class="line">
-            <view class="active" :style="{width:(saleAmount/totalAmount*100)+'%'}"></view>
+        <image class="progress-bg" src="/static/images/Rectangle3533.png"   />
+        <view class="progress-content" style="margin-top:.2rem;">
+          <view class="progress-line">
+            <view class="line">
+              <view class="active" :style="{width:(saleAmount/totalAmount*100)+'%'}"></view>
+            </view>
           </view>
-          <view class="value">
+          <view class="progress-amount" >
             <text class="current">{{formatMoney(saleAmount,2)}}</text>
             <text class="total">/{{formatMoney(totalAmount,2)}} USDT</text>
           </view>
@@ -75,10 +77,15 @@
             <text class="cl">{{$t('余额')}}</text>
             <text class="cr clr1">{{formatMoney((user.balance*1)+(user.rechargeAmount*1),2)}} USDT</text>
           </view>
-
+           <view class="amount-input-meta" v-if="investmentStats.max">
+                <text class="meta-range">{{formatMoney(investmentStats.purched,2)}}/{{formatMoney(investmentStats.max,2)}} USDT</text>
+                <text class="meta-remaining">剩余可配置 {{formatMoney(investmentStats.remaining,2)}} USDT</text>
+              </view>
           <view class="amount-input-row">
             <image class="amount-bg" src="/static/images/Rectangle1090.png" mode="widthFix" />
+           
             <view class="amount-input-content">
+             
               <input
                 class="txt"
                 type="number"
@@ -94,7 +101,11 @@
           </view>
           <view class="row">
             <text class="cl">{{$t('周期产出比例')}}</text>
-            <text class="cr">{{formatMoney(expectedRevenue,2)}} %</text>
+            <text class="cr">{{formatMoney(totalRevenueRate,2)}} %</text>
+          </view>
+          <view class="row" v-if="investmentStats.max">
+            <text class="cl">{{$t('配置区间')}}</text>
+            <text class="cr">{{formatMoney(investmentStats.min,2)}}~{{formatMoney(investmentStats.max,2)}} USDT</text>
           </view>
           <view class="row">
             <text class="cl">{{$t('周期总产出')}}</text>
@@ -249,6 +260,20 @@ export default {
   onReady() {
     //this.getServerData();
   },
+  computed:{
+    investmentStats(){
+      const min = Number(this.minInvestment) || 0;
+      const max = Number(this.maxInvestment) || 0;
+      const purched = Number(this.purchedAmount) || 0;
+      const remaining = max > 0 ? Math.max(max - purched,0) : 0;
+      return {min,max,purched,remaining};
+    },
+    totalRevenueRate(){
+      const personal = Number(this.expectedRevenue) || 0;
+      const platform = Number(this.expectedRevenue01) || 0;
+      return personal + platform;
+    }
+  },
   methods: {
     load(sender) {
           var that = this,sender=sender|| that.sender|| {},id=sender.id||0;
@@ -300,7 +325,25 @@ export default {
 </script>
   
   <style lang="scss" scoped>
+
   .product {
+    .amount-input-meta{
+          display:flex;
+          flex-direction:column;
+          width:100%;
+          font-size:0.65rem;
+          line-height:0.95rem;
+          color:#CFEFE6;
+          margin-bottom:0.1rem;
+          .meta-range{
+            color:#0EFFB0;
+            font-weight:600;
+          }
+          .meta-remaining{
+            color:#FFFFFF;
+            opacity:0.85;
+          }
+        }
     .popuper{
 
       ::v-deep .u-mode-center-box{
@@ -439,9 +482,13 @@ export default {
     }
     .progress{
       position:relative;
-      margin-top:2rem;
+      margin-top:1.5rem;
+      height:2rem;
+      position:relative;
       .progress-bg{
         width:100%;
+        height:100%;
+        position:absolute;
       }
       .progress-content{
         position:absolute;
@@ -450,14 +497,19 @@ export default {
         right:0;
         bottom:0;
         display:flex;
-        flex-direction:row;
-        justify-content:space-between;
+        flex-direction:column;
+        justify-content:center;
         align-items:center;
-        padding:0 1.5rem;
+        padding:1rem 1.5rem;
+      }
+      .progress-line{
+        width:100%;
+        display:flex;
+        justify-content:center;
       }
       .line{
         $_heightL:0.3rem;
-        width:60%;
+        width:100%;
         margin:0;
         height: $_heightL;
         border-radius:999px;
@@ -469,15 +521,20 @@ export default {
           background-color: #0EFFB0;
         }
       }
-      .value{
-        font-size:0.53rem;
+      .progress-amount{
+        width:100%;
+        display:flex;
+        justify-content: flex-end;
+        font-size:0.7rem;
         color:#FFFFFF;
         .current{
           color:#0EFFB0;
-          margin-right:0.1rem;
+          font-size:.7rem;
         }
         .total{
           color:#FFFFFF;
+          opacity:0.85;
+          font-size:.7rem;
         }
       }
     }
@@ -486,7 +543,7 @@ export default {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
-      margin-top:2rem;
+      margin-top:1.5rem;
       .item{
         position:relative;
         width:47%;
@@ -565,8 +622,10 @@ export default {
           right:0;
           bottom:0;
           display:flex;
-          align-items:center;
-          padding:0 1.5rem;
+          flex-direction:column;
+          align-items:flex-start;
+          justify-content:center;
+          padding:0.6rem 1.5rem;
         }
         .txt{
           width:100%;
@@ -575,7 +634,10 @@ export default {
           outline:none;
           color:#fff;
           font-size:0.9rem;
+          margin-top:-0.2rem;
+          line-height:1.4rem;
         }
+        
       }
       .ctl{
         margin-top:1.2rem;
