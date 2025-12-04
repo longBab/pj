@@ -6,9 +6,9 @@
         <view class="statistics">
             <view class="card-content">
                 <text class="title">{{$t('当前累计收益')}}</text>
-                <text class="value">${{formatMoney(user.statisticIncome3s,2)}}</text>
+                <text class="value">{{formatMoney(user.statisticIncome3s,2)}}$</text>
                 <view class="total-chip">
-                    <text class="label">{{$t('今日收益')}}</text>
+                    <text class="label">{{$t('今日量化产出')}}</text>
                     <text class="amount">≈ 2.36%</text>
                 </view>
             </view>
@@ -68,11 +68,9 @@
                         </text>
                     </view>
                     <view class="plan-row">
-                        <text class="label">{{$t('周期/剩余')}}：</text>
+                        <text class="label">{{$t('周期')}}：</text>
                         <text class="value">
-                            {{ plan.projectDuration || 0 }}{{$t('天')}}
-                            /
-                            {{ plan.residualDistributionCycle || 0 }}
+                            {{ plan.projectDuration || 0 }}
                         </text>
                     </view>
                     <view class="plan-row">
@@ -288,7 +286,7 @@ export default {
             }
         }
         .total-chip{
-            width:10.2rem;
+            width:12.2rem;
             margin-top:0.9rem;
             padding:0.45rem 1rem;
             background:url(/static/images/Rectangle1121.png) center center no-repeat;
