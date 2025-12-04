@@ -1,4 +1,5 @@
 <template>
+<view style="background:#000;">
 <view class="products bodys" >
     <navBar :title="title" :back="back"  ></navBar>
     <view class="wrapper" >
@@ -21,10 +22,34 @@
             <view class="cl" style="margin-top:.8rem;"></view>
             <view class="cc">
                 <text class="section-title">{{$t('请选择量化周期')}}</text>
-
             </view>
-        <view class="cr" style="margin-top:.8rem;"></view>
-      </view>
+            <view class="cr" style="margin-top:.8rem;"></view>
+        </view>
+
+            <!-- 量化周期选择 tabs，productType 从 0 ~ 3 -->
+            <view class="quantization-tabs">
+                <view
+                    class="tabs"
+                    v-if="typeTabs && typeTabs.length"
+                >
+                    <view
+                        class="slider"
+                        :style="{
+                            width: `calc(${100 / typeTabs.length}% - 0.1rem)`,
+                            transform: `translateX(${(productType >= 0 ? productType : 0) * 100}%)`
+                        }"
+                    ></view>
+                    <text
+                        class="item"
+                        v-for="(item, i) in typeTabs"
+                        :key="i"
+                        :class="{ active: productType === item.value }"
+                        @click="onTypeTabClick(item, i)"
+                    >
+                        {{ item.text }}
+                    </text>
+                </view>
+            </view>
             <view class="plan-grid">
                 <view
                   class="plan-card"
@@ -57,9 +82,6 @@
                         </text>
                     </view>
                 </view>
-            </view>
-            <view class="view-assets-btn">
-                <text>{{$t('查看我的量化资产')}}</text>
             </view>
         </view>
 
@@ -148,6 +170,7 @@
         </scroll-view>  -->
     </view>
 </view>
+</view>
 </template>
 
 <script>
@@ -161,9 +184,15 @@ export default {
         user:{statisticIncome3sDays:0,statisticInvestsTotals:0,statisticIncome3s:0,statisticInvests:0},
         types:["灵犀·闪电策略","灵犀·灵动策略","灵犀·趋势策略","灵犀·矩阵策略"],
         typesMap:[0,1,2,3],
-        productType:-1,
+        productType:0,
         rows:[],
-        quantizationPlans: []
+        quantizationPlans: [],
+        typeTabs: [
+          { value: 0, text: "闪电策略" },
+          { value: 1, text: "灵动策略" },
+          { value: 2, text: "趋势策略" },
+          { value: 3, text: "矩阵策略" }
+        ]
         };
     },
     onLoad(sender) {
@@ -190,6 +219,7 @@ export default {
             that.quantizationPlans = rows;
         });
         },
+        // 老 picker 的通用选择方法，保留以兼容历史调用
         chose(event,type,index){
             var that=this,value=index||event;
             console.log([event,type]);
@@ -198,6 +228,13 @@ export default {
                 that.productType=that.typesMap[value];
                 that.load();
             }
+        },
+        // 顶部量化周期 tabs 点击
+        onTypeTabClick(item, index) {
+            if (!item) return;
+            // productType 按照 0~3 顺序赋值
+            this.productType = item.value;
+            this.load();
         },
         handlePlanClick(plan) {
             if (!plan || !plan.id) {
@@ -212,6 +249,7 @@ export default {
 <style lang="scss" scoped>
 .bodys{
 	width:100%;
+    min-height:100vh;
     box-sizing:border-box;
     background-color:#010101;
     /* 左上角装饰图 */
@@ -381,7 +419,65 @@ export default {
             font-size:1.1rem;
             font-weight:600;
             letter-spacing:0.08rem;
-            margin:0.4rem 0 0.8rem;
+            margin:0.4rem 0 0.4rem;
+        }
+    }
+    // 量化周期 tabs（复用产品页样式）
+    .quantization-tabs{
+        width:96%;
+        margin:0.4rem auto 0.6rem;
+        display:flex;
+        flex-direction: column;
+        .tabs{
+            $_height:2.4rem;
+            $_radius:999px;
+            width:100%;
+            min-height:$_height;
+            padding:0.2rem;
+            margin:0.2rem auto 0;
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(29, 29, 29, 1) 100%;
+            border-radius: $_radius;
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                inset: -0.8px;
+                border-radius: $_radius;
+                background: linear-gradient(139deg, rgba(0, 255, 255, 1) 0%, rgba(0, 0, 0, 1) 39%, rgba(0, 255, 189, 1) 100%);
+                z-index: -1;
+            }
+            border: 0.8px solid rgba(128, 128, 128, 0.2);
+            box-sizing: border-box;
+            .slider{
+                position: absolute;
+                left: 0.2rem;
+                top: 0.2rem;
+                height: calc($_height - 0.4rem);
+                background: linear-gradient(90deg, #08E07F 0%, #1AFFAA 100%);
+                border-radius: $_radius;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 0;
+            }
+            .item{
+                flex: 1;
+                text-align: center;
+                height:calc($_height - 0.4rem);
+                line-height:calc($_height - 0.4rem);
+                font-size: 0.75rem;
+                font-weight:700;
+                color:#FFFFFF;
+                border-radius: $_radius;
+                position: relative;
+                z-index: 1;
+                transition: color 0.3s ease-out;
+                &.active{
+                    color:#000000;
+                }
+            }
         }
     }
     .plan-grid{
