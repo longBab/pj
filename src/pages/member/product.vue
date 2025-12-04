@@ -92,28 +92,23 @@
 				<view class="rc panel" >
 
 					<view class="row">
-						<text class="cl">24h 成交笔数</text>
+						<text class="cl">购买时间</text>
 						<text class="cr">177,034</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">24h 成交额</text>
+						<text class="cl">总成交额</text>
 						<text class="cr">386,767013USD</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">成交率(Fill Rate]</text>
+						<text class="cl">成交率</text>
 						<text class="cr">99.75%</text>
 					</view>
 
 					<view class="row">
-						<text class="cl">平均滑点</text>
+						<text class="cl">结束时间</text>
 						<text class="cr">2.8 bp</text>
-					</view>
-
-					<view class="row">
-						<text class="cl">API延迟</text>
-						<text class="cr">42</text>
 					</view>
 
 					<view class="row">
