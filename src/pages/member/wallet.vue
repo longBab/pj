@@ -341,7 +341,7 @@ export default {
   .record{
     margin:0.3rem auto;
     display:flex;
-    height:3rem;
+    height:3.5rem;
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: nowrap;

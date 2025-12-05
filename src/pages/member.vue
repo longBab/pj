@@ -38,11 +38,12 @@
           <view class="col des">
             <text class="title">{{$t('全球推广')}}</text>
             <text class="sub">加入全球推广，共创未来！</text>
-            <text
+            <!-- <text
               class="join bdr05 bggr01"
               style="color:#000;font-weight:bold;text-align:center;background:linear-gradient(90deg,#08E07F 0%,#1AFFAA 100%);"
               @click="gotoPage('/pages/member/node-preview')"
-            >{{$t('一键开启')}}</text>
+            >{{$t('一键开启')}}</text> -->
+            <button class="btns" @click="gotoPage('/pages/member/node-preview')">{{$t('一键开启')}}</button>
           </view>
           <!-- <view class="row">
             <text class="link">{{$t('邀请链接')}}：{{user.invitationCode || 'https://oga...3618'}}</text>
@@ -345,6 +346,18 @@ export default {
       flex-wrap: wrap;
       padding:0.1rem 1.1rem 0.1rem 1.1rem;
       align-items: center;
+      .btns{
+        color:#000;
+        background:linear-gradient(90deg, #08E07F 100%, #1AFFAA 100%);
+        border-radius:999px;
+        padding:0.5rem 1rem;
+        font-size:0.7rem;
+        font-weight:600;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin-left:0;
+      }
     }
    
     .col{
@@ -488,6 +501,7 @@ export default {
     
     .container{
       padding:0.5rem;
+      
     }
     .row{
       width:100%;
